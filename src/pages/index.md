@@ -1,10 +1,10 @@
 ---
 title: Getting started
 pageTitle: Elsa Workflows - Add workflow capabilities to any .NET project.
-description: Cache every single thing your app could ever do ahead of time, so your code never even has to run at all.
+description: Build workflow-driven applications using Elsa Workflows.
 ---
 
-Learn how to get CacheAdvance set up in your project in under thirty minutes or it's free. {% .lead %}
+Learn how to get Elsa Workflows set up in your project in under ten minutes or it's free. {% .lead %}
 
 {% quick-links %}
 
@@ -12,103 +12,131 @@ Learn how to get CacheAdvance set up in your project in under thirty minutes or 
 
 {% quick-link title="Architecture guide" icon="presets" href="/" description="Learn how the internals work and contribute." /%}
 
-{% quick-link title="Plugins" icon="plugins" href="/" description="Extend the library with third-party plugins or write your own." /%}
+{% quick-link title="Modules" icon="plugins" href="/" description="Extend the library with third-party modules or write your own." /%}
 
-{% quick-link title="API reference" icon="theming" href="/" description="Learn to easily customize and modify your app's visual design to fit your brand." /%}
+{% quick-link title="API reference" icon="theming" href="/" description="Learn to easily customize and extend your workflow application." /%}
 
 {% /quick-links %}
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste.
 
 ---
 
 ## Quick start
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
+Elsa can be used in different settings. The most common one is having a dashboard app hosting the designer and a server app hosting the workflow engine, but you can also serve both from the same app. 
 
-### Installing dependencies
+Other settings include basic workflow execution from a console app, a worker service, or front-end apps like WinForms, WPF, UWP and Xamarin.
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
+For the quick start, we will setup two ASP.NET applications, one representing the workflow server that exposes API endpoints and the other on representing the dashboard that consumes the API endpoints.
+We will also look at securing access to the API and dashboard by using [OpenIddict](https://github.com/openiddict/openiddict-core).
 
-```shell
-npm install @tailwindlabs/cache-advance
-```
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-{% callout type="warning" title="Oh no! Something bad happened!" %}
-This is what a disclaimer message looks like. You might want to include inline `code` in it. Or maybe you’ll want to include a [link](/) in it. I don’t think we should get too carried away with other scenarios like lists or tables — that would be silly.
-{% /callout %}
-
-### Configuring the library
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-```js
-// cache-advance.config.js
-export default {
-  strategy: 'predictive',
-  engine: {
-    cpus: 12,
-    backups: ['./storage/cache.wtf'],
-  },
-}
-```
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-{% callout title="You should know!" %}
-This is what a disclaimer message looks like. You might want to include inline `code` in it. Or maybe you’ll want to include a [link](/) in it. I don’t think we should get too carried away with other scenarios like lists or tables — that would be silly.
+{% callout type="warning" title="Protect your endpoints!" %}
+When hosting a workflow server that exposes API endpoints to manage & execute workflows, you should always take care of protecting access to them. We will see how in the quickstart.
 {% /callout %}
 
 ---
 
 ## Basic usage
 
-Praesentium laudantium magni. Consequatur reiciendis aliquid nihil iusto ut in et. Quisquam ut et aliquid occaecati. Culpa veniam aut et voluptates amet perspiciatis. Qui exercitationem in qui. Vel qui dignissimos sit quae distinctio.
+Besides the ability to execute workflows from a host as demonstarted in the quickstart, the most direct way to run a workflow is to use the `IWorkflowRunner` service from your application. For example:
 
-### Your first cache
+```clike
+using Elsa.Extensions;
+using Elsa.Workflows.Core.Activities;
+using Elsa.Workflows.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 
-Minima vel non iste debitis. Consequatur repudiandae et quod accusamus sit molestias consequatur aperiam. Et sequi ipsa eum voluptatibus ipsam. Et quisquam ut.
+// Setup a service container from which we can resolve Elsa services.
+var services = new ServiceCollection();
 
-Qui quae esse aspernatur fugit possimus. Quam sed molestiae temporibus. Eum perferendis dignissimos provident ea et. Et repudiandae quasi accusamus consequatur dolore nobis. Quia reiciendis necessitatibus a blanditiis iste quia. Ut quis et amet praesentium sapiente.
+// Add Elsa services to the service collection.
+services.AddElsa();
 
-Atque eos laudantium. Optio odit aspernatur consequuntur corporis soluta quidem sunt aut doloribus. Laudantium assumenda commodi.
+// Build a service provider.
+var serviceProvider = services.BuildServiceProvider();
 
-### Clearing the cache
+// Resolve a workflow runner.
+var workflowRunner = serviceProvider.GetRequiredService<IWorkflowRunner>();
 
-Vel aut velit sit dolor aut suscipit at veritatis voluptas. Laudantium tempore praesentium. Qui ut voluptatem.
+// Define a workflow.
+var workflow = new WriteLine("Hello World!");
 
-Ea est autem fugiat velit esse a alias earum. Dolore non amet soluta eos libero est. Consequatur qui aliquam qui odit eligendi ut impedit illo dignissimos.
+// Execute the workflow.
+workflowRunner.RunAsync(workflow);
+```
 
-Ut dolore qui aut nam. Natus temporibus nisi voluptatum labore est ex error vel officia. Vero repellendus ut. Suscipit voluptate et placeat. Eius quo corporis ab et consequatur quisquam. Nihil officia facere dolorem occaecati alias deleniti deleniti in.
+### Workflows
 
-### Adding middleware
+In Elsa, a workflow is a type that contains roughly three types of information:
 
-Officia nobis tempora maiores id iusto magni reprehenderit velit. Quae dolores inventore molestiae perspiciatis aut. Quis sequi officia quasi rem officiis officiis. Nesciunt ut cupiditate. Sunt aliquid explicabo enim ipsa eum recusandae. Vitae sunt eligendi et non beatae minima aut.
+- Metadata about the workflow (name, version, etc.)
+- Configuration for the workflow (variables)
+- Main activity (the root node of the graph to start executing)
 
-Harum perferendis aut qui quibusdam tempore laboriosam voluptatum qui sed. Amet error amet totam exercitationem aut corporis accusantium dolorum. Perspiciatis aut animi et. Sed unde error ut aut rerum.
+In the previous example, we seemed to execute an activity (`WriteLine`) directly, but under the hood, a new `Workflow` object was created.
+Creating a workflow manually looks like this:
 
-Ut quo libero aperiam mollitia est repudiandae quaerat corrupti explicabo. Voluptas accusantium sed et doloribus voluptatem fugiat a mollitia. Numquam est magnam dolorem asperiores fugiat. Soluta et fuga amet alias temporibus quasi velit. Laudantium voluptatum perspiciatis doloribus quasi facere. Eveniet deleniti veniam et quia veritatis minus veniam perspiciatis.
+```clike
+var workflow = new Workflow(new WriteLine("Hello World!"));
+```
 
----
+
+You may be wondering: how does one create a workflow with more than just one step?
+
+Simple! just use a _composite_ activity such as `Sequence`, `Flowchart` or even a custom one.
+
+{% callout title="Composite Activities" %}
+A composite activity is an activity that itself contains one ore more activities that it will execute as part of its operation.
+Some examples of composite activities are `Sequence`, `Flowchart`,`If`, `While` and `Switch`.
+Even `Workflow` is a composite activity!
+{% /callout %}
+
+For example, the following workflow will execute a series of steps:
+
+```clike
+var workflow = new Workflow
+{
+    Root = new Sequence
+    {
+        Activities =
+        {
+            new WriteLine("Hello World!"),
+            new WriteLine("Goodbye cruel world..."),
+        }
+    }
+};
+```
+
+### Workflow Hosting
+
+So far we only looked at simple workflows that are executed manually using the `IWorkflowRunner` service.
+However, to run workflows that can be suspended & resumed based on triggers such as timers and other events, we need a system that knows about these workflows.
+
+This system is called the `IWorkflowDefinitionStore`, and effectively represents a repository of **workflow definitions** available to the system.
+
+Checkout the Workflow Hosting page to learn everything there is to know about hosting workflows.
 
 ## Getting help
 
-Consequuntur et aut quisquam et qui consequatur eligendi. Necessitatibus dolorem sit. Excepturi cumque quibusdam soluta ullam rerum voluptatibus. Porro illo sequi consequatur nisi numquam nisi autem. Ut necessitatibus aut. Veniam ipsa voluptatem sed.
+Documentation can go only so far. You may encounter scenarios that has not been covered. You may have questions. Perhaps an idea for a new feature or an improvement of an existing feature. And believe it or not, there may be bugs!
+Whatever the case may be, we are here to help!
 
 ### Submit an issue
 
-Inventore et aut minus ut voluptatem nihil commodi doloribus consequatur. Facilis perferendis nihil sit aut aspernatur iure ut dolores et. Aspernatur odit dignissimos. Aut qui est sint sint.
+Whenever you encounter an issue or have a great idea, please submit an issue on GitHub.
 
-Facere aliquam qui. Dolorem officia ipsam adipisci qui molestiae. Error voluptatem reprehenderit ex.
+### Ask questions
 
-Consequatur enim quia maiores aperiam et ipsum dicta. Quam ut sit facere sit quae. Eligendi veritatis aut ut veritatis iste ut adipisci illo.
+There are different places where you can ask questions.
+
+- Github Discussions
+- Stack Overflow
+- Discord
 
 ### Join the community
 
-Praesentium facilis iste aliquid quo quia a excepturi. Fuga reprehenderit illo sequi voluptatem voluptatem omnis. Id quia consequatur rerum consectetur eligendi et omnis. Voluptates iusto labore possimus provident praesentium id vel harum quisquam. Voluptatem provident corrupti.
+We have a friendly community on Discord, and you're invited!
 
-Eum et ut. Qui facilis est ipsa. Non facere quia sequi commodi autem. Dicta autem sit sequi omnis impedit. Eligendi amet dolorum magnam repudiandae in a.
+We also host a weekly community meeting where we talk about anything & everything, though most commonly about Elsa features, ideas and demos.
+The meeting takes place on Discord every Tuesday 19:00 UTC.
 
-Molestiae iusto ut exercitationem dolorem unde iusto tempora atque nihil. Voluptatem velit facere laboriosam nobis ea. Consequatur rerum velit ipsum ipsam. Et qui saepe consequatur minima laborum tempore voluptatum et. Quia eveniet eaque sequi consequatur nihil eos.
+Everyone is welcome!
