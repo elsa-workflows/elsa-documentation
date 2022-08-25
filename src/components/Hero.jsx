@@ -25,7 +25,7 @@ const code = `public class HelloWorld : WorkflowBase
 }`
 
 const tabs = [
-  { name: 'HelloWorldWorkflow.cs', isActive: true },
+  { name: 'HelloWorld.cs', isActive: true },
   { name: 'appsettings.json', isActive: false },
 ]
 
