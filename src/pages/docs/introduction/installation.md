@@ -1,34 +1,30 @@
 ---
-title: Quickstart
-description: Setup Server + Dashboard.
+title: Installation
+description: Installation of server + dashboard.
 ---
 
-Quasi sapiente voluptates aut minima non doloribus similique quisquam. In quo expedita ipsum nostrum corrupti incidunt. Et aut eligendi ea perferendis.
+Elsa can be used in different settings, but the most common one is to have a workflow server and a dashboard application that connects with the server to create workflows with the designer and store them on the server. 
+
+We will create one solution with two ASP.NET applications:
+
+- ElsaQuickstart.Api
+- ElsaQuickstart.Dashboard
 
 ---
 
-## Quickstart
+## ElsQuickstart.Api
 
-Elsa can be used in different paradigms. The most common one is that of having the dashboard app hosting the designer and a separate server hosting the workflow engine, but you can serve both from the same app just as well.
-Or you can host just the workflow engine and not use the designer, relying on hand-crafted workflows using C# instead, or perhaps use JSON files for workflow definitions.
+The `ElsQuickstart.Api` project will be the workflow server and expose API endpoints for the dashboard app to consume.
 
-For the quick start, we will go with the more common scenario and setup two ASP.NET applications, one representing the workflow server and the other on representing the dashboard.
-As an extra, we will also look at securing access to the API and dashboard by using [OpenIddict](https://github.com/openiddict/openiddict-core) as the identity provider and token issuer.
+### Create the project
 
-### Elsa.QuickStart.Api
-
-To run workflows, we need an application. This could be any .NET application you want, but for this quickstart, it needs to be an ASP.NET API project that exposes the necessary API endpoints to the dashboard application, which communicates with the workflow server through REST API calls.
-These HTTP requests perform tasks like loading & saving workflow definitions created using the designer.
-
-Perform the following steps to scaffold a new, empty ASP.NET project.
+Perform the following command to scaffold a new, empty ASP.NET project.
 
 ```shell
-dotnet new web -n "ElsaQuickstarts.Server.ApiEndpoints" -f net6.0
+dotnet new web -n "ElsaQuickstarts.Api" -f net6.0
 ```
 
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Natus aspernatur iste
+### Install Elsa packages
 
 Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
 

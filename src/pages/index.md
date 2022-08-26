@@ -20,11 +20,11 @@ Learn how to get Elsa Workflows set up in your project in under ten minutes or i
 
 ---
 
-## Quick start
+## Installation
 
-Elsa can be used in different settings. The most common one is having a dashboard app hosting the designer and a server app hosting the workflow engine, but you can also serve both from the same app. 
+Elsa can be used in different settings. The most common one is having a server app hosting the workflow engine to which a dashboard app connects. It's also common to serve both the engine as well as the dashboard from the same app. 
 
-Other settings include basic workflow execution from a console app, a worker service, or front-end apps like WinForms, WPF, UWP and Xamarin.
+Other paradigms include basic workflow execution from a console app, a worker service, or front-end apps like WinForms, WPF, UWP and Xamarin.
 
 For the quick start, we will setup two ASP.NET applications, one representing the workflow server that exposes API endpoints and the other on representing the dashboard that consumes the API endpoints.
 We will also look at securing access to the API and dashboard by using [OpenIddict](https://github.com/openiddict/openiddict-core).
@@ -37,7 +37,7 @@ When hosting a workflow server that exposes API endpoints to manage & execute wo
 
 ## Basic usage
 
-Besides the ability to execute workflows from a host as demonstarted in the quickstart, the most direct way to run a workflow is to use the `IWorkflowRunner` service from your application. For example:
+Besides the ability to execute workflows from a host as demonstrated in the quickstart, the most direct way to run a workflow is to use the `IWorkflowRunner` service from your application. For example:
 
 ```clike
 using Elsa.Extensions;
@@ -72,17 +72,15 @@ In Elsa, a workflow is a type that contains roughly three types of information:
 - Configuration for the workflow (variables)
 - Main activity (the root node of the graph to start executing)
 
-In the previous example, we seemed to execute an activity (`WriteLine`) directly, but under the hood, a new `Workflow` object was created.
+In the previous code snippet, we executed an activity (`WriteLine`) directly, but under the hood, a new `Workflow` object was created.
 Creating a workflow manually looks like this:
 
 ```clike
 var workflow = new Workflow(new WriteLine("Hello World!"));
 ```
 
-
-You may be wondering: how does one create a workflow with more than just one step?
-
-Simple! just use a _composite_ activity such as `Sequence`, `Flowchart` or even a custom one.
+Up to this point, we executed only one activity. Real-world workflows, however, typically contain many more activities that are connected in a certain way. 
+In Elsa, we use _composite activities_ such as `Sequence` and `Flowchart` to model different kinds of graphs.
 
 {% callout title="Composite Activities" %}
 A composite activity is an activity that itself contains one ore more activities that it will execute as part of its operation.
@@ -108,10 +106,15 @@ var workflow = new Workflow
 
 ### Workflow Hosting
 
-So far we only looked at simple workflows that are executed manually using the `IWorkflowRunner` service.
-However, to run workflows that can be suspended & resumed based on triggers such as timers and other events, we need a system that knows about these workflows.
+We looked at simple workflows that are executed manually using the `IWorkflowRunner` service.
+For simple workflows that contain no triggers or blocking activities, this is sufficient.
+But to run workflows that can be suspended & resumed based on triggers such as timers and other events, we need a system that knows about these workflows.
 
-This system is called the `IWorkflowDefinitionStore`, and effectively represents a repository of **workflow definitions** available to the system.
+In a nutshell, Elsa comes with a repository called the **Workflow Definition Store** with which we can register our workflow definitions.
+Various components of the system will use this store to lookup workflows to execute.
+
+For example, workflows that start with a trigger such as **Timer** are driven by a hosted service that looks up a list of triggers, which in turn are associated with workflow definitions (by ID).
+Knowing a workflow definition ID is enough to find it in the workflow definition store and execute it.
 
 Checkout the Workflow Hosting page to learn everything there is to know about hosting workflows.
 
