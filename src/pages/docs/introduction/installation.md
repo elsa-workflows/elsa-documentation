@@ -12,9 +12,9 @@ We will create one solution with two ASP.NET applications:
 
 ---
 
-## ElsQuickstart.Api
+## ElsaQuickstart.Api
 
-The `ElsQuickstart.Api` project will be the workflow server and expose API endpoints for the dashboard app to consume.
+The `ElsaQuickstart.Api` project will be the workflow server and expose API endpoints for the dashboard app to consume.
 
 ### Create the project
 
