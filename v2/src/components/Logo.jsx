@@ -5,7 +5,7 @@ export function Logo(props) {
   return (
     <div className="flex space-x-2">
       <Image src={logoImage} unoptimized alt="Elsa 2 logo"/>
-      <h2 className="font-display text-2xl tracking-tight text-slate-900 dark:text-white uppercase">Elsa 2</h2>
+      <h2 className="font-display text-2xl tracking-tight text-slate-900 dark:text-white uppercase">Elsa 2.9</h2>
     </div>
   );
 }
