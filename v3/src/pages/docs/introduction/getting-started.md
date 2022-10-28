@@ -1,6 +1,6 @@
 ---
-title: Installation
-description: Installation of server + dashboard.
+title: Getting started
+description: Getting started with Elsa Workflows.
 ---
 
 Elsa can be used in different settings, but the most common one is to have a workflow server and a dashboard application that connects with the server to create workflows with the designer and store them on the server. 
