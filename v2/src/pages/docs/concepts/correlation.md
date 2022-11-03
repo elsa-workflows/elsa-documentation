@@ -6,7 +6,7 @@ Elsa enables you to _correlate_ workflows with a application-specific values. Th
 
 For example, it could represent a customer, a document, a change request, and anything else.
 
-### When to use correlation?
+## When to use correlation?
 
 Imagine you have a document approval workflow that requests reviews of a document from users in the system.
 Such workflows are typically long-running: they will suspend while awaiting input from a user.
