@@ -15,12 +15,12 @@ const navigation = [
     {
         title: 'Quickstart',
         links: [
-            { title: 'Hello World Console', href: '/docs/quickstart/hello-world-console' },
-            { title: 'Hello World HTTP', href: '/docs/quickstart/hello-world-console' },
-            { title: 'Elsa server', href: '/docs/quickstart/elsa-server' },
-            { title: 'Elsa dashboard', href: '/docs/quickstart/elsa-dashboard' },
-            { title: 'Elsa dashboard + server', href: '/docs/quickstart/elsa-dashboard-server' },
-            { title: 'Elsa + Docker', href: '/docs/quickstart/elsa-docker' },
+            { title: 'Hello World Console', href: '/docs/quickstarts/hello-world-console' },
+            { title: 'Hello World HTTP', href: '/docs/quickstarts/hello-world-http' },
+            { title: 'Elsa server', href: '/docs/quickstarts/elsa-server' },
+            { title: 'Elsa dashboard', href: '/docs/quickstarts/elsa-dashboard' },
+            { title: 'Elsa dashboard + server', href: '/docs/quickstarts/elsa-dashboard-and-server' },
+            { title: 'Elsa + Docker', href: '/docs/quickstarts/elsa-docker' },
         ],
     },
     {
@@ -82,6 +82,7 @@ const navigation = [
     {
         title: 'Designer',
         links: [
+            { title: 'Basic usage', href: '/docs/designer/basic-usage' },
             { title: 'Enabling horizontal layout', href: '/docs/designer/enabling-horizontal-layout' },
         ],
     },
