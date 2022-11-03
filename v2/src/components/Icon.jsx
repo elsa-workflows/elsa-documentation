@@ -18,12 +18,12 @@ const icons = {
 }
 
 const iconStyles = {
-  blue: '[--icon-foreground:theme(colors.slate.900)] [--icon-background:theme(colors.white)]',
-  amber:
-    '[--icon-foreground:theme(colors.amber.900)] [--icon-background:theme(colors.amber.100)]',
+  green: '[--icon-foreground:theme(colors.slate.900)] [--icon-background:theme(colors.white)]',
+  lime:
+    '[--icon-foreground:theme(colors.lime.900)] [--icon-background:theme(colors.lime.100)]',
 }
 
-export function Icon({ color = 'blue', icon, className, ...props }) {
+export function Icon({ color = 'green', icon, className, ...props }) {
   let id = useId()
   let IconComponent = icons[icon]
 
@@ -41,18 +41,18 @@ export function Icon({ color = 'blue', icon, className, ...props }) {
 }
 
 const gradients = {
-  blue: [
-    { stopColor: '#0EA5E9' },
-    { stopColor: '#22D3EE', offset: '.527' },
-    { stopColor: '#818CF8', offset: 1 },
+  green: [
+    { stopColor: '#bbf7d0' },
+    { stopColor: '#4ade80', offset: '.527' },
+    { stopColor: '#15803d', offset: 1 },
   ],
-  amber: [
-    { stopColor: '#FDE68A', offset: '.08' },
-    { stopColor: '#F59E0B', offset: '.837' },
+  lime: [
+    { stopColor: '#ecfccb', offset: '.08' },
+    { stopColor: '#84cc16', offset: '.837' },
   ],
 }
 
-export function Gradient({ color = 'blue', ...props }) {
+export function Gradient({ color = 'green', ...props }) {
   return (
     <radialGradient
       cx={0}

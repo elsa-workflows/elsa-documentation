@@ -1,7 +1,5 @@
 ---
-id: guides-signaling-workflows
-title: Signaling Workflows 
-sidebar_label: Signaling Workflows
+title: Signaling Workflows
 ---
 
 Elsa comes with simple yet powerful signaling capabilities that allow you to send simple signals from and to workflows as well as from your application code.
@@ -59,4 +57,4 @@ Signal 1 received!
 
 The following animation shows everything scenario in action:
 
-![Elsa Dashboard + Docker](assets/guides/guides-signaling-workflows-animation-1.gif)
+{% figure src="/assets/guides/guides-signaling-workflows-animation-1.gif" caption="Elsa Dashboard + Docker" /%}

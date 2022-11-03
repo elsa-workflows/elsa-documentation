@@ -17,7 +17,7 @@ To connect an outcome to an existing activity:
 1. Press and hold the SHIFT button while left-clicking the outcome from which you wish to connect. 
 2. Left-click on the target activity (no need to keep pressing SHIFT)
 
-![](assets/guides/guides-document-approval-animation-1.gif)
+{% figure src="/assets/guides/guides-document-approval-animation-1.gif" /%}
 
 
 ## Undo / Redo

@@ -1,7 +1,5 @@
 ---
-id: guides-recurring-tasks 
-title: Create & run a recurring workflow 
-sidebar_label: Recurring Tasks
+title: Create & run a recurring workflow
 ---
 
 In this guide, we will do the following:
@@ -36,7 +34,7 @@ dotnet add package Microsoft.Extensions.Hosting
 
 Create a new file called `RecurringTaskWorkflow.cs` and add the following code:
 
-```csharp
+```clike
 using Elsa.Activities.Console;
 using Elsa.Activities.Temporal;
 using Elsa.Builders;
@@ -64,7 +62,7 @@ Now that we have a workflow, we need to be able to execute it. Since the workflo
 
 Open `Program.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using System.Threading.Tasks;
 using Elsa;
 using Microsoft.Extensions.DependencyInjection;
@@ -234,7 +232,7 @@ Finally, create a new folder called `Pages` and add a new file called `_Host.csh
     <script src="/_content/Elsa.Designer.Components.Web/monaco-editor/min/vs/loader.js"></script>
     <script type="module" src="/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/elsa-workflows-studio.esm.js"></script>
 </head>
-<body class="h-screen" style="background-size: 30px 30px; background-image: url(/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/assets/images/tile.png); background-color: #FBFBFB;">
+<body class="h-screen" style="background-size: 30px 30px; background-image: url(/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/assets/images/tile.png" /%}; background-color: #FBFBFB;">
 <elsa-studio-root server-url="@serverUrl" monaco-lib-path="_content/Elsa.Designer.Components.Web/monaco-editor/min"></elsa-studio-root>
 </body>
 </html>
@@ -275,7 +273,7 @@ Duration.FromSeconds(5)
 
 To switch to JavaScript mode, click on the small button with an icon representing horizontal triple dots and select "JavaScript":
 
-![Switching to JavaScript mode](assets/guides/guides-recurring-tasks-animation-1.gif)
+{% figure src="/assets/guides/guides-recurring-tasks-animation-1.gif" caption="Switching to JavaScript mode" /%}
 
 Click the **Done** outcome's "plus" button to create & connect a new `WriteLine` activity and configure it as follows:
 

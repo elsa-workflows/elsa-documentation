@@ -17,7 +17,7 @@ The following steps assume you created a new, blank ASP.NET Core project.
 
 The following `Startup` shows the minimum set of calls to make in order to register the most common services required when using **HTTP** and **Timer** activities:
 
-```csharp
+```clike
 public void ConfigureServices(IServiceCollection services)
 {
     services
@@ -34,7 +34,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Additionally, the following call is required to register the necessary middleware when using with **HTTP** activities:
 
-```csharp
+```clike
 public void Configure(IApplicationBuilder app)
 {
     // Register necessary ASP.NET Core middleware that triggers workflows containing HTTP activities. 

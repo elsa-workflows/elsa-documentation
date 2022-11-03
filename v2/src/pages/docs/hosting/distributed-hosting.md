@@ -1,7 +1,5 @@
 ---
-id: hosting-distributed-hosting
-title: Hosting Elsa on Multiple Nodes
-sidebar_label: Distributed Hosting
+title: Distributed Hosting
 ---
 
 Hosting Elsa in a multi-node environment is 100% supported and can significantly increase throughput and of course offers redundancy in case once node goes down. 

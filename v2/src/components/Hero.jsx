@@ -7,37 +7,7 @@ import { Button } from '@/components/Button'
 import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
-
-const codeLanguage = 'clike'
-const code = `public class HelloWorld : WorkflowBase
-{
-  protected override void Build(IWorkflowBuilder workflow)
-  {
-      workflow.Root = new Sequence
-      {
-         Activities = 
-         {
-            new WriteLine("Hello"),
-            new WriteLine("World!")
-         }
-      };
-  }
-}`
-
-const tabs = [
-  { name: 'HelloWorld.cs', isActive: true },
-  { name: 'appsettings.json', isActive: false },
-]
-
-function TrafficLightsIcon(props) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 42 10" fill="none" {...props}>
-      <circle cx="5" cy="5" r="4.5" />
-      <circle cx="21" cy="5" r="4.5" />
-      <circle cx="37" cy="5" r="4.5" />
-    </svg>
-  )
-}
+import breakingBarriersImage from '@/images/undraw_breaking_barriers_vnf3.svg';
 
 export function Hero() {
   return (
@@ -55,14 +25,14 @@ export function Hero() {
               priority
             />
             <div className="relative">
-              <p className="inline bg-gradient-to-r from-indigo-200 via-sky-400 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
+              <p className="inline bg-gradient-to-r from-green-600 via-emerald-400 to-emerald-800 bg-clip-text font-display text-5xl tracking-tight text-transparent">
                 Open Source .NET Workflows Library.
               </p>
               <p className="mt-3 text-2xl tracking-tight text-slate-400">
                 Enable workflow execution in any .NET application using code or a visual workflow designer.
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
-                <Button href="/">Get started</Button>
+                <Button href="/docs/quickstarts/hello-world-console">Get started</Button>
                 <Button href="https://github.com/elsa-workflows/elsa-core" variant="secondary">
                   View on GitHub
                 </Button>
@@ -92,85 +62,13 @@ export function Hero() {
                 unoptimized
                 priority
               />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-sky-300 via-sky-300/70 to-blue-300 opacity-10 blur-lg" />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-sky-300 via-sky-300/70 to-blue-300 opacity-10" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-300 via-emerald-300/70 to-green-300 opacity-10 blur-lg" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-300 via-emerald-300/70 to-green-300 opacity-10" />
               <div className="relative rounded-2xl bg-[#0A101F]/80 ring-1 ring-white/10 backdrop-blur">
-                <div className="absolute -top-px left-20 right-11 h-px bg-gradient-to-r from-sky-300/0 via-sky-300/70 to-sky-300/0" />
-                <div className="absolute -bottom-px left-11 right-20 h-px bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
+                <div className="absolute -top-px left-20 right-11 h-px bg-gradient-to-r from-emerald-300/0 via-emerald-300/70 to-emerald-300/0" />
+                <div className="absolute -bottom-px left-11 right-20 h-px bg-gradient-to-r from-green-400/0 via-green-400 to-green-400/0" />
                 <div className="pl-4 pt-4">
-                  <TrafficLightsIcon className="h-2.5 w-auto stroke-slate-500/30" />
-                  <div className="mt-4 flex space-x-2 text-xs">
-                    {tabs.map((tab) => (
-                      <div
-                        key={tab.name}
-                        className={clsx(
-                          'flex h-6 rounded-full',
-                          tab.isActive
-                            ? 'bg-gradient-to-r from-sky-400/30 via-sky-400 to-sky-400/30 p-px font-medium text-sky-300'
-                            : 'text-slate-500'
-                        )}
-                      >
-                        <div
-                          className={clsx(
-                            'flex items-center rounded-full px-2.5',
-                            tab.isActive && 'bg-slate-800'
-                          )}
-                        >
-                          {tab.name}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-6 flex items-start px-1 text-sm">
-                    <div
-                      aria-hidden="true"
-                      className="select-none border-r border-slate-300/5 pr-4 font-mono text-slate-600"
-                    >
-                      {Array.from({
-                        length: code.split('\n').length,
-                      }).map((_, index) => (
-                        <Fragment key={index}>
-                          {(index + 1).toString().padStart(2, '0')}
-                          <br />
-                        </Fragment>
-                      ))}
-                    </div>
-                    <Highlight
-                      {...defaultProps}
-                      code={code}
-                      language={codeLanguage}
-                      theme={undefined}
-                    >
-                      {({
-                        className,
-                        style,
-                        tokens,
-                        getLineProps,
-                        getTokenProps,
-                      }) => (
-                        <pre
-                          className={clsx(
-                            className,
-                            'flex overflow-x-auto pb-6'
-                          )}
-                          style={style}
-                        >
-                          <code className="px-4">
-                            {tokens.map((line, lineIndex) => (
-                              <div key={lineIndex} {...getLineProps({ line })}>
-                                {line.map((token, tokenIndex) => (
-                                  <span
-                                    key={tokenIndex}
-                                    {...getTokenProps({ token })}
-                                  />
-                                ))}
-                              </div>
-                            ))}
-                          </code>
-                        </pre>
-                      )}
-                    </Highlight>
-                  </div>
+                  <Image src={breakingBarriersImage} alt="" layout="fill" />
                 </div>
               </div>
             </div>

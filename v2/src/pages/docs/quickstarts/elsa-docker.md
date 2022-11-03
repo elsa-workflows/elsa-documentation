@@ -17,4 +17,4 @@ http://localhost:13000/
 
 Here's what that looks like:
 
-![Elsa Dashboard + Docker](assets/quickstarts/quickstarts-elsa-dashboard-docker-animation-1.gif)
+![Elsa Dashboard + Docker](assets/quickstarts/quickstarts-elsa-dashboard-docker-animation-1.gif" /%}

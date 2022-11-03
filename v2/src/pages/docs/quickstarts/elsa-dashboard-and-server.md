@@ -42,7 +42,7 @@ dotnet add package Elsa.Designer.Components.Web
 
 Open `Startup.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using Elsa;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
@@ -169,7 +169,7 @@ var serverUrl = $"{Request.Scheme}://{Request.Host}";
 
 Run the program and open a web browser to the home page:
 
-![](assets/installation/installing-elsa-dashboard-figure-1.png)
+{% figure src="/assets/installation/installing-elsa-dashboard-figure-1.png" /%}
 
 Because we configured the <elsa-studio-root> element with a valid URL to a running Elsa server (which is the same application hosting the dashboard), we can click around the menu.
 Let's create a workflow next.
@@ -209,7 +209,7 @@ The workflow is now published and ready to be invoked!
 
 We'll try out the workflow in a second. Here's an animation that shows the above steps:
 
-![Elsa Workflows Hello World demo with HTTP activities](assets/quickstarts/quickstarts-aspnetcore-server-dashboard-and-api-endpoints-animation-1.gif)
+![Elsa Workflows Hello World demo with HTTP activities](assets/quickstarts/quickstarts-aspnetcore-server-dashboard-and-api-endpoints-animation-1.gif" /%}
 
 > **Bug Alert**
 >
@@ -220,7 +220,7 @@ We'll try out the workflow in a second. Here's an animation that shows the above
 
 Since the workflow starts with an HTTP Endpoint activity configured to listen for HTTP GET requests at `/hello-world`, we can open a new web browser tab and navigate to `https://localhost:5001/hello-world`.
 
-![Elsa Workflows Hello World workflow](assets/quickstarts/quickstarts-aspnetcore-server-dashboard-and-api-endpoints-figure-1.png)
+![Elsa Workflows Hello World workflow](assets/quickstarts/quickstarts-aspnetcore-server-dashboard-and-api-endpoints-figure-1.png" /%}
 
 ## Next Steps
 

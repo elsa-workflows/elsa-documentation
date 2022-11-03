@@ -14,7 +14,7 @@ dotnet add package Elsa
 
 To add Elsa services to your application, add the following code to `Startup.cs`:
 
-```csharp
+```clike
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddElsa();

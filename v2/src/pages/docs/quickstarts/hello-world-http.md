@@ -35,7 +35,7 @@ dotnet add package Elsa.Activities.Http
 
 Create a new file called `HelloWorld.cs` and add the following code:
 
-```csharp
+```clike
 using System.Net;
 using Elsa.Activities.Http;
 using Elsa.Builders;
@@ -75,7 +75,7 @@ The first activity is connected to the second activity `WriteHttpResponse`, whic
 
 Next, open `Startup.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -113,7 +113,7 @@ Open a web browser and navigate to `https://localhost:5001/hello-world`.
 
 The result should look like this:
 
-![](assets/quickstarts/aspnetcore-hello-world-figure-1.png)
+{% figure src="/assets/quickstarts/aspnetcore-hello-world-figure-1.png" /%}
 
 ## Next Steps
 

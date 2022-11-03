@@ -5,15 +5,15 @@ import { Icon } from '@/components/Icon'
 const styles = {
   note: {
     container:
-      'bg-sky-50 dark:bg-slate-800/60 dark:ring-1 dark:ring-slate-300/10',
-    title: 'text-sky-900 dark:text-sky-400',
-    body: 'text-sky-800 [--tw-prose-background:theme(colors.sky.50)] prose-a:text-sky-900 prose-code:text-sky-900 dark:text-slate-300 dark:prose-code:text-slate-300',
+      'bg-emerald-50 dark:bg-slate-800/60 dark:ring-1 dark:ring-slate-300/10',
+    title: 'text-emerald-900 dark:text-emerald-400',
+    body: 'text-emerald-800 [--tw-prose-background:theme(colors.emerald.50)] prose-a:text-emerald-900 prose-code:text-emerald-900 dark:text-slate-300 dark:prose-code:text-slate-300',
   },
   warning: {
     container:
       'bg-amber-50 dark:bg-slate-800/60 dark:ring-1 dark:ring-slate-300/10',
     title: 'text-amber-900 dark:text-amber-500',
-    body: 'text-amber-800 [--tw-prose-underline:theme(colors.amber.400)] [--tw-prose-background:theme(colors.amber.50)] prose-a:text-amber-900 prose-code:text-amber-900 dark:text-slate-300 dark:[--tw-prose-underline:theme(colors.sky.700)] dark:prose-code:text-slate-300',
+    body: 'text-amber-800 [--tw-prose-underline:theme(colors.amber.400)] [--tw-prose-background:theme(colors.amber.50)] prose-a:text-amber-900 prose-code:text-amber-900 dark:text-slate-300 dark:[--tw-prose-underline:theme(colors.emerald.700)] dark:prose-code:text-slate-300',
   },
 }
 

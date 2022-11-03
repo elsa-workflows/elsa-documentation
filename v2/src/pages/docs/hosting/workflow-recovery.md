@@ -1,7 +1,5 @@
 ---
-id: hosting-workflow-recovery
 title: Workflow Recovery
-sidebar_label: Workflow Recovery
 ---
 
 > **UNDER CONSTRUCTION**

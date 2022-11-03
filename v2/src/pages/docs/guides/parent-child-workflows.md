@@ -7,7 +7,7 @@ In this guide, we will see how we can invoke other workflows from a parent workf
 We will see how we can run child workflows in a **fire and forget** fashion as well as in a **wait until completed** fashion.
 We'll also see how we can provide input into the child workflows and allow the child workflows to provide output back to the parent workflow.
 
-You don't need to setup an Elsa project to follow this guide. All we need is a running [Elsa Server + Dashboard Docker container](https://elsa-workflows.github.io/elsa-core/docs/next/quickstarts/quickstarts-elsa-and-docker) by running the following command:
+You don't need to setup an Elsa project to follow this guide. All we need is a running [Elsa Server + Dashboard Docker container](/docs/quickstarts/elsa-docker) by running the following command:
 
 ```bash
 docker run -t -i -e ELSA__SERVER__BASEURL='http://localhost:13000' -p 13000:80 elsaworkflows/elsa-dashboard-and-server:latest
@@ -26,7 +26,7 @@ For this scenario, we will setup one parent workflow and a child workflow.
 The parent workflow:
 
 - Listens for incoming HTTP requests
-- Runs a the child workflow.
+- Runs a child workflow.
 
 ### Child Workflow
 
@@ -65,8 +65,8 @@ Parent says: "Hello child!"
 ```
 
 The following JSON files are completed workflows that you can import. 
-* [Scenario 1: Parent Workflow JSON](assets/guides/parent-child-workflows-scenario-1-parent.json)
-* [Scenario 1: Child Workflow JSON](assets/guides/parent-child-workflows-scenario-1-child.json)
+* [Scenario 1: Parent Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-1-parent.json)
+* [Scenario 1: Child Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-1-child.json)
 
 ## Scenario 2: Parent Child: Block until Complete
 
@@ -145,8 +145,8 @@ Message received from child 975ed020276e430f91c1338e92131402: Hello parent!
 When you look at the workflow instances, you will see that both the Child as well as the Parent are now in the `Finished` state.
 
 The following JSON files are completed workflows that you can import.
-* [Scenario 2: Parent Workflow JSON](assets/guides/guides-parent-child-workflows-scenario-2-parent.json)
-* [Scenario 2: Child Workflow JSON](assets/guides/guides-parent-child-workflows-scenario-2-child.json)
+* [Scenario 2: Parent Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-2-parent.json)
+* [Scenario 2: Child Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-2-child.json)
 
 ## Scenario 3: Parent Children: Run Many Children and Block until Complete.
 
@@ -165,7 +165,7 @@ Update the Parent workflow by adding a new **Fork** activity between the **HTTP 
 
 This will generate 3 branches.
 
-Now [reconnect](designer/designer-using-the-designer.md) the existing **Run Workflow** to the **Child 1** outcome.
+Now [reconnect](/docs/designer/basic-usage) the existing **Run Workflow** to the **Child 1** outcome.
 
 #### Run Workflow 1
 
@@ -211,7 +211,7 @@ Configure it as follows:
 
 The final result should look like this:
 
-![](assets/guides/guides-parent-child-workflows-1.png)
+{% figure src="/assets/guides/guides-parent-child-workflows-1.png" /%}
 
 ### Child Workflow
 
@@ -280,7 +280,7 @@ My workflow instance ID is: bd345ece3aba48a69383a471185a16fd
 
 Notice also that there are now 4 workflow instances in the **Suspended** state: one Parent workflow and three Child workflows:
 
-![](assets/guides/guides-parent-child-workflows-2.png)
+{% figure src="/assets/guides/guides-parent-child-workflows-2.png" /%}
 
 Execute the following HTTP requests one-by-one (the order in which does not matter) and notice that the Parent workflow will finish only after the last Child workflow completes:
 
@@ -307,5 +307,5 @@ curl --location --request POST 'https://localhost:11000/v1/signals/resume-1/exec
 After the last child executes, the HTTP response should read `All set!`, and all workflows should have completed.
 
 The following JSON files are completed workflows that you can import.
-* [Scenario 2: Parent Workflow JSON](assets/guides/guides-parent-child-workflows-scenario-3-parent.json)
-* [Scenario 2: Child Workflow JSON](assets/guides/guides-parent-child-workflows-scenario-3-child.json)
+* [Scenario 2: Parent Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-3-parent.json)
+* [Scenario 2: Child Workflow JSON](/assets/guides/guides-parent-child-workflows-scenario-3-child.json)

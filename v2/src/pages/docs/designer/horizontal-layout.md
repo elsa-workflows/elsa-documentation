@@ -45,6 +45,6 @@ Next you must pass the file location to the root component.
 
 Now that the settings are enabled you should have an extra tab in the designer:
 
-![](assets/designer/designer-horizontal-layout-tab.png)
+{% figure src="/assets/designer/designer-horizontal-layout-tab.png" /%}
 
 Any changes done to the layout are also applied to instance editor. The layout cannot be changed from the instance editor.

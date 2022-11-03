@@ -22,7 +22,7 @@ dotnet add package Elsa.Designer.Components.Web
 
 Update your `Startup.cs` to contain the following code:
 
-```csharp
+```clike
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -77,7 +77,7 @@ Create a new file called `_Host.cshtml` and add the following markup:
     <script src="/_content/Elsa.Designer.Components.Web/monaco-editor/min/vs/loader.js"></script>
     <script type="module" src="/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/elsa-workflows-studio.esm.js"></script>
 </head>
-<body class="h-screen" style="background-size: 30px 30px; background-image: url(/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/assets/images/tile.png); background-color: #FBFBFB;">
+<body class="h-screen" style="background-size: 30px 30px; background-image: url(/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/assets/images/tile.png" /%}; background-color: #FBFBFB;">
 <elsa-studio-root server-url="https://your-elsa-server" monaco-lib-path="_content/Elsa.Designer.Components.Web/monaco-editor/min"></elsa-studio-root>
 </body>
 </html>
@@ -89,7 +89,7 @@ Notice that you will need to update the `server-url` attribute of the `elsa-stud
 
 When you run your application you should see the following:
 
-![](assets/installation/installing-elsa-dashboard-figure-1.png)
+{% figure src="/assets/installation/installing-elsa-dashboard-figure-1.png" /%}
 
 None of the menu items will function correctly until you made sure to point the component to a running Elsa server.
 

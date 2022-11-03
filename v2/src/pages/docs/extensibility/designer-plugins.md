@@ -119,9 +119,9 @@ With this plugin registered, it will display the thumbs-up icon for your custom 
 Sometimes your custom activities might yield dynamic outcomes depending on the values of some activity property. A good example of this is the `Fork` activity.
 When you add this activity, you specify a list of **branches** that are then displayed on the designer as outcomes.
 
-![](assets/extensibility/extensibility-designer-plugins-01.png)
+{% figure src="/assets/extensibility/extensibility-designer-plugins-01.png" /%}
 
-![](assets/extensibility/extensibility-designer-plugins-02.png)
+{% figure src="/assets/extensibility/extensibility-designer-plugins-02.png" /%}
 
 To implement this dynamic behavior, you need to create a plugin for your custom activity that does the following things:
 
@@ -132,7 +132,7 @@ To implement this dynamic behavior, you need to create a plugin for your custom 
 
 For example, let's say you have the following custom activity defined in C#:
 
-```csharp
+```clike
 public RandomizeOutcome : Activity
 {
    [ActivityInput(
@@ -288,7 +288,7 @@ Notice that when registering a driver, you register a function that constructs a
 
 With that in place (make sure to register your plugin), you can now declare activity properties with the `'my-custom-input'` UI hint like this:
 
-```csharp
+```clike
 [ActivityInput(UIHint = "my-custom-input", SupportedSyntaxes = new[] { SyntaxNames.JavaScript, SyntaxNames.Liquid })]
 public string Subtext { get; set; }
 ```

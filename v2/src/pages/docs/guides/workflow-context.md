@@ -1,7 +1,5 @@
 ---
-id: guides-workflow-contexts
 title: Working with Workflow Contexts
-sidebar_label: Workflow Contexts
 ---
 
 In this guide, we will learn how to work with **Workflow Contexts**.
@@ -15,15 +13,15 @@ The completed solution for this guide can be found [here](https://github.com/els
 A workflow context represents a model that is specific to your own domain, which means it can be any object that you like.
 Examples are documents, time sheets, users, employees, products, shopping carts, leave requests, change requests, blog posts and so forth.
 
-> See also the [conceptual definition of Workflow Context](../concepts/concepts-workflow-context).
+> See also the [conceptual definition of Workflow Context](../concepts/workflow-context).
 
 ## Why Use Workflow Contexts?
 
 Oftentimes when you work with long-running workflows that deal with domain entities, you need to load the entity into memory before you can start reading information from it or perform update operations.
 
-For [short-running]((../concepts/concepts-workflows#short-running-workflows)) workflows, it is enough to load the entity just once, which will be in memory for the duration of the workflow's lifetime.
+For [short-running](../concepts/workflows#short-running-workflows) workflows, it is enough to load the entity just once, which will be in memory for the duration of the workflow's lifetime.
 
-For [long-running]((../concepts/concepts-workflows#long-running-workflows)) workflows on the other hand, you will need to load the entity each time the workflow gets resumed and if you need access to this entity.
+For [long-running](../concepts/workflows#long-running-workflows) workflows on the other hand, you will need to load the entity each time the workflow gets resumed and if you need access to this entity.
 
 This is usually solved by writing custom activities that take care of loading (and perhaps persisting) these domain entities. Although that works fine, one disadvantage of this approach is that it tends to clutters the workflow.
 
@@ -68,7 +66,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 
 Create a new folder called `Models` and add the following class:
 
-```csharp
+```clike
 namespace ElsaGuides.WorkflowContexts.Web.Models
 {
     public class BlogPost
@@ -83,7 +81,7 @@ namespace ElsaGuides.WorkflowContexts.Web.Models
 
 Create a new folder called `Data` and add the following class:
 
-```csharp
+```clike
 using ElsaGuides.WorkflowContexts.Web.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -102,7 +100,7 @@ namespace ElsaGuides.WorkflowContexts.Web.Data
 
 Create the following class in the same folder:
 
-```csharp
+```clike
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -130,19 +128,20 @@ The design time DB context factory will be used by the dotnet EF Core tool to ge
 To generate the migrations, execute the following command:
 
 ```bash
-cd 
 dotnet ef migrations add Initial -c BlogContext -o Data/Migrations
 ```
 
 At this point, we could go ahead and create the SQLite database by running the following command: 
 
-`dotnet ef database update -- "Data Source=blog.db;Cache=Shared"`
+```bash
+dotnet ef database update -- "Data Source=blog.db;Cache=Shared"
+```
 
 That would be fine, and is usually the right thing to do. But if you for whatever reason prefer to automatically run migrations during application startup, you can create a new class that implements `IStartupTask`, which is a feature provided by Elsa and will be executed during application startup.
 
 To see how that works, create a new folder called `Data/StartupTasks` and add the following class:
 
-```csharp
+```clike
 using System.Threading;
 using System.Threading.Tasks;
 using Elsa.Services;
@@ -178,7 +177,7 @@ When we register this class with the service container (which we will get to sho
 
 Before we go over the `Startup` class, we will first create a new folder called `Providers/WorkfowContexts` and add the following class:
 
-```csharp
+```clike
 using System;
 using System.Linq;
 using System.Threading;
@@ -266,7 +265,7 @@ Although it's a bit of code to read and write, you only have to do it once and t
 
 Now that we got the important pieces of the puzzle in place, it's time to update the `Startup` as follows:
 
-```csharp
+```clike
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
 using Elsa.Runtime;
@@ -414,7 +413,7 @@ This variable is set because our workflow context provider's `SaveAsync` method 
 
 And when we look back at that method again (BlogPostWorkflowContextProvider.cs:57-58), we see that we are setting the `WorkflowContext` for newly received blog posts:
 
-```csharp
+```clike
 // Set context.
 context.WorkflowExecutionContext.WorkflowContext = blogPost;
 context.WorkflowExecutionContext.ContextId = blogPost.Id;
@@ -457,7 +456,7 @@ Make sure to select the JavaScript syntax and set the **Content Type** field to 
 
 The result should look like this:
 
-![](assets/guides/guides-workflow-contexts-1.png)
+{% figure src="/assets/guides/guides-workflow-contexts-1.png" /%}
 
 Make sure to **publish** the workflow.
 
@@ -492,11 +491,11 @@ The response will be something like this:
 
 So far so good. If we take a look at the created workflow instance, we should see that it is currently in the **Suspended** state:
 
-![](assets/guides/guides-workflow-contexts-2.png)
+{% figure src="/assets/guides/guides-workflow-contexts-2.png" /%}
 
 Clicking the workflow instance ID will take us to the workflow instance viewer:
 
-![](assets/guides/guides-workflow-contexts-3.png)
+{% figure src="/assets/guides/guides-workflow-contexts-3.png" /%}
 
 Notice that the last activity that was executed is indeed the **Signal Received** activity. When this activity executed, it instructed the workflow runner to **suspend** the workflow.
 
@@ -504,7 +503,7 @@ So right now, the workflow is waiting for a signal to be received.
 
 Sending a signal to a workflow can be done in various ways. To do it programmatically, we might take advantage of the `ISignaler` service like so:
 
-```csharp
+```clike
 await _signaler.TriggerSignalAsync(signal: "Publish", workflowInstanceId: "039893a53e2c484b92519d33947b29c5");
 ```
 
@@ -531,11 +530,11 @@ When you invoke the HTTP request, the workflow instance will be resumed and the 
 Notice that the `IsPublished` field is set to `true` - this was done by our workflow.
 Looking at the dashboard again, we should indeed see that the workflow was finished:
 
-![](assets/guides/guides-workflow-contexts-4.png)
+{% figure src="/assets/guides/guides-workflow-contexts-4.png" /%}
 
 
 Finally, let's make sure the posted Blog Post object was actually stored in the database as published:
 
-![](assets/guides/guides-workflow-contexts-5.png)
+{% figure src="/assets/guides/guides-workflow-contexts-5.png" /%}
 
 And sure enough, the blog post is there AND it is marked as published.

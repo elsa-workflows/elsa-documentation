@@ -72,7 +72,7 @@ dotnet add package Elsa.Designer.Components.Web
 
 Open `Startup.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using Elsa;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
@@ -199,7 +199,7 @@ Even if you never intend to write workflows in this way, it may come in handy wh
 
 Create a new file called `DocumentApprovalWorkflow.cs` and add the following contents:
 
-```csharp
+```clike
 using System.Net;
 using System.Net.Http;
 using Elsa.Activities.ControlFlow;
@@ -315,11 +315,11 @@ The response should look like this:
 
 When you launch the Smtp4Dev dashboard, you should be seeing this:
 
-![](assets/guides/guides-document-approval-figure-1.png)
+{% figure src="/assets/guides/guides-document-approval-figure-1.png" /%}
 
 And after around every 10 seconds, reminder email messages will come in:
 
-![](assets/guides/guides-document-approval-figure-2.png)
+{% figure src="/assets/guides/guides-document-approval-figure-2.png" /%}
 
 This will continue until you either click the `Approve` or `Reject` link.
 
@@ -333,13 +333,13 @@ This should trigger a final email message, clear the Timer activity (due to the 
 
 Let's take a look at the workflow instance using the Elsa Dashboard:
 
-![](assets/guides/guides-document-approval-figure-3.png)
+{% figure src="/assets/guides/guides-document-approval-figure-3.png" /%}
 
 As you can see, one workflow instance was created, and it got completed.
 
 When you click on the workflow instance, you will be taken to the workflow instance viewer, which will display the workflow visually as well as the execution log:
 
-![](assets/guides/guides-document-approval-figure-4.png)
+{% figure src="/assets/guides/guides-document-approval-figure-4.png" /%}
 
 Now that we've seen how to create the workflow programmatically, let's do it again but this time using the designer!
 
@@ -450,7 +450,7 @@ Click the **Done** outcome button on the previous activity and look for the **Se
 Now connect the `Send Email` activity we just added back to the `Timer` activity so that the workflow will keep sending reminders for as long as we haven't received a signal.
 To connect an outcome to an existing activity, simply press and hold the SHIFT button while clicking the outcome. Release the SHIFT button and left-click on the target activity:
 
-![](assets/guides/guides-document-approval-animation-1.gif)
+{% figure src="/assets/guides/guides-document-approval-animation-1.gif" /%}
 
 ### Join
 
@@ -460,7 +460,7 @@ Click the **Done** outcome button of the **Send Email** activity in the **Approv
 
 We also need to connect the **Send Email** activity from the **Reject** branch using the same technique used to connect the reminder **Send Email** activity back to the **Timer** activity:
 
-![](assets/guides/guides-document-approval-animation-2.gif)
+{% figure src="/assets/guides/guides-document-approval-animation-2.gif" /%}
 
 ### HTTP Response: All set!
 

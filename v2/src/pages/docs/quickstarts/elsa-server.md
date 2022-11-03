@@ -53,7 +53,7 @@ This will show us a number of things:
 
 Go ahead and create a new file called `HeartbeatWorkflow.cs` and add the following code:
 
-```csharp
+```clike
 using Elsa.Activities.Console;
 using Elsa.Activities.Temporal;
 using Elsa.Builders;
@@ -86,7 +86,7 @@ Notice also that the `HeartbeatWorkflow` class can accept constructor-injected s
 
 Next, open `Startup.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using Elsa;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;

@@ -67,7 +67,7 @@ This means we need the following two connections:
 
 Visually, this would look like this:
 
-![](assets/concepts/concepts-workflows-figure-1.png)
+{% figure src="/assets/concepts/workflows-figure-1.png" /%}
 
 ## Long Running Workflows
 

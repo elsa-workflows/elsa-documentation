@@ -2,7 +2,7 @@
 title: Writing blocking activities
 ---
 
-In this guide, we will learn how to create [blocking activities](concepts/concepts-workflows.md#blocking-activity) by implementing a sample activity that acts as a workflow trigger.
+In this guide, we will learn how to create [blocking activities](/docs/concepts/workflows#blocking-activity) by implementing a sample activity that acts as a workflow trigger.
 
 ## Source Code
 
@@ -75,7 +75,7 @@ dotnet add ElsaGuides.BlockingActivities/src/web/Elsa.Server.Web.csproj package 
 
 Now that we have a solution structure in place, it's time to configure the Elsa Server project's Startup class. Open Startup.cs and replace its contents with the following code:
 
-```csharp
+```clike
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
 using Microsoft.AspNetCore.Builder;
@@ -144,13 +144,13 @@ When you try to run the application now, you should see the standard ASP.NET Cor
 dotnet run -p ElsaGuides.BlockingActivities/src/web
 ```
 
-![](assets/guides/guides-blocking-activities-1.png)
+{% figure src="/assets/guides/guides-blocking-activities-1.png" /%}
 
 ## File Received Activity
 
 Let's now turn our focus to the MyActivityLibrary project. Remove the `Class1.cs` file that was generated automatically and instead create a new folder called **Activities** and create a new class called `FileReceived`:
 
-```csharp
+```clike
 using Elsa.Attributes;
 using Elsa.Services;
 
@@ -183,18 +183,18 @@ docker run -t -i -e ELSA__SERVER__BASEADDRESS='http://localhost:5000' -p 16000:8
 
 With that, Elsa Dashboard will be available via [http://localhost:12000](http://localhost:12000):
 
-![](assets/guides/guides-blocking-activities-2.png)
+{% figure src="/assets/guides/guides-blocking-activities-2.png" /%}
 
 Try and create a new workflow definition, add an activity, and try and locate the **File Received** activity:
 
-![](assets/guides/guides-blocking-activities-3.png)
+{% figure src="/assets/guides/guides-blocking-activities-3.png" /%}
 
 No activity by the name **File Received**.
 
 This makes sense, because we haven't registered the activity with Elsa Server.
 To do so, go back to the Startup class and register the activity as follows:
 
-```csharp
+```clike
 services
     .AddElsa(elsa => elsa
         .UseEntityFrameworkPersistence(ef => ef.UseSqlite())
@@ -205,7 +205,7 @@ services
 
 When you now restart the server and try to add the activity, you should see this:
 
-![](assets/guides/guides-blocking-activities-4.png)
+{% figure src="/assets/guides/guides-blocking-activities-4.png" /%}
 
 Perfect.
 
@@ -216,7 +216,7 @@ Now let's get it to do something.
 Since we are writing a blocking activity, the activity needs to tell the workflow engine that execution should pause until a file is received.
 To do so, we might implement the `OnExecute` method of the activity like this:
 
-```csharp
+```clike
 protected override IActivityExecutionResult OnExecute()
 {
     return Suspend();
@@ -228,7 +228,7 @@ That's no good. Instead, what we want is for the workflow to continue to the nex
 
 To make that work, we need to return a `SuspendResult` only if this is not the first pass. If it IS the first pass, we will simply return an OutcomeResult with the `"Done"` outcome. Like this:
 
-```csharp
+```clike
 protected override IActivityExecutionResult OnExecute(ActivityExecutionContext context)
 {
     return context.WorkflowExecutionContext.IsFirstPass ? Done() : Suspend();
@@ -241,7 +241,7 @@ The big idea is that we should be able to trigger workflows when a file is recei
 
 Speaking of resumption, let's implement `OnResume` next:
 
-```csharp
+```clike
 protected override IActivityExecutionResult OnResume()
 {
     return Done();
@@ -269,7 +269,7 @@ For now, we will start simple without file extension matching.
 
 Create a new directory called `Bookmarks` and create a new class called `FileReceivedBookmark` that implements `IBookmark`:
 
-```csharp
+```clike
 using Elsa.Bookmarks;
 
 namespace MyActivityLibrary.Bookmarks
@@ -284,7 +284,7 @@ To create actual bookmarks, Elsa relies on **bookmark providers**. Bookmark prov
 
 Let's create another class called `FileReceivedBookmarkProvider` in the same directory:
 
-```csharp
+```clike
 using System.Collections.Generic;
 using Elsa.Services.Bookmarks;
 using MyActivityLibrary.Activities;
@@ -306,7 +306,7 @@ All this bookmark provider does is return a new instance of `FileReceivedBookmar
 Next, we need to tell Elsa about this bookmark provider.
 To do so, go back to the `Startup` class and add the following line to the `ConfigureServices` method:
 
-```csharp
+```clike
 services.AddBookmarkProvider<FileReceivedBookmarkProvider>();
 ```
 
@@ -314,7 +314,7 @@ services.AddBookmarkProvider<FileReceivedBookmarkProvider>();
 
 Now that we have the basics in place, we should be able to add the activity to a workflow, and trigger it using the `IWorkflowLaunchpad` service like this:
 
-```csharp
+```clike
 
 var bookmark = new FileReceivedBookmark();
 var context = new CollectWorkflowsContext(nameof(FileReceived), bookmark);
@@ -323,7 +323,7 @@ await _workflowLaunchpad.CollectAndDispatchWorkflowsAsync(context);
 
 To make this a bit easier for consumer code, let's create a new service called `IFileReceivedInvoker` (create it inside a new folder called **Services**):
 
-```csharp
+```clike
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -341,7 +341,7 @@ namespace MyActivityLibrary.Services
 
 Create a class that implements this interface as follows:
 
-```csharp
+```clike
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -384,7 +384,7 @@ Notice that this allows callers to either **dispatch** or **execute** workflows.
 
 Make sure to register this new service with DI in `Startup`:
 
-```csharp
+```clike
 services.AddScoped<IFileReceivedInvoker, FileReceivedInvoker>();
 ```
 
@@ -396,7 +396,7 @@ Create a new folder called `Endpoints`, a subfolder called `Files` and a new con
 > Notice that I'm using the API Endpoint pattern to structure the controllers, rather than using the traditional controller pattern.
 > To learn more about this pattern, check out [Steve Smith's motivation on API Endpoints](https://github.com/ardalis/ApiEndpoints#1-motivation).
 
-```csharp
+```clike
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -432,7 +432,7 @@ The above is a very simple API controller that will dispatch any and all workflo
 
 To try this out, start the workflow server and use the dashboard to create **and publish** a new workflow, something like this:
 
-![](assets/guides/guides-blocking-activities-5.png)
+{% figure src="/assets/guides/guides-blocking-activities-5.png" /%}
 
 Then invoke a POST request on the **/files** endpoint:
 
@@ -473,7 +473,7 @@ As it turns out, all we need to do to achieve this is a couple of small things:
 Since ASP.NET Core uses the `IFormFile` abstraction to handle uploaded files, we shouldn't use it "as-is" when sending to workflows, since we might also want our activity to support workflows that operate outside the context of ASP.NET Core.
 To that end, let's also create a small class that represents a file, called `FileModel`:
 
-```csharp
+```clike
 namespace MyActivityLibrary.Models
 {
     public class FileModel
@@ -489,14 +489,14 @@ This should be enough information for most use cases, and we can always add to i
 
 With that model in place, let's now update the `IFileReceivedInvoker` service:
 
-```csharp
+```clike
 Task<IEnumerable<CollectedWorkflow>> DispatchWorkflowsAsync(FileModel file, CancellationToken cancellationToken = default);
 Task<IEnumerable<CollectedWorkflow>> ExecuteWorkflowsAsync(FileModel file, CancellationToken cancellationToken = default);
 ```
 
 The `FileReceivedInvoker` concrete implementation should be updated as well:
 
-```csharp
+```clike
 public async Task<IEnumerable<CollectedWorkflow>> DispatchWorkflowsAsync(FileModel file, CancellationToken cancellationToken = default)
 {
     var context = new CollectWorkflowsContext(nameof(FileReceived), new FileReceivedBookmark());
@@ -514,7 +514,7 @@ Notice that we are passing in the `file` parameter into the calls to `CollectAnd
 
 We can now update the `Post` controller as follows:
 
-```csharp
+```clike
 [HttpPost]
 public async Task<IActionResult> Handle(IFormFile file)
 {
@@ -540,7 +540,7 @@ Good! But how do we use it from within the workflow?
 
 As it turns out, that's easy too - we just update our activity to read its input and store it in an output property. Something like this:
 
-```csharp
+```clike
 using Elsa.ActivityResults;
 using Elsa.Attributes;
 using Elsa.Services;
@@ -595,7 +595,7 @@ dotnet add ElsaGuides.BlockingActivities/src/web/Elsa.Server.Web.csproj package 
 
 Make sure to install it into DI from `Startup`:
 
-```csharp
+```clike
 .AddConsoleActivities()
 .AddEmailActivities(options => Configuration.GetSection("Elsa:Smtp").Bind(options)) <-- Add this line.
 ```
@@ -623,12 +623,12 @@ That will launch an SMTP server accessible on port `2525`. Let's configure `apps
 Restart the server with the applied changes and open the workflow we created earlier.
 Add a new **Send Email** activity after the **Write Line** activity:
 
-![](assets/guides/guides-blocking-activities-6.png)
+{% figure src="/assets/guides/guides-blocking-activities-6.png" /%}
 
 Notice specifically the **Attachments** and **Body** field and their JavaScript and Liquid expression respectively: here we are referencing an activity called **FileReceived1**.
 Let's update the **File Received** activity to have exactly this name, or else things won't work.
 
-![](assets/guides/guides-blocking-activities-7.png)
+{% figure src="/assets/guides/guides-blocking-activities-7.png" /%}
 
 Make sure to publish the updated workflow and then upload a new file to the /files API endpoint:
 
@@ -638,11 +638,11 @@ curl --location --request POST 'https://localhost:5001/files' --form 'file=@"/C:
 
 If everything worked out, you should be able to find a new email when navigating to SMTP4Devs web UI at [http://localhost:3000/](http://localhost:3000/)
 
-![](assets/guides/guides-blocking-activities-8.png)
+{% figure src="/assets/guides/guides-blocking-activities-8.png" /%}
 
 And when we open the attachment:
 
-![](assets/guides/guides-blocking-activities-9.png)
+{% figure src="/assets/guides/guides-blocking-activities-9.png" /%}
 
 That's indeed the file I posted, so no big deal.
 
@@ -654,7 +654,7 @@ Although the entire process works, there are is at least one issue, one quality 
 
 1. The astute reader might have noticed already: the received email body didn't display the filename:
 
-![](assets/guides/guides-blocking-activities-10.png)
+{% figure src="/assets/guides/guides-blocking-activities-10.png" /%}
 
 2. If you went through this guide step by step, you might have noticed that the **Attachments** field is able to use JavaScript intellisense, but only up to the point of typing in `Output()`. Is there a way to have intellisense "know" that the output is of type `FileModel`? Yes there is, and we'll see how shortly.
 
@@ -673,7 +673,7 @@ dotnet add ElsaGuides.BlockingActivities/src/activities/MyActivityLibrary.csproj
 
 Then create a new folder called `Liquid` and create the following handler:
 
-```csharp
+```clike
 using System.Threading;
 using System.Threading.Tasks;
 using Elsa.Scripting.Liquid.Messages;
@@ -696,7 +696,7 @@ namespace MyActivityLibrary.Liquid
 
 Go back to `Startup` to register this handler as follows:
 
-```csharp
+```clike
 services.AddNotificationHandlersFrom<LiquidHandler>();
 ```
 
@@ -704,7 +704,7 @@ That will register all notification handlers found in the assembly containing th
 
 This time when you invoke the API endpoint to post a file, you should see the filename proper:
 
-![](assets/guides/guides-blocking-activities-11.png)
+{% figure src="/assets/guides/guides-blocking-activities-11.png" /%}
 
 One down, two more issues to go.
 
@@ -713,7 +713,7 @@ One down, two more issues to go.
 Open the SQLite database file from the root of the application folder with a tool such as [DB Browser for SQLite](https://sqlitebrowser.org/).
 When you look at the **WorkflowInstances** table's **Data** column, you will see something like this:
 
-![](assets/guides/guides-blocking-activities-12.png)
+{% figure src="/assets/guides/guides-blocking-activities-12.png" /%}
 
 In fact, you may notice that the file is stored for both the **File Received** activity as well as the **Send Email** activity.
 
@@ -729,15 +729,15 @@ All we need to do is open the activity settings window of the **File Received** 
 
 Blob Storage is useful if we want the file to persist long-term, but for our demo, we don't need that so we'll go with Transient:
 
-![](assets/guides/guides-blocking-activities-13.png)
+{% figure src="/assets/guides/guides-blocking-activities-13.png" /%}
 
 Do the same for the Send Email activity:
 
-![](assets/guides/guides-blocking-activities-14.png)
+{% figure src="/assets/guides/guides-blocking-activities-14.png" /%}
 
 When you publish the change and post another file, you will see that the file is no longer stored as part of the workflow instance:
 
-![](assets/guides/guides-blocking-activities-15.png)
+{% figure src="/assets/guides/guides-blocking-activities-15.png" /%}
 
 Only one issue left!
 
@@ -745,7 +745,7 @@ Only one issue left!
 
 When we open the **Send Email** activity property window, we get a lot of intellisense, but not for the type of the Output method as depicted in the following screenshot:
 
-![](assets/guides/guides-blocking-activities-16.png)
+{% figure src="/assets/guides/guides-blocking-activities-16.png" /%}
 
 To fix this, we need to provide a type definition for the `FileModel` class, since that is the type of the `Output` property of our **File Received** activity.
 Elsa can automatically generate a type definition based on a given class. All we have to do is implement a type definition provider and register it with DI.
@@ -758,7 +758,7 @@ dotnet add ElsaGuides.BlockingActivities/src/activities/MyActivityLibrary.csproj
 
 Next, create a new folder called `JavaScript` and a new class called `MyTypeDefinitionProvider`:
 
-```csharp
+```clike
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -781,7 +781,7 @@ namespace MyActivityLibrary.JavaScript
 
 And register it with DI like this:
 
-```csharp
+```clike
 services.AddJavaScriptTypeDefinitionProvider<MyTypeDefinitionProvider>();
 ```
 
@@ -789,11 +789,11 @@ Build the solution, start the server and refresh the workflow definition editor.
 
 This time around you should see intellisense recognizing the proper type for the `Output` property of the **File Received** activity:
 
-![](assets/guides/guides-blocking-activities-17.png)
+{% figure src="/assets/guides/guides-blocking-activities-17.png" /%}
 
 This also means that we can "dot" into it to access its properties:
 
-![](assets/guides/guides-blocking-activities-18.png)
+{% figure src="/assets/guides/guides-blocking-activities-18.png" /%}
 
 All fixed!
 
@@ -816,7 +816,7 @@ dotnet add ElsaGuides.BlockingActivities/src/web/Elsa.Server.Web.csproj package 
 
 Next, create a new Hosted Service called `FileMonitorService` in a new folder called `HostedServices` in the web project:
 
-```csharp
+```clike
 using System;
 using System.IO;
 using System.Threading;
@@ -910,13 +910,13 @@ When the event handler is invoked, we read the file contents and trigger any and
 
 For this to work, we need to register the `IContentTypeProvider` (which is provided by the `Microsoft.AspNetCore.StaticFiles` package) service in `Startup` as follows:
 
-```csharp
+```clike
 services.AddSingleton<IContentTypeProvider, FileExtensionContentTypeProvider>();
 ```
 
 And while we are here, let's also register the `FileMonitorService`:
 
-```csharp
+```clike
 services.AddHostedService<FileMonitorService>();
 ```
 
@@ -935,7 +935,7 @@ Instead, let's make this a built-in feature of our File Received activity.
 
 First off, let's add an activity input property called `SupportedFileExtensions`:
 
-```csharp
+```clike
 [ActivityInput(
     Hint = "Specify a list of file extensions to filter. Leave empty to allow any file extension.",
     UIHint = ActivityInputUIHints.MultiText, 
@@ -947,7 +947,7 @@ public ICollection<string> SupportedFileExtensions { get; set; } = new List<stri
 
 The activity itself doesn't use this property, but it will be leveraged by the `FileReceivedBookmarkProvider` class, which needs to be updated like this:
 
-```csharp
+```clike
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -976,7 +976,7 @@ If on the other hand no file extensions were configured, we will simply return a
 
 Update the `FileReceivedBookmark` next:
 
-```csharp
+```clike
 using Elsa.Services.Bookmarks;
 
 namespace MyActivityLibrary.Bookmarks
@@ -1004,7 +1004,7 @@ We also need to consider that there may be bookmarks that have no particular fil
 
 To achieve this, update the class as follows:
 
-```csharp
+```clike
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1063,7 +1063,7 @@ What it does is setup two types of "queries": one for any workflows that respond
 
 Build and start the server, go to the workflow editor and update the **File Received** activity's **File Extensions** setting with `".zip"`:
 
-![](assets/guides/guides-blocking-activities-19.png)
+{% figure src="/assets/guides/guides-blocking-activities-19.png" /%}
 
 Publish the changes and try posting a file with a .zip extension and then another file with another extension. If all went well, only the .zip file should have triggered the workflow.
 Experiment: try different combinations, create multiple workflows with different settings to see how it behaves.

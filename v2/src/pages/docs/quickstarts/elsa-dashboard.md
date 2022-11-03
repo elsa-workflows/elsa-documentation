@@ -42,7 +42,7 @@ dotnet add package Elsa.Designer.Components.Web
 
 Open `Startup.cs` and replace its contents with the following:
 
-```csharp
+```clike
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -109,7 +109,7 @@ And add the following content to `_Host.cshtml`:
 
 Run the program and open a web browser to the home page (usually happens automatically if you don't change `launchSettings.json`):
 
-![](assets/installation/installing-elsa-dashboard-figure-1.png)
+{% figure src="/assets/installation/installing-elsa-dashboard-figure-1.png" /%}
 
 None of the menu items will function correctly until you made sure to point the component to a running Elsa server.
 

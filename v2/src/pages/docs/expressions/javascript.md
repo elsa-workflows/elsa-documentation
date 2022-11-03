@@ -81,7 +81,7 @@ Then you can access the `"Title"` field like this:
 
 The **SendHttpRequest** activity has two output properties:
 
-```csharp
+```clike
         [ActivityOutput] public HttpResponseModel? Response { get; set; }
         [ActivityOutput] public object? ResponseContent { get; set; 
 ```
@@ -217,7 +217,7 @@ getConfig(name: string): string
 
 > This is a security-sensitive function and is therefore not available by default. You need to enable this function through a setting.
 > To enable this function, add the following code to your Startup class:
-> ```csharp
+> ```clike
 > services.WithJavaScriptOptions(options => options.EnableConfigurationAccess = true);
 > ```
 
