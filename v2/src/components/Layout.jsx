@@ -17,9 +17,9 @@ const navigation = [
         links: [
             { title: 'Hello World Console', href: '/docs/quickstart/hello-world-console' },
             { title: 'Hello World HTTP', href: '/docs/quickstart/hello-world-console' },
-            { title: 'Elsa Server', href: '/docs/quickstart/elsa-server' },
-            { title: 'Elsa Dashboard', href: '/docs/quickstart/elsa-dashboard' },
-            { title: 'Elsa Dashboard + Server', href: '/docs/quickstart/elsa-dashboard-server' },
+            { title: 'Elsa server', href: '/docs/quickstart/elsa-server' },
+            { title: 'Elsa dashboard', href: '/docs/quickstart/elsa-dashboard' },
+            { title: 'Elsa dashboard + server', href: '/docs/quickstart/elsa-dashboard-server' },
             { title: 'Elsa + Docker', href: '/docs/quickstart/elsa-docker' },
         ],
     },
@@ -37,32 +37,73 @@ const navigation = [
     {
         title: 'Upgrading',
         links: [
-            { title: 'Writing plugins', href: '/docs/writing-plugins' },
-            { title: 'Neuralink integration', href: '/docs/neuralink-integration' },
-            { title: 'Temporal paradoxes', href: '/docs/temporal-paradoxes' },
-            { title: 'Testing', href: '/docs/testing' },
-            { title: 'Compile-time caching', href: '/docs/compile-time-caching' },
-            {
-                title: 'Predictive data generation',
-                href: '/docs/predictive-data-generation',
-            },
+            { title: '1x to 2.0', href: '/docs/upgrading/1x-to-20' },
+            { title: '2.0 to 2.1', href: '/docs/upgrading/20-to-21' },
         ],
     },
     {
-        title: 'API reference',
+        title: 'Concepts',
         links: [
-            { title: 'CacheAdvance.predict()', href: '/docs/cacheadvance-predict' },
-            { title: 'CacheAdvance.flush()', href: '/docs/cacheadvance-flush' },
-            { title: 'CacheAdvance.revert()', href: '/docs/cacheadvance-revert' },
-            { title: 'CacheAdvance.regret()', href: '/docs/cacheadvance-regret' },
+            { title: 'Workflows', href: '/docs/concepts/workflows' },
+            { title: 'Workflow variables', href: '/docs/concepts/workflow-variables' },
+            { title: 'Workflow context', href: '/docs/concepts/workflow-context' },
+            { title: 'Correlation', href: '/docs/concepts/correlation' },
         ],
     },
     {
-        title: 'Contributing',
+        title: 'Guides',
         links: [
-            { title: 'How to contribute', href: '/docs/how-to-contribute' },
-            { title: 'Architecture guide', href: '/docs/architecture-guide' },
-            { title: 'Design principles', href: '/docs/design-principles' },
+            { title: 'Recurring tasks', href: '/docs/guides/recurring-tasks' },
+            { title: 'Document approval', href: '/docs/guides/document-approval' },
+            { title: 'Signaling workflows', href: '/docs/guides/signaling-workflows' },
+            { title: 'Parent/child workflows', href: '/docs/guides/parent-child-workflows' },
+            { title: 'Composite activities', href: '/docs/guides/composite-activities' },
+            { title: 'Runtime list values', href: '/docs/guides/runtime-list-values' },
+            { title: 'JSON workflows', href: '/docs/guides/json-workflows' },
+            { title: 'Blocking activities', href: '/docs/guides/blocking-activities' },
+            { title: 'Workflow context', href: '/docs/guides/workflow-context' },
+        ],
+    },
+    {
+        title: 'Activities',
+        links: [
+            { title: 'Common properties', href: '/docs/activities/common-properties' },
+            { title: 'Control flow', href: '/docs/activities/control-flow' },
+            { title: 'Primitives', href: '/docs/activities/primitives' },
+        ],
+    },
+    {
+        title: 'Expressions',
+        links: [
+            { title: 'JavaScript', href: '/docs/expressions/javascript' },
+            { title: 'Liquid', href: '/docs/expressions/liquid' },
+        ],
+    },
+    {
+        title: 'Designer',
+        links: [
+            { title: 'Enabling horizontal layout', href: '/docs/designer/enabling-horizontal-layout' },
+        ],
+    },
+    {
+        title: 'Extensibility',
+        links: [
+            { title: 'Custom activities', href: '/docs/extensibility/custom-activities' },
+            { title: 'Custom activity providers', href: '/docs/extensibility/custom-activity-providers' },
+            { title: 'Customize activities', href: '/docs/extensibility/customize-activities' },
+            { title: 'Persistence', href: '/docs/extensibility/persistence' },
+            { title: 'Workflow storage providers', href: '/docs/extensibility/workflow-storage-providers' },
+            { title: 'JavaScript', href: '/docs/extensibility/javascript' },
+            { title: 'Liquid', href: '/docs/extensibility/liquid' },
+            { title: 'Expression handlers', href: '/docs/extensibility/expression-handlers' },
+            { title: 'Designer plugins', href: '/docs/extensibility/designer-plugins' },
+        ],
+    },
+    {
+        title: 'Hosting',
+        links: [
+            { title: 'Distributed hosting', href: '/docs/hosting/distributed-hosting' },
+            { title: 'Workflow recovery', href: '/docs/hosting/workflow-recovery' },
         ],
     },
 ]

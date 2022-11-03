@@ -16,7 +16,7 @@ out/
 /build
 
 # rider
-.idea
+.idea/
 
 # misc
 .DS_Store
