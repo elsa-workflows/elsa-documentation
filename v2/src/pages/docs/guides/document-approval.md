@@ -477,7 +477,7 @@ Click the **Done** outcome button of the **Join** activity and look for the **HT
 Make sure to publish your changes and then issue the following HTTP request:
 
 ```http request
-POST /v2/documents HTTP/1.1
+POST workflows/v2/documents HTTP/1.1
 Host: localhost:5001
 Content-Type: application/json
 
