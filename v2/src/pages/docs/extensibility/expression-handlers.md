@@ -26,7 +26,7 @@ Your handler should be able to evaluate the specified expression, and if specifi
 To register your expression handler, use the `TryAddProvider<T>` extension method:
 
 ```c#
-services.TryAddProvider<IExpressionEvaluator, MyCustomExpressionEvaluator>(ServiceLifetime.Scoped);
+services.TryAddProvider<IExpressionHandler, MyCustomExpressionHandler>(ServiceLifetime.Scoped);
 ```
 
 > `TryAddProvider<T>` is like `TryAddScoped<T>`, except that it allows for multiple `IExpressionHandlers` registrations as long as the implementation type is different.
