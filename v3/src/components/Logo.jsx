@@ -1,4 +1,4 @@
-import Image from 'next/future/image'
+import Image from 'next/image'
 import logoImage from '@/images/logo-small.png';
 
 export function Logo(props) {
