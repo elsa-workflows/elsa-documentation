@@ -20,6 +20,12 @@ const navigation = [
     ],
   },
   {
+    title: 'Recipes',
+    links: [
+      { title: 'Console: Hello World', href: '/docs/recipes/console/hello-world' }
+    ]
+  },
+  {
     title: 'Core concepts',
     links: [
       { title: 'Understanding caching', href: '/docs/understanding-caching' },

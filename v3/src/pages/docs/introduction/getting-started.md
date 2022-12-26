@@ -3,65 +3,20 @@ title: Getting started
 description: Getting started with Elsa Workflows.
 ---
 
-Elsa can be used in different settings, but the most common one is to have a workflow server and a dashboard application that connects with the server to create workflows with the designer and store them on the server. 
+There are different architectural approaches one might take when building an application with workflow support, and we will look at all of them.
+We will tackle this by going through different "recipies", starting with the simplest one.
 
-We will create one solution with two ASP.NET applications:
+The recipes are categorized as follows:
 
-- ElsaQuickstart.Api
-- ElsaQuickstart.Dashboard
+## Console applications
 
----
+These are simple console applications that are the easiest to setup and will demonstrate various kinds of workflows written in C#, how to run them, and also show things like loading and executing workflows from JSON files.
 
-## ElsaQuickstart.Api
+## ASP.NET
 
-The `ElsaQuickstart.Api` project will be the workflow server and expose API endpoints for the dashboard app to consume.
+Here, we'll be looking at different kinds of setups. For example, we'll setup a basic workflow server that hosts workflows created in C# that we can invoke through a REST API, both via a custom controller as well as endpoints provided from the `Elsa.Workflows.Api` package.
+We'll also add a dashboard app to create workflows visually, both using a "monolith" approach where the application acts as both the workflow + dashboard server, as well as hosting the dashboard app separately,
 
-### Create the project
+## Docker
 
-Perform the following command to scaffold a new, empty ASP.NET project.
-
-```shell
-dotnet new web -n "ElsaQuickstarts.Api" -f net6.0
-```
-
-### Install Elsa packages
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
-
----
-
-## Quos porro ut molestiae
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
-
-### Voluptatem quas possimus
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Id vitae minima
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
-
----
-
-## Vitae laborum maiores
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
-
-### Corporis exercitationem
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Reprehenderit magni
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
+We'll provide basic Dockerfile and instructions to help you containerize your workflow applications.
