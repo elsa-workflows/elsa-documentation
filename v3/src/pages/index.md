@@ -1,10 +1,10 @@
 ---
-title: Elsa Workflows
-pageTitle: Elsa Workflows - Add workflow capabilities to any .NET project.
+title: Getting started
+pageTitle: Add workflow capabilities to any .NET project.
 description: Build workflow-driven applications using Elsa Workflows.
 ---
 
-Elsa Workflows is a set of open source .NET libraries that add workflow capabilities to any .NET application.
+Learn how to get Elsa Workflows set up in your project.
 
 {% quick-links %}
 
@@ -22,11 +22,7 @@ Elsa Workflows is a set of open source .NET libraries that add workflow capabili
 
 ## Introduction
 
-The easiest way to think about Elsa Workflows within the context of your .NET application is to think of it like any other piece of code you write to add functionality.
-With Elsa, however, you can implement complicated logic that span multiple machines and people with ease, because you model these processes using stateful workflows.
-
-Elsa is easy to setup and contains a lightweight engine with powerful capabilities that support both short-running and long-running workflows.
-
+Elsa Workflows is a set of open source .NET libraries that add workflow capabilities to any .NET application.
 Workflows can be created either from code or using the designer.
 
 The programmatic API to create workflows is loosely inspired on that of Windows Workflows Foundation 4, where you can easily define sequential workflows.
@@ -66,7 +62,7 @@ This makes it easy to have, for example, a separate workflow server and backend 
 
 Adding workflows to your application unlocks powerful capabilities, such as easy to update business logic, microservice orchestration, recurring tasks, data processing, message processing, and more.
 
-### Join the community!
+## Join the community!
 
 There's a friendly community around Elsa, and you're invited!
 
