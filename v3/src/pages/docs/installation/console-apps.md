@@ -8,7 +8,7 @@ description: Installing Elsa in console apps.
 Create a new console application using the following command:
 
 ```shell
-dotnet new console -n "HelloWorldConsole"
+dotnet new console -n "HelloWorldConsole" -f net7.0
 ```
 
 In your console project's root directory, run the following command:

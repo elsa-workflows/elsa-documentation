@@ -5,10 +5,10 @@ description: Installing Elsa in ASP.NET apps.
 
 ## Setup
 
-Create a new ASP.NET app using the following command:
+Create a new empty ASP.NET app using the following command:
 
 ```shell
-dotnet new web -n "MyBackend.Api"
+dotnet new web -n "MyBackend.Api" -f net7.0
 ```
 
 CD into the project's root directory and add the Elsa package:
