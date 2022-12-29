@@ -5,21 +5,41 @@ description: Installing Elsa in ASP.NET apps.
 
 ## Setup
 
-In your ASP.NET project's root directory, run the following command:
+Create a new ASP.NET app using the following command:
 
 ```shell
+dotnet new web -n "MyBackend.Api"
+```
+
+CD into the project's root directory and add the Elsa package:
+
+```shell
+cd MyBackend.Api
 dotnet add package Elsa
 ```
 
-Next, open your Program.cs file and add the following code:
+Next, open `Program.cs` file and replace its contents with the following code:
 
 **Program.cs**
 
 ```clike
 using Elsa.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-// Add Elsa services.
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddElsa();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
 ```
 
 With that in place, you can now resolve Elsa services to run workflows. For example, if your app has a controller, you could inject the `IWorkflowRunner` service and run some workflow.
@@ -28,7 +48,7 @@ With that in place, you can now resolve Elsa services to run workflows. For exam
 
 ### Writing to the console
 
-Assuming your ASP.NET project is configured to use API controllers, you can try out running a workflow from a new controller using the following code:
+Add a new controller called `RunWorkflowController` with the following code:
 
 **RunWorkflowController.cs**
 
@@ -38,7 +58,7 @@ using Elsa.Workflows.Core.Models;
 using Elsa.Workflows.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Elsa.Samples.MyBackendApi.Controllers;
+namespace MyBackend.Api.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
@@ -51,7 +71,7 @@ public class RunWorkflowController : ControllerBase
         _workflowRunner = workflowRunner;
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task Post()
     {
         await _workflowRunner.RunAsync(new WriteLine("Hello ASP.NET world!"));
@@ -59,13 +79,8 @@ public class RunWorkflowController : ControllerBase
 }
 ```
 
-Next, start the program and send the following HTTP request to it:
-
-```http request
-POST https://localhost:7242/run-workflow
-```
-
-When you look at the console, you should see the following message:
+Then start the program and navigate to https://localhost:7242/run-workflow using your web browser.
+When you look at the application console output, you should see the following message:
 
 ```shell
 Hello ASP.NET world!
@@ -73,7 +88,7 @@ Hello ASP.NET world!
 
 ### Writing to the HTTP Response
 
-To make this a little bit more interesting, let's update the controller so that instead of writing to the console, Elsa writes directly to the HTTP response.
+To make this a little bit more interesting, let's update the controller so that instead of writing to the console, the workflow writes directly to the HTTP response.
 To do this, we need to make a few small changes:
 
 1. Add the `Elsa.Http` package.
@@ -88,9 +103,11 @@ First, run the following command:
 dotnet add package Elsa.Http
 ```
 
-Update Program.cs by replacing the Elsa setup with the following:
+Update `Program.cs` by replacing the Elsa setup code with the following (and adding a new `using` statement at the top):
 
 ```clike
+using Elsa.Http.Extensions;
+
 builder.Services.AddElsa(elsa => elsa.UseHttp());
 ```
 
@@ -105,7 +122,7 @@ using Elsa.Workflows.Core.Models;
 using Elsa.Workflows.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Elsa.Samples.MyBackendApi.Controllers;
+namespace MyBackend.Api.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
@@ -129,7 +146,9 @@ public class RunWorkflowController : ControllerBase
 }
 ```
 
-Restart your application, start a web browser and navigate to https://localhost:7242/run-workflow
+Notice that we replaced the `WriteLine` activity with the `WriteHttpResponse` activity which comes from the `Elsa.Http` package.
+
+Restart your application and navigate to https://localhost:7242/run-workflow
 This time around, you should see the following response:
 
 ![Response](/installation/response.png)
@@ -155,7 +174,7 @@ using Elsa.Http;
 using Elsa.Workflows.Core.Activities;
 using Elsa.Workflows.Core.Services;
 
-namespace Elsa.Samples.MyBackendApi.Workflows;
+namespace MyBackend.Api.Workflows;
 
 public class HelloWorldHttpWorkflow : WorkflowBase
 {
@@ -194,9 +213,11 @@ In order for the workflow runtime to be able to trigger workflows automatically,
 This is easy to forget, so whenever you are wondering why a workflow isn't running even though you are sure you triggered it, the first thing to check is to see if this property is set correctly.
 {% /callout %}
 
-Finally, we need to register the workflow with the runtime. To do this, update `Program.cs` by replacing the call to `builder.Services.AddElsa` with the following:
+Finally, we need to register the workflow with the runtime. To do this, update `Program.cs` by replacing the call to `builder.Services.AddElsa` with the following (and adding another `using` statement at the top):
 
 ```clike
+using Elsa.Workflows.Runtime.Extensions;
+
 builder.Services.AddElsa(elsa =>
 {
     elsa.UseWorkflowRuntime(runtime => runtime.AddWorkflow<HelloWorldHttpWorkflow>());
@@ -204,9 +225,9 @@ builder.Services.AddElsa(elsa =>
 });
 ```
 
-That will effectively register our workflow definition with the runtime.
+That will effectively register our workflow definition with the workflow runtime.
 
-To try it out, start the application, open a browser, and navigate to `https://localhost:7242/workflows/hello-world`.
+To try it out, restart the application and navigate to `https://localhost:7242/workflows/hello-world`.
 
 The response should look like this:
 
