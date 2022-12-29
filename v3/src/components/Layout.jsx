@@ -36,6 +36,7 @@ const navigation = [
         links: [
             { title: 'Workflow', href: '/docs/concepts/workflow' },
             { title: 'Activity', href: '/docs/concepts/activity' },
+            { title: 'Runtimes', href: '/docs/concepts/runtimes' },
             { title: 'Trigger', href: '/docs/concepts/trigger' },
             { title: 'Input / output', href: '/docs/concepts/input-output' }
         ],

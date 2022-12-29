@@ -3,13 +3,7 @@ title: Console apps
 description: Installing Elsa in console apps.
 ---
 
-To install Elsa in a console app, follow these steps:
-
-1. Add the `Elsa` package.
-2. Create a service collection and add Elsa services to it.
-3. Create a service provider from the service collection to start resolving Elsa services and using them.
-
-## Step by step
+## Setup
 
 In your console project's root directory, run the following command:
 
@@ -35,6 +29,8 @@ services.AddElsa();
 var serviceProvider = services.BuildServiceProvider();
 ```
 
+## Trying it out
+
 To try out Elsa, add the following:
 
 ```clike
@@ -54,4 +50,4 @@ When you run the program, you should see the following output in the console:
 Hello world!
 ```
 
-Elsa is working! 🎉
+Which is evidence that Elsa is working! 🎉
