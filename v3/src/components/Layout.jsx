@@ -19,7 +19,8 @@ const navigation = [
             { title: 'Console apps', href: '/docs/installation/console-apps' },
             { title: 'ASP.NET apps', href: '/docs/installation/aspnet-apps' },
             { title: 'ASP.NET workflow server', href: '/docs/installation/aspnet-apps-workflow-server' },
-            { title: 'ASP.NET workflow designer', href: '/docs/installation/aspnet-apps-workflow-designer' }
+            { title: 'ASP.NET workflow designer', href: '/docs/installation/aspnet-apps-workflow-designer' },
+            { title: 'ASP.NET server + designer', href: '/docs/installation/aspnet-apps-workflow-server-and-designer' }
         ],
     },
     {

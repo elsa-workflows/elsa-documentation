@@ -18,7 +18,7 @@ Create a new empty ASP.NET app using the following command:
 dotnet new web -n "WorkflowServer.Api" -f net7.0
 ```
 
-CD into the project's root directory and add the `Elsa` and `Elsa.Workflows.Api` packages:
+CD into the project's root directory and add the following packages:
 
 ```shell
 cd WorkflowServer.Api
@@ -222,3 +222,32 @@ The response will return the workflow instance ID, and to see that the workflow 
 Although being able to control your workflow server via a REST API is awesome, handcrafting workflow JSON probably not so much ;)
 
 Fortunately, we don't have to, thanks to the designer tool. Which is the topic of the next chapter.
+
+## Persistence
+
+When you restart the application, you will notice that your workflow will not have been persisted anywhere. This is because by default, Elsa uses an in-memory store for storing workflow definitions.
+To change this, we need to configure an actual persistence store.
+
+Out of the box, Elsa ships with an Entity Framework Core and a MongoDB implementation.
+
+Let's take a look at setting up the EF Core provider and how to configure it to use SQLite.
+
+### Entity Framework Core
+
+First, add the `Elsa.EntityFrameworkCore` and `Elsa.EntityFrameworkCore.Sqlite` packages:
+
+```shell
+dotnet add package Elsa.EntityFrameworkCore
+dotnet add package Elsa.EntityFrameworkCore.Sqlite
+```
+
+Next, update `Program.cs` to configure the Elsa Management feature to use the EF Core provider, which we in turn configure to use SQLite:
+
+```clike
+// Configure management feature to use EF Core.
+elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore(ef => ef.UseSqlite()));
+```
+
+When no connection string is provided for SQLite, like in our case, the following connection string is used by default: `"Data Source=elsa.sqlite.db;Cache=Shared;"`.
+
+This time around, workflows will be persisted even after you restart the application. 

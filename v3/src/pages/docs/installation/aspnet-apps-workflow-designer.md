@@ -91,9 +91,20 @@ When you start the application, you should see the login screen:
 
 ![Response](/installation/designer-login.png)
 
-If you configured the workflow server to create a default user, you should be able to logi nwith the default user name and password, which is:
+If you configured the workflow server to create a default user, you should be able to login with the default user name and password, which is:
 
 ```html
 Username: admin
 Password: password
 ```
+
+After having logged in, you will see the home page:
+
+![Response](/installation/designer-home.png)
+
+We can now begin creating workflows via the New button displayed on the top-right:
+
+![Response](/installation/designer-demo.gif)
+
+Up until this point, we have seen how to setup a separate workflow server and designer application. And in case you're wondering, yes, it's also possible to combine the server + designer into a single ASP.NET application.
+Which is the topic for the next chapter.
