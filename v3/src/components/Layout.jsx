@@ -28,11 +28,9 @@ const navigation = [
         title: 'Guides',
         links: [
             { title: 'Introduction', href: '/docs/guides/introduction' },
-            { title: 'Console apps', href: '/docs/guides/console-apps' },
-            { title: 'ASP.NET server', href: '/docs/guides/aspnet-server' },
-            { title: 'ASP.NET designer', href: '/docs/guides/aspnet-designer' },
-            { title: 'ASP.NET server + designer', href: '/docs/guides/aspnet-server-and-designer' },
-            { title: 'Loading workflows from JSON', href: '/docs/guides/aspnet-apps' },
+            { title: 'HTTP workflows', href: '/docs/guides/http-workflows' },
+            { title: 'Conductor-style workflows', href: '/docs/guides/conductor-style-workflows' },
+            { title: 'Loading workflows from JSON', href: '/docs/guides/loading-workflows-from-json' },
         ],
     },
     {
