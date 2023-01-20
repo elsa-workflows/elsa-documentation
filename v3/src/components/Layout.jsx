@@ -27,7 +27,6 @@ const navigation = [
     {
         title: 'Guides',
         links: [
-            { title: 'Introduction', href: '/docs/guides/introduction' },
             { title: 'HTTP workflows', href: '/docs/guides/http-workflows' },
             { title: 'Conductor-style workflows', href: '/docs/guides/conductor-style-workflows' },
             { title: 'Loading workflows from JSON', href: '/docs/guides/loading-workflows-from-json' },

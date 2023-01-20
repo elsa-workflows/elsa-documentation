@@ -1,6 +1,6 @@
 ---
 title: Workflow Hosting
-description: Everything you nee to know about workflow hosting.
+description: Everything you need to know about workflow hosting.
 ---
 
 Quasi sapiente voluptates aut minima non doloribus similique quisquam. In quo expedita ipsum nostrum corrupti incidunt. Et aut eligendi ea perferendis.
