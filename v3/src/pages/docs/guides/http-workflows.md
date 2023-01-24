@@ -5,33 +5,27 @@ description: Working with HTTP activities
 
 In this guide, we'll take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
 
+We will rely on the `webapi` project template that comes with a demo controller called **WeatherForecastController**.
+
+Our workflow will handle inbound HTTP requests, invoke the weather forecast API using an HTTP call, and write back the response to the HTTP response.
+
+As a result, we will learn how to use the following HTTP activities:
+
+- HttpEndpoint
+- SendHttpRequest
+- WriteHttpResponse
+
 ---
 
-## Handling inbound HTTP requests
-
-When creating ASP.NET web applications, we typically create one or more API endpoints. These endpoints may receive a payload via the HTTP request body, perform operations like data access, and finally return a response.
-To implement an API endpoint, you have a number of options at your disposal. For example:
-
-- [API controllers](https://learn.microsoft.com/en-us/aspnet/core/web-api/)
-- [Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/)
-- [FastEndpoints](https://fast-endpoints.com/)
-
-With Elsa, you have yet another option to implement APIs by creating workflows that start with the **HTTP Endpoint** activity.  
-
-### HTTP Endpoint
-
-The HTTP endpoint activity effectively makes your workflow invokable via HTTP requests. It lets you specify a request path to handle, one or more HTTP verbs, and optionally lets you specify which .NET type to parse inbound JSON payloads into.
-
-To see how it works, we are going to create a new ASP.NET project using the `webapi` template. This template provides a `WeatherForecastController` that returns a random weather forecast to the caller. We will replace this controller with a workflow.
-We will first create this workflow in code, and then using the visual designer.
-
-### Create the project
+## Project setup
 
 To create the project, run the following command:
 
 ```shell
 dotnet new webapi -n WorkflowApp.Web --no-openapi -f net7.0
 ```
+
+### Run project
 
 Run the following commands to go into the created project directory and run the project:
 
@@ -41,7 +35,7 @@ dotnet run
 ```
 
 When the app is running, take note of the URL it is listening on. For example: `http://localhost:5085`.
-To invoke the weather forecast controller, navigate to `http://localhost:5085/weatherforecast`, which should produce output similar to the following:
+To invoke the weather forecast controller, navigate to `http://localhost:5085/weatherforecast`, which should produce output similar to the following (simplified for clarity):
 
 ```json
 [
@@ -56,349 +50,36 @@ To invoke the weather forecast controller, navigate to `http://localhost:5085/we
     "temperatureC": 48,
     "temperatureF": 118,
     "summary": "Balmy"
-  },
-  {
-    "date": "2023-01-22",
-    "temperatureC": 49,
-    "temperatureF": 120,
-    "summary": "Warm"
-  },
-  {
-    "date": "2023-01-23",
-    "temperatureC": -15,
-    "temperatureF": 6,
-    "summary": "Cool"
-  },
-  {
-    "date": "2023-01-24",
-    "temperatureC": 51,
-    "temperatureF": 123,
-    "summary": "Balmy"
   }
 ]
 ```
 
-Let's take a look at the contents of `WeatherForecastController.cs`:
+## Elsa integration
 
-```csharp
-using Microsoft.AspNetCore.Mvc;
+Next, let's install and configure Elsa.
 
-namespace WorkflowApp.Web.Controllers;
+### Packages
 
-[ApiController]
-[Route("[controller]")]
-public class WeatherForecastController : ControllerBase
-{
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
-    }
-
-    [HttpGet]
-    public IEnumerable<WeatherForecast> Get()
-    {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
-    }
-}
-```
-
-All it does is the following:
-
-- For the next 5 days, generate a new weather forecast for each day.
-- Use a shared randomizer instance to produce a random temperature
-- Use a shared randomizer instance to produce a randomly selected summary
-- Return the weather forecasts, which will be written to the HTTP response as a JSON response.
-
-### Setup Elsa
-
-Let's see what it takes to replace the controller entirely with a workflow.
-
-First, install the necessary packages:
+Install the following packages:
 
 ```shell
 dotnet add package Elsa
+dotnet add package Elsa.EntityFrameworkCore.Sqlite
 dotnet add package Elsa.Http
-```
-
-Update `Program.cs` with the following code:
-
-```clike
-using Elsa.Extensions;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-
-// Add Elsa services.
-builder.Services.AddElsa(elsa =>
-{
-    elsa.UseHttp();
-});
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-// Map HTTP workflows.
-app.UseWorkflows();
-
-app.Run();
-
-```
-
-### Workflow in code
-
-Before we create the workflow using the designer, we will first see how to create it in code.
-Create a new folder called `Workflows` and add the following class:
-
-```clike
-using System.Net;
-using System.Net.Mime;
-using System.Text.Json;
-using Elsa.Http;
-using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Services;
-
-namespace WorkflowApp.Web.Workflows;
-
-public class WeatherForecastWorkflow : WorkflowBase
-{
-    private static readonly string[] Summaries = {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-    
-    protected override void Build(IWorkflowBuilder builder)
-    {
-        builder.Root = new Sequence
-        {
-            Activities =
-            {
-                new HttpEndpoint
-                {
-                    Path = new("/WeatherForecast"),
-                    SupportedMethods = new(new[] { HttpMethods.Get }),
-                    CanStartWorkflow = true
-                },
-                new WriteHttpResponse
-                {
-                    ContentType = new(MediaTypeNames.Application.Json),
-                    StatusCode = new(HttpStatusCode.OK),
-                    Content = new(() =>
-                    {
-                        var weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-                            {
-                                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                                TemperatureC = Random.Shared.Next(-20, 55),
-                                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-                            })
-                            .ToArray();
-
-                        return JsonSerializer.Serialize(weatherForecasts);
-                    })
-                }
-            }
-        };
-    }
-}
-```
-
-{% callout title="CanStartWorkflow" type="warning" %}
-Notice that we set the `CanStartWorkflow` property of the `HttpEndpoint` activity to `true`.
-This is a signal to the workflow runtime to extract a trigger from the activity.
-
-Without this property set, the workflow will not be triggered automatically in response to inbound HTTP requests.
-{% /callout %}
-
-To register the workflow, go back to `Program.cs` and update Elsa like this:
-
-```clike
-// Add Elsa services.
-builder.Services.AddElsa(elsa =>
-{
-    elsa.UseHttp();
-    elsa.AddWorkflow<WeatherForecastWorkflow>(); // <-- Add this line to register the workflow.
-});
-```
-
-Restart the application, and this time navigate to `http://localhost:5085/workflows/weatherforecast`.
-
-The result should be similar to that of `http://localhost:5085/weatherforecast`.
-
-{% callout title="Path prefix" type="note" %}
-By default, HTTP workflows are prefixed with `/workflows`. This is an optimization to prevent **every** inbound HTTP request from passing through the accompanying middleware component responsible for invoking workflows.
-
-You can change the prefix to something else. For example, the following code changes the prefix to `"/wf"`:
-
-`elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/wf");`
-
-To remove the prefix entirely, provide an empty string instead:
-
-`elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "");`
-
-As mentioned before, this will cause any inbound HTTP request to be matched against a workflow, which can potentially decrease overall performance of the app, so use with care.  
-{% /callout %}
-
-There you have it - we exposed another endpoint using a workflow.
-
-{% callout title="OpenAPI support" type="note" %}
-HTTP workflows in Elsa 3 currently don't integrate with Swashbuckle, but there's [an issue for that](https://github.com/elsa-workflows/elsa-core/issues/3644).    
-{% /callout %}
-
-### Workflow from designer
-
-To implement the same workflow from the designer, we need to do a bit more prepwork:
-
-1. Setup the designer (or setup a [separate project that hosts the designer](../installation/aspnet-apps-workflow-designer))
-2. Create and register a custom activity called `GetWeatherForecast`.
-
-The reason we need to create a custom activity is because the designer does not support running arbitrary C# logic, like we did in the `WeatherForecastWorkflow` class.
-
-#### GetWeatherForecast activity
-
-Create a new folder called `Activities` and add the following class to it:
-
-```clike
-using Elsa.Workflows.Core.Attributes;
-using Elsa.Workflows.Core.Models;
-
-namespace WorkflowApp.Web.Activities;
-
-[Activity("Demo", "Returns a list of weather forecasts for the next few days.")]
-public class GetWeatherForecast : CodeActivity<ICollection<WeatherForecast>>
-{
-    private static readonly string[] Summaries =
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    protected override void Execute(ActivityExecutionContext context)
-    {
-        var weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-
-        context.Set(Result, weatherForecasts);
-    }
-}
-```
-
-Notice that the activity returns a collection of weather forecast objects, and is completely decoupled from any HTTP related context.
-This allows us to reuse the activity in other places outside of any HTTP context if we wanted to.
-
-To register the activity with the runtime, update `Program.cs` as follows:
-
-```clike
-// Add Elsa services.
-builder.Services.AddElsa(elsa =>
-{
-    elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/wf");
-    elsa.AddWorkflow<WeatherForecastWorkflow>();
-    elsa.AddActivity<GetWeatherForecast>(); // <-- Add this line to register the custom activity.
-});
-```
-
-Before updating the application to host the designer, let's quickly update the coded workflow first to use this new activity.
-
-Update `WeatherForecastWorkflow.cs` file with the following:
-
-```clike
-using System.Net;
-using System.Net.Mime;
-using System.Text.Json;
-using Elsa.Http;
-using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Services;
-using WorkflowApp.Web.Activities;
-
-namespace WorkflowApp.Web.Workflows;
-
-public class WeatherForecastWorkflow : WorkflowBase
-{
-    private static readonly string[] Summaries = {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-    
-    protected override void Build(IWorkflowBuilder builder)
-    {
-        // Declare a workflow variable to capture the result of the new GetWeatherForecast activity.
-        var weatherForecasts = builder.WithVariable<ICollection<WeatherForecast>>();
-        
-        builder.Root = new Sequence
-        {
-            Activities =
-            {
-                new HttpEndpoint
-                {
-                    Path = new("/WeatherForecast"),
-                    SupportedMethods = new(new[] { HttpMethods.Get }),
-                    CanStartWorkflow = true
-                },
-                
-                // Our new activity
-                new GetWeatherForecast
-                {
-                    // Set Result property to our variable in order to capture the output.
-                    Result = new (weatherForecasts)
-                },
-                new WriteHttpResponse
-                {
-                    ContentType = new(MediaTypeNames.Application.Json),
-                    StatusCode = new(HttpStatusCode.OK),
-                    
-                    // Update the Content property to access the weatherForecasts variable and convert it to a JSON string. 
-                    Content = new(context => JsonSerializer.Serialize(weatherForecasts.Get(context)))
-                }
-            }
-        };
-    }
-}
-```
-
-#### Installing the designer
-
-A complete description of configuring the designer in an ASP.NET project can be found [here](../installation/aspnet-apps-workflow-server-and-designer), but here are the basic steps:
-
-1. Add the `Elsa.Workflows.Api` and `Elsa.Workflows.Designer` packages.
-2. Update `Program.cs` with the necessary services and middleware components for Razor pages, Elsa identity and Elsa REST API.
-3. Add a Razor page to render the designer.
-
-In other words:
-
-```shell
 dotnet add package Elsa.Identity
+dotnet add package Elsa.Liquid
 dotnet add package Elsa.Workflows.Api
 dotnet add package Elsa.Workflows.Designer
 ```
 
-**Program.cs**
+### Program
+
+Update `Program.cs` with the following code:
 
 ```clike
+using Elsa.EntityFrameworkCore.Extensions;
+using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.Extensions;
-using WorkflowApp.Web.Activities;
 using WorkflowApp.Web.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -416,11 +97,12 @@ builder.Services.AddElsa(elsa =>
         identity.TokenOptions.SigningKey = "my-secret-signing-key";
     });
     elsa.UseDefaultAuthentication();
+    elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore(m => m.UseSqlite()));
     elsa.UseJavaScript();
+    elsa.UseLiquid();
     elsa.UseWorkflowsApi();
     elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/wf");
     elsa.AddWorkflow<WeatherForecastWorkflow>();
-    elsa.AddActivity<GetWeatherForecast>();
 });
 
 var app = builder.Build();
@@ -436,6 +118,26 @@ app.MapControllers();
 app.MapRazorPages();
 app.Run();
 ```
+
+{% callout title="Path prefix" type="note" %}
+By default, HTTP workflow paths are prefixed with `/workflows`. This is an optimization to prevent *every* inbound HTTP request from passing through the accompanying middleware component responsible for invoking workflows.
+
+You can change the prefix to something else. For example, the following code changes the prefix to `"/wf"`:
+
+`elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/wf");`
+
+To remove the prefix entirely, provide an empty string instead:
+
+`elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "");`
+
+As mentioned before, this will cause any inbound HTTP request to be matched against a workflow, which can potentially decrease overall performance of the app, so use with care.  
+{% /callout %}
+
+### Designer
+
+A complete description of configuring the designer in an ASP.NET project can be found [here](../installation/aspnet-apps-workflow-server-and-designer), but we'll repeat the steps here inline for completeness' sake.
+
+We already installed the necessary packages and added the necessary services, but we also need to create a couple of Razor files:
 
 **Pages/_ViewImports.cshtml**
 
@@ -477,12 +179,153 @@ Restart the application and navigate to `http://localhost:5085/`, which should p
 
 ![Login screen](/guides/http-workflows/login.png)
 
-The following takes you through the creation of the workflow step-by-step [using Scribe](https://scribehow.com/shared/Workflow__Mj1B4ddoSh27jKmeD3fq8Q)
+With that out of the way, let's continue and create the workflow, first in code.
 
-{% scribe-how id="Workflow__Mj1B4ddoSh27jKmeD3fq8Q" %} 
+## Workflow from code
+
+The workflow we'll be creating will be able to do the following:
+
+- Handle inbound HTTP requests
+- Send HTTP requests to the WeatherForecast API endpoint.
+- Write the weather forecast results back to the HTTP response.
+
+Let's see how to create the workflow in code.
+
+Create a new folder called `Workflows` and add the following class:
+
+```clike
+using System.Net;
+using System.Net.Mime;
+using System.Text;
+using Elsa.Http;
+using Elsa.Workflows.Core.Activities;
+using Elsa.Workflows.Core.Services;
+
+namespace WorkflowApp.Web.Workflows;
+
+public class WeatherForecastWorkflow : WorkflowBase
+{
+    protected override void Build(IWorkflowBuilder builder)
+    {
+        var serverAddress = new Uri(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")!.Split(';').First());
+        var weatherForecastApiUrl = new Uri(serverAddress, "weatherforecast");
+        var weatherForecastResponseVariable = builder.WithVariable<ICollection<WeatherForecast>>();
+
+        builder.Root = new Sequence
+        {
+            Activities =
+            {
+                // Expose this workflow as an HTTP endpoint.
+                new HttpEndpoint
+                {
+                    Path = new("/weatherforecast"),
+                    SupportedMethods = new(new[] { HttpMethods.Get }),
+                    CanStartWorkflow = true
+                },
+
+                // Invoke another API endpoint. Could be a remote server, but here we are invoking an API hosted in the same app.
+                new SendHttpRequest
+                {
+                    Url = new(weatherForecastApiUrl),
+                    Method = new(HttpMethods.Get),
+                    ParsedContent = new(weatherForecastResponseVariable)
+                },
+
+                // Write back the weather forecast.
+                new WriteHttpResponse
+                {
+                    ContentType = new(MediaTypeNames.Text.Html),
+                    StatusCode = new(HttpStatusCode.OK),
+                    Content = new(context =>
+                    {
+                        var weatherForecasts = weatherForecastResponseVariable.Get(context)!;
+                        var sb = new StringBuilder();
+
+                        sb.AppendLine(
+                            """
+<!doctype html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <div class="px-4 sm:px-6 lg:px-8">
+        <div class="mt-8 flex flex-col">
+        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Date</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Temperature (C/F)</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Summary</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+""");
+                        foreach (var weatherForecast in weatherForecasts)
+                        {
+                            sb.AppendLine("<tr>");
+                            sb.AppendLine($"""<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{weatherForecast.Date}</td>""");
+                            sb.AppendLine($"""<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{weatherForecast.TemperatureC}/{weatherForecast.TemperatureF}</td>""");
+                            sb.AppendLine($"""<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{weatherForecast.Summary}</td>""");
+                            sb.AppendLine("</tr>");
+                        }
+
+                        sb.AppendLine(
+"""
+                </tbody>
+            </table>
+        </div>
+        </div>
+        </div>
+        </div>
+    </body>
+    </html>
+""");
+                        return sb.ToString();
+                    })
+                }
+            }
+        };
+    }
+}
+```
+
+{% callout title="CanStartWorkflow" type="warning" %}
+Notice that we set the `CanStartWorkflow` property of the `HttpEndpoint` activity to `true`.
+This is a signal to the workflow runtime to extract a trigger from the activity.
+
+Without this property set, the workflow will not be triggered automatically in response to inbound HTTP requests.
+{% /callout %}
+
+To register the workflow with the workflow runtime, go back to `Program.cs` and update the Elsa setup code by adding the following line:
+
+```clike
+elsa.AddWorkflow<WeatherForecastWorkflow>();
+```
+
+Restart the application, and this time navigate to `http://localhost:5085/wf/weatherforecast`.
+
+The result should look similar to this:
+
+![Weather forecast response](/guides/http-workflows/weatherforecast-response-html.png)
+
+## Workflow from designer
+
+Now that we have seen how to create the workflow from code, let's take a look at creating the same workflow using the designer.
+
+The following takes you through the creation of the workflow step-by-step [using Scribe](https://scribehow.com/shared/Workflow__pTWktzWTQXWQ5FEfPWLvtw)
+
+The liquid template that is used can be downloaded from here: [Liquid template](/guides/http-workflows/weatherforecast-template.liquid)
+
+{% scribe-how id="Workflow__pTWktzWTQXWQ5FEfPWLvtw" %} 
 {% /scribe-how %}
 
 You can also watch the video to re-create the workflow using the designer:
 
-{% youtube id="N-H6UcQ-ZfM" %}
+{% youtube id="0w-gDOnG7Uo" %}
 {% /youtube %}
