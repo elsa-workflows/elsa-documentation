@@ -318,9 +318,9 @@ The result should look similar to this:
 
 Now that we have seen how to create the workflow from code, let's take a look at creating the same workflow using the designer.
 
-The following takes you through the creation of the workflow step-by-step [using Scribe](https://scribehow.com/shared/Workflow__pTWktzWTQXWQ5FEfPWLvtw)
+The following takes you through the creation of the workflow step-by-step [using Scribe](https://scribehow.com/shared/Workflow__pTWktzWTQXWQ5FEfPWLvtw).
 
-The liquid template that is used can be downloaded from here: [Liquid template](/guides/http-workflows/weatherforecast-template.liquid)
+The liquid template that is used can be downloaded from [here](/guides/http-workflows/weatherforecast-template.liquid)
 
 {% scribe-how id="Workflow__pTWktzWTQXWQ5FEfPWLvtw" %} 
 {% /scribe-how %}
