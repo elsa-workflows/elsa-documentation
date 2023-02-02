@@ -30,6 +30,7 @@ const navigation = [
             { title: 'HTTP workflows', href: '/docs/guides/http-workflows' },
             { title: 'Conductor-style workflows', href: '/docs/guides/conductor-style-workflows' },
             { title: 'Loading workflows from JSON', href: '/docs/guides/loading-workflows-from-json' },
+            { title: 'User tasks', href: '/docs/guides/user-tasks' },
         ],
     },
     {
