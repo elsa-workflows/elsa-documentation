@@ -22,11 +22,14 @@ dotnet new web -n "WorkflowsApp" -f net7.0
 CD into the project's root directory and add the following packages:
 
 ```shell
-cd WorkflowServer.Api
-dotnet add package Elsa
-dotnet add package Elsa.Http
-dotnet add package Elsa.Workflows.Api
-dotnet add package Elsa.Workflows.Designer
+cd WorkflowsApp
+dotnet add package Elsa --prerelease
+dotnet add package Elsa.EntityFrameworkCore --prerelease
+dotnet add package Elsa.EntityFrameworkCore.Sqlite --prerelease
+dotnet add package Elsa.Http --prerelease
+dotnet add package Elsa.Identity --prerelease
+dotnet add package Elsa.Workflows.Api --prerelease
+dotnet add package Elsa.Workflows.Designer --prerelease
 ```
 
 Next, open `Program.cs` file and replace its contents with the following code:
@@ -34,12 +37,9 @@ Next, open `Program.cs` file and replace its contents with the following code:
 **Program.cs**
 
 ```clike
+using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
-using Elsa.EntityFrameworkCore.Sqlite.Modules.Management;
 using Elsa.Extensions;
-using Elsa.Http.Extensions;
-using Elsa.Identity.Extensions;
-using Elsa.Workflows.Management.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +58,8 @@ builder.Services.AddElsa(elsa =>
     // Configure identity so that we can create a default admin user.
     elsa.UseIdentity(identity =>
     {
-        identity.CreateDefaultUser = builder.Environment.IsDevelopment();
-        identity.IdentityOptions.SigningKey = "secret-token-signing-key";
+        identity.IdentityOptions.CreateDefaultAdmin = builder.Environment.IsDevelopment();
+        identity.TokenOptions.SigningKey = "secret-token-signing-key";
     });
     
     // Use default authentication (JWT).
