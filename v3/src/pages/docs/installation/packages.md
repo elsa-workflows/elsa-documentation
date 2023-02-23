@@ -24,11 +24,11 @@ Additional packages are there to cater to different scenarios.
 
 Elsa Workflows is distributed via NuGet packages from the following feeds:
 
-| Type               | Feed         | URL                                                                                                                 |
-|--------------------|--------------|---------------------------------------------------------------------------------------------------------------------|
-| Releases           | NuGet        | https://api.nuget.org/v3/index.json                                                                                 |
-| Release candidates | NuGet        | https://api.nuget.org/v3/index.json                                                                                 |
-| CI/CD              | Azure DevOps | https://pkgs.dev.azure.com/elsa-workflows/3cbdb983-acb6-4ba7-b862-f9e3cbd4e213/_packaging/Elsa3/nuget/v3/index.json |
+| Type               | Feed  | URL                                                       |
+|--------------------|-------|-----------------------------------------------------------|
+| Releases           | NuGet | https://api.nuget.org/v3/index.json                       |
+| Release candidates | NuGet | https://api.nuget.org/v3/index.json                       |
+| CI/CD              | Feedz | https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json |
 
 ---
 
