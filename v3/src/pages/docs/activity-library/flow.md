@@ -3,15 +3,13 @@ title: Flow activities
 description: Explanation about the flow activities
 ---
 
-## Flow activities
-
 Here we explain the flow activities
 
 
-### Flow Switch
+## Flow Switch
 
-### Flow Node
+## Flow Node
 
-### Flow Join
+## Flow Join
 
-### Flow Decision
+## Flow Decision

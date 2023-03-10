@@ -3,10 +3,8 @@ title: Console activities
 description: Explanation about the console activities
 ---
 
-## Console activities
-
 Here we explain the console activities
 
-### Write Line
+## Write Line
 
-### Read Line
+## Read Line

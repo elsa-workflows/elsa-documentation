@@ -3,14 +3,12 @@ title: HTTP activities
 description: Explanation about the http activities
 ---
 
-## Http activities
-
 Here we explain the http activities
 
-### HTTP Response
+## HTTP Response
 
-### HTTP Request
+## HTTP Request
 
-### Flow HTTP Request
+## Flow HTTP Request
 
-### HTTP Endpoint
+## HTTP Endpoint

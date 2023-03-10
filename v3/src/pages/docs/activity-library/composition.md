@@ -3,12 +3,10 @@ title: Composition activities
 description: Explanation about the composition activities
 ---
 
-## Composition activities
-
 Here we explain the composition activities
 
-### Complete
+## Complete
 
-### Set Workflow Output
+## Set Workflow Output
 
-### Dispatch Workflow
+## Dispatch Workflow

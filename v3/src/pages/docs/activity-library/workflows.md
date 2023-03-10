@@ -3,8 +3,6 @@ title: Workflow activities
 description: Explanation about the workflow activities
 ---
 
-## Workflow activities
-
 Workflow activities are workflows that can be used as an activity.
 To use a workflow as activity in the settings "Usable As Activity" needs to be put on 'yes'.
 

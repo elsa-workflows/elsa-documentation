@@ -3,14 +3,12 @@ title: Looping activities
 description: Explanation about the looping activities
 ---
 
-## Looping activities
-
 Here we explain the looping activities
 
-### While
+## While
 
-### For Each
+## For Each
 
-### For
+## For
 
-### Break
+## Break

@@ -3,25 +3,23 @@ title: Primitive activities
 description: Explanation about the primitive activities
 ---
 
-## Primitive activities
-
 Here we explain the primitive activities
 
 
-### Start
+## Start
 
-### Set Variable
+## Set Variable
 
-### Set Name
+## Set Name
 
-### Finish
+## Finish
 
-### Fault
+## Fault
 
-### Correlate
+## Correlate
 
-### Run task
+## Run task
 
-### Publish Event
+## Publish Event
 
-### Event
+## Event
