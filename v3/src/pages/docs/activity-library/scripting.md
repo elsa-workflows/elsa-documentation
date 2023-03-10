@@ -5,8 +5,8 @@ description: Explanation about the scripting activities
 
 ## Scripting activities
 
-Here we explain the following scripting activities:
-- [Run JavaScript](#runjavascript)
+Here we explain the scripting activities
 
-### <a id="runjavascript"></a>Run JavaScript
+
+### Run JavaScript
 

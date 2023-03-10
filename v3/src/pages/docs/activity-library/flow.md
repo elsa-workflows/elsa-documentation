@@ -5,16 +5,13 @@ description: Explanation about the flow activities
 
 ## Flow activities
 
-Here we explain the following flow activities:
-- [Flow Switch](#flowswitch)
-- [Flow Node](#flownode)
-- [Flow Join](#flowjoin)
-- [Flow Decision](#flowdesicion)
+Here we explain the flow activities
 
-### <a id="flowswitch"></a>Flow Switch
 
-### <a id="flownode"></a>Flow Node
+### Flow Switch
 
-### <a id="flowjoin"></a>Flow Join
+### Flow Node
 
-### <a id="flowdesicion"></a>Flow Decision
+### Flow Join
+
+### Flow Decision

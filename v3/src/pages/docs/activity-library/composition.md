@@ -5,13 +5,10 @@ description: Explanation about the composition activities
 
 ## Composition activities
 
-Here we explain the following composition activities:
-- [Complete](#complete)
-- [Set Workflow Output](#setworkflowoutput)
-- [Dispatch Workflow](#dispatchworkflow)
+Here we explain the composition activities
 
-### <a id="complete"></a>Complete
+### Complete
 
-### <a id="setworkflowoutput"></a>Set Workflow Output
+### Set Workflow Output
 
-### <a id="dispatchworkflow"></a>Dispatch Workflow
+### Dispatch Workflow

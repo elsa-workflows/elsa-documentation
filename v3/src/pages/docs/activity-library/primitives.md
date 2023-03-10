@@ -5,32 +5,23 @@ description: Explanation about the primitive activities
 
 ## Primitive activities
 
-Here we explain the following primitive activities:
-- [Start](#start)
-- [Set Variable](#setvariable)
-- [Set Name](#setname)
-- [Finish](#finish)
-- [Fault](#fault)
-- [Correlate](#correlate)
-- [Run task](#runtask)
-- [Publish Event](#publishevent)
-- [Event](#event)
+Here we explain the primitive activities
 
 
-### <a id="start"></a>Start
+### Start
 
-### <a id="setvariable"></a>Set Variable
+### Set Variable
 
-### <a id="setname"></a>Set Name
+### Set Name
 
-### <a id="finish"></a>Finish
+### Finish
 
-### <a id="fault"></a>Fault
+### Fault
 
-### <a id="correlate"></a>Correlate
+### Correlate
 
-### <a id="runtask"></a>Run task
+### Run task
 
-### <a id="publishevent"></a>Publish Event
+### Publish Event
 
-### <a id="event"></a>Event
+### Event

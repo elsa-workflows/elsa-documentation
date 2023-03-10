@@ -5,16 +5,12 @@ description: Explanation about the http activities
 
 ## Http activities
 
-Here we explain the following http activities:
-- [HTTP Response](#response)
-- [HTTP Request](#request)
-- [Flow HTTP Request](#flowrequest)
-- [HTTP Endpoint](#endpoint)
+Here we explain the http activities
 
-### <a id="response"></a>HTTP Response
+### HTTP Response
 
-### <a id="request"></a>HTTP Request
+### HTTP Request
 
-### <a id="flowrequest"></a>Flow HTTP Request
+### Flow HTTP Request
 
-### <a id="endpoint"></a>HTTP Endpoint
+### HTTP Endpoint

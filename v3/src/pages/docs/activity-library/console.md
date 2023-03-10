@@ -5,10 +5,8 @@ description: Explanation about the console activities
 
 ## Console activities
 
-Here we explain the following console activities:
-- [Write Line](#writeline)
-- [Read Line](#readline)
+Here we explain the console activities
 
-### <a id="writeline"></a>Write Line
+### Write Line
 
-### <a id="readline"></a>Read Line
+### Read Line

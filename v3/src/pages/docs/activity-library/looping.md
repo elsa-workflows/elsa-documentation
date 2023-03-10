@@ -5,16 +5,12 @@ description: Explanation about the looping activities
 
 ## Looping activities
 
-Here we explain the following looping activities:
-- [While](#while)
-- [For Each](#foreach)
-- [For](#for)
-- [Break](#break)
+Here we explain the looping activities
 
-### <a id="while"></a>While
+### While
 
-### <a id="foreach"></a>For Each
+### For Each
 
-### <a id="for"></a>For
+### For
 
-### <a id="break"></a>Break
+### Break

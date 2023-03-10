@@ -5,10 +5,8 @@ description: Explanation about the branching activities
 
 ## Branching activities
 
-Here we explain the following branching activities:
-- [Switch](#switch)
-- [If](#if)
+Here we explain the branching activities
 
-### <a id="switch"></a>Switch
+### Switch
 
-### <a id="if"></a>If
+### If
