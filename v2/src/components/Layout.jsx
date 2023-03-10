@@ -80,10 +80,11 @@ const navigation = [
         ],
     },
     {
-        title: 'Designer',
+        title: 'Dashboard',
         links: [
-            { title: 'Basic usage', href: '/docs/designer/basic-usage' },
-            { title: 'Enabling horizontal layout', href: '/docs/designer/enabling-horizontal-layout' },
+            { title: 'Overview', href: '/docs/dashboard/overview' },
+            { title: 'Designer', href: '/docs/dashboard/designer' },
+            { title: 'Enabling horizontal layout', href: '/docs/dashboard/horizontal-layout' },
         ],
     },
     {
