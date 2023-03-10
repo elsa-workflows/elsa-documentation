@@ -68,11 +68,15 @@ const navigation = [
     {
         title: 'Activity library',
         links: [
-            { title: 'Primitives', href: '/docs/activity-library/primitives' },
-            { title: 'Sequential', href: '/docs/activity-library/sequential' },
-            { title: 'Flow', href: '/docs/activity-library/flow' },
+            { title: 'Branching', href: '/docs/activity-library/branching' },
+            { title: 'Composition', href: '/docs/activity-library/composition' },
             { title: 'Console', href: '/docs/activity-library/console' },
-            { title: 'Messaging', href: '/docs/activity-library/messaging' },
+            { title: 'Flow', href: '/docs/activity-library/flow' },
+            { title: 'Http', href: '/docs/activity-library/http' },
+            { title: 'Looping', href: '/docs/activity-library/looping' },
+            { title: 'Primitives', href: '/docs/activity-library/primitives' },
+            { title: 'Scripting', href: '/docs/activity-library/scripting' },
+            { title: 'Workflows', href: '/docs/activity-library/workflows' },
         ]
     },
     {
