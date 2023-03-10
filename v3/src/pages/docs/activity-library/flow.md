@@ -3,18 +3,17 @@ title: Flow activities
 description: Explanation about the flow activities
 ---
 
-## Flow activities
+Here we explain the flow activities
 
-Here we explain the following flow activities:
-- [Flow Switch](#flowswitch)
-- [Flow Node](#flownode)
-- [Flow Join](#flowjoin)
-- [Flow Decision](#flowdesicion)
 
-### <a id="flowswitch"></a>Flow Switch
+## Flow Switch
+This activity is a switch that lets you continue your workflow on different paths (cases) depending on the condition.
 
-### <a id="flownode"></a>Flow Node
+## Flow Node
+This is a container that lets you execute the activities within.
 
-### <a id="flowjoin"></a>Flow Join
+## Flow Join
+This activity makes it possible to wait for any or all other activities that connect to it.
 
-### <a id="flowdesicion"></a>Flow Decision
+## Flow Decision
+This is a decision activity that depending on a condition lets you continue on the 'true'or 'false' path. 

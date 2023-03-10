@@ -3,12 +3,10 @@ title: Console activities
 description: Explanation about the console activities
 ---
 
-## Console activities
+Here we explain the console activities
 
-Here we explain the following console activities:
-- [Write Line](#writeline)
-- [Read Line](#readline)
+## Write Line
+This activity lets you write data to the console. This is not visible for users only developers.
 
-### <a id="writeline"></a>Write Line
-
-### <a id="readline"></a>Read Line
+## Read Line
+Here you can read a line from the console and map it to a variable. Also for development purposes.

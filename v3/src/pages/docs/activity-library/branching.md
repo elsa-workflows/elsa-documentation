@@ -3,12 +3,14 @@ title: Branching activities
 description: Explanation about the branching activities
 ---
 
-## Branching activities
+Here we explain the branching activities
 
-Here we explain the following branching activities:
-- [Switch](#switch)
-- [If](#if)
+## Switch
 
-### <a id="switch"></a>Switch
+This activity lets you make a switch statement where you enter your condition and the cases.
+In each case you can put activities to execute.
+Also an output can be mapped to a variable.
 
-### <a id="if"></a>If
+## If
+In this activity you can specify an if condition and add activities in the 'then' or 'else' 
+Also an output can be mapped to a variable.

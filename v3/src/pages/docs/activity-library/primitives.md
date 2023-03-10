@@ -3,34 +3,32 @@ title: Primitive activities
 description: Explanation about the primitive activities
 ---
 
-## Primitive activities
-
-Here we explain the following primitive activities:
-- [Start](#start)
-- [Set Variable](#setvariable)
-- [Set Name](#setname)
-- [Finish](#finish)
-- [Fault](#fault)
-- [Correlate](#correlate)
-- [Run task](#runtask)
-- [Publish Event](#publishevent)
-- [Event](#event)
+Here we explain the primitive activities
 
 
-### <a id="start"></a>Start
+## Start
+This activity lets you create a start activity and register it as a milestone.
 
-### <a id="setvariable"></a>Set Variable
+## Set Variable
+The set avariable activity lets you set a variable in your workflow.
 
-### <a id="setname"></a>Set Name
+## Set Name
+This lets you set the name of the workflow instance.
 
-### <a id="finish"></a>Finish
+## Finish
+This activity marks the workflow as finished.
 
-### <a id="fault"></a>Fault
+## Fault
+Makes the workflow fault, and you can specify a message.
 
-### <a id="correlate"></a>Correlate
+## Correlate
+The correlate activity lets you set a correlationid on the instance.
 
-### <a id="runtask"></a>Run task
+## Run task
+Lets you run a task with a name and parameters. The result can be mapped to a variable.
 
-### <a id="publishevent"></a>Publish Event
+## Publish Event
+This publishes an event with a name and correlationid.
 
-### <a id="event"></a>Event
+## Event
+This is the eventhandler which can continue if a event is raised. You can specify the eventname and the output of the event.
