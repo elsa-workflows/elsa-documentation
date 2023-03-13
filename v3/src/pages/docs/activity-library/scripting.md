@@ -3,10 +3,9 @@ title: Scripting activities
 description: Explanation about the scripting activities
 ---
 
-## Scripting activities
+Here we explain the scripting activities
 
-Here we explain the following scripting activities:
-- [Run JavaScript](#runjavascript)
 
-### <a id="runjavascript"></a>Run JavaScript
+## Run JavaScript
+This activity lets you run javascript.
 

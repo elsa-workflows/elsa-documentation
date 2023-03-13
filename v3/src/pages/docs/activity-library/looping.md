@@ -3,18 +3,18 @@ title: Looping activities
 description: Explanation about the looping activities
 ---
 
-## Looping activities
+Here we explain the looping activities
 
-Here we explain the following looping activities:
-- [While](#while)
-- [For Each](#foreach)
-- [For](#for)
-- [Break](#break)
+## While
+This activity lets you loop throug activities till a condition is met or till it encounters an break.
 
-### <a id="while"></a>While
+## For Each
+Here you can iterate over a collection of items and execute activities on each of them.
+There is also a current value that can be mapped to a variable.
 
-### <a id="foreach"></a>For Each
+## For
+Here you can call activities for a specified range.
+There is also a current value that can be mapped to a variable.
 
-### <a id="for"></a>For
-
-### <a id="break"></a>Break
+## Break
+This activity lets you break from a loop.
