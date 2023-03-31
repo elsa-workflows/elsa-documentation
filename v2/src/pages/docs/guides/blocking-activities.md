@@ -178,7 +178,7 @@ curl --location --request GET 'https://localhost:5001/v1/activities'
 Another way is to launch the Elsa Dashboard docker image if you have Docker installed with the following command:
 
 ```bash
-docker run -t -i -e ELSA__SERVER__BASEADDRESS='http://localhost:5000' -p 16000:80 elsaworkflows/elsa-dashboard:latest
+docker run -t -i -e ELSA__SERVER__BASEADDRESS=http://localhost:5000 -p 16000:80 elsaworkflows/elsa-dashboard:latest
 ```
 
 With that, Elsa Dashboard will be available via [http://localhost:12000](http://localhost:12000):

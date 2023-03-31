@@ -353,7 +353,7 @@ Since we didn't setup Elsa Dashboard, we will need to run that separately in ord
 Run the following Docker command to do exactly that:
 
 ```bash
-docker run -t -i -e ELSA__SERVER__BASEADDRESS='http://localhost:5000' -p 14000:80 elsaworkflows/elsa-dashboard:latest
+docker run -t -i -e ELSA__SERVER__BASEADDRESS=http://localhost:5000 -p 14000:80 elsaworkflows/elsa-dashboard:latest
 ```
 
 Navigate to the dashboard at `http://localhost:14000/`

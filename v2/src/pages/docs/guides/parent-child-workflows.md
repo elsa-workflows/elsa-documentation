@@ -10,7 +10,7 @@ We'll also see how we can provide input into the child workflows and allow the c
 You don't need to setup an Elsa project to follow this guide. All we need is a running [Elsa Server + Dashboard Docker container](/docs/quickstarts/elsa-docker) by running the following command:
 
 ```bash
-docker run -t -i -e ELSA__SERVER__BASEURL='http://localhost:13000' -p 13000:80 elsaworkflows/elsa-dashboard-and-server:latest
+docker run -t -i -e ELSA__SERVER__BASEURL=http://localhost:13000 -p 13000:80 elsaworkflows/elsa-dashboard-and-server:latest
 ```
 
 Next, we'll go over the following scenarios:
