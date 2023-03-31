@@ -21,7 +21,7 @@ To follow this guide, make sure to run Elsa Dashboard. If you have Docker instal
 docker run -t -i -p 13000:80 elsaworkflows/elsa-dashboard-and-server:latest
 ```
 
-This will start the Elsa Dashboard in a container which you can access from a web browser at `http://localhost:14000`.
+This will start the Elsa Dashboard in a container which you can access from a web browser at `http://localhost:13000`.
 
 ### Signal Sender Workflow
 
