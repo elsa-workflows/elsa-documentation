@@ -13,7 +13,9 @@ All commits on the `master` branch are deployed to [Feedz.io](https://feedz.io/)
 
 In order to install Elsa packages from MyGet, add the following package feed to your project:
 
-`https://f.feedz.io/elsa-workflows/elsa-2/nuget/index.json`
+```
+https://f.feedz.io/elsa-workflows/elsa-2/nuget/index.json
+```
 
 The easiest way to do that is by adding a `NuGet.config` file to the root of your project/solution folder:
 
@@ -27,5 +29,7 @@ The easiest way to do that is by adding a `NuGet.config` file to the root of you
 ```
 Designer npm preview packages can be obtained from:
 
-`https://f.feedz.io/elsa-workflows/elsa-2/npm/@elsa-workflows/elsa-workflows-studio`
+```
+https://f.feedz.io/elsa-workflows/elsa-2/npm/@elsa-workflows/elsa-workflows-studio
+```
 
