@@ -6,7 +6,7 @@ description: Running the Elsa Docker container
 ## TLDR
 
 ```shell
-docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -p 13000:80 elsaworkflows/elsa-v3:latest
+docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -p 13000:80 elsaworkflows/elsa-v3:latest
 ```
 
 Navigate to: http://localhost:13000/
@@ -30,7 +30,7 @@ Before trying to run the image, make sure you have [Docker](https://docs.docker.
 To run the image, simply run the following command from your terminal:
 
 ```shell
-docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -p 13000:80 elsaworkflows/elsa-v3:latest
+docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -p 13000:80 elsaworkflows/elsa-v3:latest
 ```
 
 When the container has started, open a web browser and navigate to http://localhost:13000/.
