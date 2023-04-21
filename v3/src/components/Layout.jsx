@@ -37,11 +37,11 @@ const navigation = [
     {
         title: 'Core concepts',
         links: [
-            { title: 'Workflow', href: '/docs/concepts/workflow' },
-            { title: 'Activity', href: '/docs/concepts/activity' },
-            { title: 'Runtimes', href: '/docs/concepts/runtimes' },
-            { title: 'Trigger', href: '/docs/concepts/trigger' },
-            { title: 'Input / output', href: '/docs/concepts/input-output' }
+            { title: 'Workflow', href: '/docs/core-concepts/workflow' },
+            { title: 'Activity', href: '/docs/core-concepts/activity' },
+            { title: 'Input / output', href: '/docs/core-concepts/input-output' },
+            { title: 'Trigger', href: '/docs/core-concepts/trigger' },
+            { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
         ],
     },
     {

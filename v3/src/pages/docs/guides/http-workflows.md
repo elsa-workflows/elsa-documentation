@@ -3,7 +3,7 @@ title: HTTP workflows
 description: Working with HTTP activities
 ---
 
-In this guide, we'll take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
+Let's take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
 
 We will rely on the `webapi` project template that comes with a demo controller called **WeatherForecastController**.
 

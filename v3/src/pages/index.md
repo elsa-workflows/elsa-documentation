@@ -25,7 +25,7 @@ Learn how to get Elsa Workflows set up in your project.
 Elsa Workflows is a set of open source .NET libraries that add workflow capabilities to any .NET application.
 Workflows can be created either from code or using the designer.
 
-The programmatic API to create workflows is loosely inspired on that of Windows Workflows Foundation 4, where you can easily define sequential workflows.
+The programmatic API to create workflows is loosely inspired on that of Windows Workflows Foundation 4, where you can define sequential workflows for example.
 For example, the following workflow prompts the user for their name and prints it out to the console:
 
 ```clike
@@ -52,15 +52,127 @@ Output:
 
 ![Output](./sample-workflow-console.gif)
 
-Alternatively, you can create workflows using the designer, which stores the workflow definition on the server via REST API endpoints:
+Besides `Sequence`, Elsa also supports `Flowchart` activities, which allow you to define a workflow as a graph of activities:
+
+```clike
+public class BraidedWorkflow : WorkflowBase
+{
+    protected override void Build(IWorkflowBuilder workflow)
+    {
+        var writeLine1 = new WriteLine("WriteLine1");
+        var writeLine2 = new WriteLine("WriteLine2");
+        var writeLine3 = new WriteLine("WriteLine3");
+        var writeLine4 = new WriteLine("WriteLine4");
+        var writeLine5 = new WriteLine("WriteLine5");
+        var writeLine6 = new WriteLine("WriteLine6");
+        var writeLine7 = new WriteLine("WriteLine7");
+
+        workflow.Root = new Flowchart
+        {
+            Start = writeLine1,
+            
+            Activities =
+            {
+                writeLine1,
+                writeLine2,
+                writeLine3,
+                writeLine4,
+                writeLine5,
+                writeLine6,
+                writeLine7,
+            },
+
+            Connections =
+            {
+                new Connection(writeLine1, writeLine2),
+                new Connection(writeLine1, writeLine3),
+
+                new Connection(writeLine2, writeLine4),
+                new Connection(writeLine2, writeLine5),
+
+                new Connection(writeLine3, writeLine5),
+                new Connection(writeLine3, writeLine6),
+
+                new Connection(writeLine4, writeLine7),
+                new Connection(writeLine5, writeLine7),
+                new Connection(writeLine6, writeLine7),
+            }
+        };
+    }
+}
+```
+
+When visualized, the above graph looks like this:
+
+![Designer](./introduction/braided-flowchart-workflow.png)
+
+In addition to creating them in code, you can create workflows with the designer:
 
 ![Designer](./sample-workflow-designer.gif)
 
-Workflows can be run from within your own application that references the Elsa packages, but they can also be invoked externally using a simple to use REST API that you can optionally expose from your app.
+Workflows can execute from within your own application as well as from external applications.
 
-This makes it easy to have, for example, a separate workflow server and backend service, conductor style.
+Adding workflows to your application unlocks powerful capabilities, such as easy to update business logic, microservice orchestration, recurring tasks, data processing, message processing, and virtually anything else you can think of.
 
-Adding workflows to your application unlocks powerful capabilities, such as easy to update business logic, microservice orchestration, recurring tasks, data processing, message processing, and more.
+## Features
+
+Elsa comes packed with features that make it easy to build workflow-driven applications.
+
+### Programmatic workflows
+
+Workflows can be created from code. This allows you to create workflows in a strongly typed manner, and to reuse them in multiple places.
+
+### Designed workflows
+
+Workflows can be created using the designer. This allows you to create workflows visually, and to reuse them in multiple places.
+
+### Short running workflows
+
+Short running workflows are workflows that execute from start to end without entering suspension states in between. Examples are workflows that involve orchestrating short running tasks, such as sending emails, or workflows that involve executing a series of steps.
+
+### Long running workflows
+
+Long running workflows are workflows that can suspend and resume execution at any point in time. Examples are workflows that involve orchestrating long running tasks, such as human workflows, or workflows that involve waiting for external events to occur.
+
+### Composite activities
+
+Composite activities are activities that can contain other activities. Examples are `Sequence` and `Flowchart`.
+You can also model your own composite activities. This can be done using code or using the designer.
+These activities can be reused in other workflows.
+
+### Triggers
+
+Triggers are activities that can be used to start a workflow. Examples are `HttpEndpoint` and `Timer`.
+
+### Activities
+
+Activities are the building blocks of workflows. Examples are `WriteLine`, `ReadLine`, `SendEmail`, `HttpRequest`, `Timer`, `Fork`, `Join`, `Switch`, `While`, `DoWhile`, `ForEach`, `Delay`, `SetVariable`.
+In addition, Elsa was built to be extensible, so you can easily add your own activities.
+
+### Activity providers
+
+Activity providers are responsible for providing activity types to the system.
+For example, the `TypedActivityProvider` provides activity types based on classes that implement `IActivity`.
+Another example is the `MassTransitActivityTypeProvider`, which provides activity types based on service bus message types.
+Future examples will include activity types based on GraphQL, OpenAPI, JavaScript functions, and more.
+
+### Dynamic expressions
+
+Expressions can be used to dynamically evaluate values at runtime. For example, an expression can be used to dynamically set the value of an activity property based on other values.
+
+### Persistence
+
+Workflows can be persisted to a database. This allows you to resume workflows after your application has restarted.
+Persistence is abstracted away, so you can plug in your own persistence provider.
+
+### Workflow hosting
+
+Workflows can be hosted in your own application. This allows you to execute workflows from within your own application.
+
+### Integration with external applications
+
+Workflows can be executed from external applications. This allows you to execute workflows from any application that can make HTTP requests.
+And vice versa, workflows can make HTTP requests to external applications, either explicitly via HTTP Request activities, custom code, or implicitly via webhooks, service bus messages and gRPC.
 
 ## Join the community!
 
