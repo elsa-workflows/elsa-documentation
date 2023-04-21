@@ -35,6 +35,7 @@ Next, open `Program.cs` file and replace its contents with the following code:
 using Elsa.Extensions;
 using Elsa.Http.Extensions;
 using Elsa.Identity.Extensions;
+using Elsa.Identity.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ builder.Services.AddElsa(elsa =>
     // Configure identity so that we can create a default admin user.
     elsa.UseIdentity(identity =>
     {
-        identity.IdentityOptions.CreateDefaultAdmin = builder.Environment.IsDevelopment();
+        identity.UseAdminUserProvider();
         identity.TokenOptions.SigningKey = "secret-token-signing-key";
     });
     
@@ -100,12 +101,12 @@ The response should look something like this:
 
 Now that we have an access token with admin privileges, we can create and execute workflows.
 
-{% callout title="Cyber security warning" type="warning" %}
-As you may have noticed, we configured the system to create a default user when running the application in development mode.
-Internally, this will create a user with admin privileges with the user name *"admin"* and password *"password"*.
+{% callout title="Your application is at risk!" type="warning" %}
+As you may have noticed, we configured the system to use a default admin user when running the application in development mode.
+Internally, this will provide a user with admin privileges with the user name *"admin"* and password *"password"*.
 
 Never deploy applications to a production environment using this default username and password. We are using it here for demo purposes only.
-Later on, we will see how we can use the API to create new users from our local machine.
+Later on, we will see how we can configure custom users and applications and take advantage of API keys.
 
 {% /callout %}
 

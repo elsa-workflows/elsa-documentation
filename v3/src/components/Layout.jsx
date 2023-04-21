@@ -37,6 +37,7 @@ const navigation = [
     {
         title: 'Core concepts',
         links: [
+            { title: 'Programmatic vs designer', href: '/docs/core-concepts/programmatic-vs-designer' },
             { title: 'Workflow', href: '/docs/core-concepts/workflow' },
             { title: 'Activity', href: '/docs/core-concepts/activity' },
             { title: 'Input / output', href: '/docs/core-concepts/input-output' },

@@ -37,33 +37,85 @@ public class HelloWorld : CodeActivity
 
 ---
 
-## Activity metadata
+## Input and output
 
-Activities can be annotated with metadata using the `ActivityAttribute` attribute. The following is an example of annotating an activity with metadata:
+Similar to functions, activities can receive input and return outputs.
+Access to input is provided through the `ActivityExecutionContext` object that is passed to the `ExecuteAsync` method.
+Similarly, output can be set through the `ActivityExecutionContext` object.
 
-```clike
-[Activity(
-    Namespace = "MyCompany",
-    Category = "My Domain",
-    Description = "A simple activity that writes \"Hello World!\" to the console."
-)]
-```
-
-The complete code would look like this:
+The following is an example of an activity that receives input and returns output:
 
 ```clike
-[Activity(
-    Namespace = "MyCompany",
-    Category = "My Domain",
-    Description = "A simple activity that writes \"Hello World!\" to the console."
-)]
-public class HelloWorld : CodeActivity
+public class Sum : CodeActivity<int>
 {
-    protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+    public Sum(Variable<int> a, Variable<int> b, Variable<int> result)
     {
-        Console.WriteLine("Hello World!");
+        A = new(a);
+        B = new(b);
+        Result = new(result);
+    }
+
+    public Input<int> A { get; set; } = default!;
+    public Input<int> B { get; set; } = default!;
+
+    protected override void Execute(ActivityExecutionContext context)
+    {
+        var input1 = A.Get(context);
+        var input2 = B.Get(context);
+        var result = input1 + input2;
+        context.SetResult(result);
     }
 }
+```
+
+The above activity receives two inputs, `A` and `B`, and returns a single output, `Result`.
+Notice how the inputs are accessed using the `Get` method and the output is set using the `SetResult` method.
+The `SetResult` method is a convenience method that sets the inherited `Result` property from `CodeActivity<T>`.
+
+We can now use the above activity in a workflow:
+
+```clike
+// Declare workflow variables to hold activity output.
+var a = new Variable<int>();
+var b = new Variable<int>();
+var sum = new Variable<int>();
+
+var workflow = new Workflow
+{
+    Root = new Sequence
+    {
+        Variables = {a, b, sum},
+        Activities =
+        {
+            new WriteLine("Enter first value"),
+            new ReadLine(a),
+            new WriteLine("Enter second value"),
+            new ReadLine(b),
+            new Sum(a, b, sum),
+            new WriteLine(context => $"The sum of {a.Get(context)} and {b.Get(context)} is {sum.Get(context)}")
+        }
+    }
+};
+```
+
+---
+
+## Outcomes
+---
+
+## Metadata
+
+Activities can be annotated with metadata using the `ActivityAttribute` attribute.
+This metadata is used by the designer to, for example, group activities into categories and display descriptions.
+
+The following is an example of annotating an activity with metadata:
+
+```clike
+[Activity(
+    Namespace = "Demo",
+    Category = "Demo",
+    Description = "A simple activity that writes \"Hello World!\" to the console."
+)]
 ```
 
 ---
@@ -119,7 +171,8 @@ var workflow = new Workflow
 ```
 
 {% callout title="Workflow Root" %}
-Notice that in the above example, we assigned the `If` activity to the `Root` property of the workflow. This works because the `If` activity implements the `IActivity` interface.
+Notice that we assigned the `If` activity to the `Root` property of the workflow. This works because the `If` activity implements the `IActivity` interface.
+If you need to run multiple activities, simply install a container activity such as `Sequence` or `Flowchart` as the root activity.
 {% /callout %}
 
 ---
@@ -129,38 +182,20 @@ Notice that in the above example, we assigned the `If` activity to the `Root` pr
 A blocking activity is an activity that creates a bookmark and waits for an external event to resume execution. This is useful when you want to wait for some external event to occur before continuing execution.
 Examples of blocking activities include the `Event` activity and the `Delay` activity.
 
-When creating a bookmark, you can provide a callback that will be invoked when the bookmark is resumed. From this callback, you can then resume execution of the activity, which may or may not complete the activity.
-
-The following is an example of a blocking activity that waits for an external event to occur:
+The following is an example of a blocking activity that creates a bookmark, which we can later use to resume the activity.
 
 ```clike
-public class Event : Activity<object>
+public class MyEvent : Activity
 {
-    public Input<string> Name { get; set; } = default!;
-
-    protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+    protected override void Execute(ActivityExecutionContext context)
     {
-        // Get the event name.
-        var eventName = context.Get(Name);
-
-        // Create a bookmark that will be resumed when the event occurs.
-        context.CreateBookmark(eventName, OnEventOccurred);
+        // Create a bookmark. The created bookmark will be stored in the workflow state.
+        context.CreateBookmark();
         
         // This activity does not complete until the event occurs.
     }
-
-    private async ValueTask OnEventOccurred(ActivityExecutionContext context)
-    {
-        // Get the event data, if any.
-        var eventData = context.GetInput<object>("Payload");
-        
-        // Set the event data as the output of the activity.
-        context.Set(Reult, eventData);
-
-        // Complete the activity.
-        await context.CompleteActivityAsync();
-    }
 }
+
 ```
 
 The following is an example of using the `Event` activity:
@@ -173,10 +208,7 @@ var workflow = new Workflow
         Activities =
         {
             new WriteLine("Starting workflow..."),
-            new Event
-            {
-                Name = new("MyEvent")
-            },
+            new MyEvent(), // This will block further execution until the MyEvent's bookmark is resumed. 
             new WriteLine("Event occurred!")
         }
     }
@@ -189,28 +221,54 @@ When we run this workflow, it will print "Starting workflow..." to the console a
 var result = await workflowRunner.RunAsync(workflow);
 ```
 
-The `result` variable will contain the workflow state and any created bookmarks that we might persist.
+The `result` variable contains the workflow state, which in turn contains the bookmark that was created.
 
-To resume the workflow, we need to provide the bookmark and the event data:
+To resume the workflow, we need to provide the bookmark ID.
+In this example, we know that the workflow only contains one bookmark, so we can simply grab the first bookmark from the workflow state.
 
 ```clike 
 var workflowState = result.WorkflowState;
-var bookmark = workflowState.Bookmarks.Single();
-var instanceId = workflowState.Id;
+var bookmark = workflowState.Bookmarks.Single(); // Get the bookmark that was created by the MyEvent activity.
+var options = new RunWorkflowOptions(BookmarkId: bookmark.Id);
 
-var input = new Dictionary<string, object>
-{
-    ["Payload"] = "Event occurred!"
-}
-
-var runOptions = new RunWorkflowOptions
-{
-    WorkflowInstanceId = instanceId,
-    BookmarkId = bookmark.Id,
-    Input = input
-};
-
-await workflowRunner.ResumeAsync(bookmark, options);
+// Resume the workflow.
+await workflowRunner.RunAsync(workflow, workflowState, options);
 ```
 
 When the workflow resumes, it will print "Event occurred!" to the console and then complete.
+
+{% callout title="Bookmark Management" %}
+The example above uses low-level services to manually retrieve and resume bookmarks. In practice, you would typically use a higher-level service such as `IWorkflowRuntime` to start and resume workflows when implementing custom blocking activities.
+{% /callout %}
+
+---
+
+## Triggers
+
+A trigger is a special type of activity that is used to start workflows in response to some external event, such as a HTTP request or a message from a message queue.
+
+As an example, we can update the `MyEvent` activity from the previous example to be a trigger:
+
+```clike
+// Implement the ITrigger interface.
+public class MyEvent : Activity, ITrigger
+{
+    protected override void Execute(ActivityExecutionContext context)
+    {
+        // Create a bookmark. The created bookmark will be stored in the workflow state.
+        context.CreateBookmark();
+        
+        // This activity does not complete until the event occurs.
+    }
+    
+    // Implement the ITrigger interface.
+    ValueTask<IEnumerable<object>> GetTriggerPayloadsAsync(TriggerIndexingContext context)
+    {
+       // We need no payloads for this example.
+       return new(Enumerable.Empty<object>());
+    }
+}
+```
+
+These triggers are a way for higher-level services such as `IWorkflowRuntime` to start workflows in response to some external event.
+Under the hood, the workflow runtime calls into lower-level services to run the appropriate workflow.
