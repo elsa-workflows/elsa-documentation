@@ -26,7 +26,7 @@ export function HeroAndroid() {
             />
             <div className="relative">
               <p className="inline bg-gradient-to-r from-indigo-200 via-sky-400 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-                ELSA 3.0.
+                ELSA 3.0
               </p>
               <p className="mt-3 text-2xl tracking-tight text-slate-400">
                 Enable workflow execution in any .NET application using code or a visual workflow designer.
