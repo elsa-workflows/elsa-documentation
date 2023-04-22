@@ -8,13 +8,13 @@ Learn how to get Elsa Workflows set up in your project.
 
 {% quick-links %}
 
-{% quick-link title="Installation" icon="installation" href="/" description="Step-by-step guides to setting up your system and installing the library." /%}
+{% quick-link title="Installation" icon="installation" href="/docs/installation/packages" description="Step-by-step guides to setting up your system and installing the library." /%}
 
-{% quick-link title="Architecture guide" icon="presets" href="/" description="Learn how the internals work and contribute." /%}
+{% quick-link title="Activity library" icon="presets" href="/docs/activity-library/branching" description="Explore the activity library." /%}
 
-{% quick-link title="Modules" icon="plugins" href="/" description="Extend the library with third-party modules or write your own." /%}
+{% quick-link title="Concepts" icon="plugins" href="/docs/core-concepts/programmatic-vs-designer" description="Learn more about the core concepts." /%}
 
-{% quick-link title="API reference" icon="theming" href="/" description="Learn to easily customize and extend your workflow application." /%}
+{% quick-link title="Guides" icon="theming" href="/docs/guides/http-workflows" description="Learn more by doing." /%}
 
 {% /quick-links %}
 
@@ -113,6 +113,8 @@ In addition to creating them in code, you can create workflows with the designer
 Workflows can execute from within your own application as well as from external applications.
 
 Adding workflows to your application unlocks powerful capabilities, such as easy to update business logic, microservice orchestration, recurring tasks, data processing, message processing, and virtually anything else you can think of.
+
+---
 
 ## Features
 
