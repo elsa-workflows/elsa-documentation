@@ -55,8 +55,8 @@ builder.Services.AddElsa(elsa =>
         identity.TokenOptions.SigningKey = "secret-token-signing-key";
     });
     
-    // Use default authentication (JWT).
-    elsa.UseDefaultAuthentication();
+    // Use default authentication (JWT + API Key).
+    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 });
 
 // Configure CORS to allow designer app hosted on a different origin to invoke the APIs.
@@ -74,15 +74,31 @@ app.UseWorkflows();
 app.Run();
 ```
 
+### Security
+
 The API endpoints exposed by Elsa are protected by default, and require authenticated requests.
-In order to send authenticated requests, we need a JWT bearer token, aka an access token.
 
-## Getting an access token
+In the code above, we configured the system to use the default authentication scheme, which is JWT + API Key.
+This means that we need to either provide an **access token** or **API key** in the `Authorization` header of our HTTP requests.
 
-Start the application and send the following HTTP request:
+### Admin API key
+
+In this example, we configured the default authentication feature to install an API key provider that will provide an API key for the default admin user.
+The admin API key is: `00000000-0000-0000-0000-000000000000`. 
+
+To make authenticated requests to the API endpoints using an API key, we can include the API key as follows:
 
 ```shell
-curl --location --request POST 'https://localhost:7248/elsa/api/identity/login' \
+curl --location 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: ApiKey 00000000-0000-0000-0000-000000000000'
+````
+
+### Admin access token
+
+To request an access token, we can send the following request to the `/identity/login` endpoint:
+
+```shell
+curl --location --request POST 'https://localhost:5001/elsa/api/identity/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "username": "admin",
@@ -95,22 +111,273 @@ The response should look something like this:
 ```json
 {
     "isAuthenticated": true,
-    "accessToken": "{your_access_token}"
+    "accessToken": "{access_token}"
 }
 ```
 
-Now that we have an access token with admin privileges, we can create and execute workflows.
+To make authenticated requests to the API endpoints using an access token, we can include the access token as follows:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: Bearer {access_token}'
+````
+
+When we login to the designer, the designer will request an access token and use it to make authenticated requests to the API endpoints.
+When we build external applications, we can communicate with the workflow server API using API keys or access tokens.
 
 {% callout title="Your application is at risk!" type="warning" %}
-As you may have noticed, we configured the system to use a default admin user when running the application in development mode.
-Internally, this will provide a user with admin privileges with the user name *"admin"* and password *"password"*.
+We configured the system to use a default admin user and admin API key.
+Internally, this will provide a user and application with admin privileges with the user name *"admin"* and password *"password"*.
 
 Never deploy applications to a production environment using this default username and password. We are using it here for demo purposes only.
-Later on, we will see how we can configure custom users and applications and take advantage of API keys.
 
 {% /callout %}
 
+### Users and applications
+
+Instead of using the default admin user & API key, we can configure the system to use custom users and applications.
+We will use the configuration-based providers for this.
+
+{% callout title="Other providers" %}
+Out of the box, Elsa comes with configuration-based providers for users, applications and roles.
+You can also use the database-based providers from _Elsa.EntityFrameworkCore_, or write your own providers.
+{% /callout %}
+
+First, let's update the code in `Program.cs` to use the configuration-based identity providers:
+
+```clike
+.UseIdentity(identity =>
+{
+    var configuration = builder.Configuration;
+    var identitySection = configuration.GetSection("Identity");
+    var identityTokenSection = identitySection.GetSection("Tokens");
+    
+    identity.IdentityOptions = options => identitySection.Bind(options);
+    identity.TokenOptions = options => identityTokenSection.Bind(options);
+    identity.UseConfigurationBasedUserProvider(options => identitySection.Bind(options));
+    identity.UseConfigurationBasedApplicationProvider(options => identitySection.Bind(options));
+    identity.UseConfigurationBasedRoleProvider(options => identitySection.Bind(options));
+})
+```
+
+Next, add the following configuration section to appsettings.json:
+
+```json
+{
+  "Identity": {
+    "Tokens": {
+      "SigningKey": "secret-signing-key",
+      "AccessTokenLifetime": "1:00:00:00",
+      "RefreshTokenLifetime": "1:00:10:00"
+    },
+    "Roles": [{
+      "Id": "admin",
+      "Name": "Administrator",
+      "Permissions": ["*"]
+    }],
+    "Users": [],
+    "Applications": []
+  }
+}
+```
+
+In order to create a new user using the API, we first need an API key that has the right permission to do so.
+Although we could use the default admin API key, let's create a new API key instead.
+
+Send the following request to the `/identity/applications` endpoint:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/identity/applications' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Postman",
+    "roles": ["admin"]
+}'
+````
+
+{% callout title="Applications" %}
+By default, creating applications is allowed for anonymous requests from the localhost.
+{% /callout %}
+
+When we send the request, we receive a response similar to the following:
+
+```json
+{
+    "id": "35dfe2518227454699a6febe27ae673f",
+    "name": "Postman",
+    "roles": [
+        "admin"
+    ],
+    "clientId": "ytUOVpe0NnDaRC9f",
+    "clientSecret": "LES7gpF61.|umSs1S1@Ft*H#<J,()i8y",
+    "apiKey": "7974554F567065304E6E446152433966-e0931498-0e8e-4c1b-9eed-49bf78b6e1e6",
+    "hashedApiKey": "DplTmSOg7dAqHqnW/FzDysjqd6pFh8EiN/IzZ2n+pgc=",
+    "hashedApiKeySalt": "6dH9bxJmi5QLDvICV2MONhQxul9TKPA7dG+XiobQ8kQ=",
+    "hashedClientSecret": "pW/ek5PxrjgsvoZKoxidfgnSRh4rfPIOPt22fYL4bBg=",
+    "hashedClientSecretSalt": "c6FQ+sHJDWJjnPwOkxEjk1Ie4HXYDGeAycKCkscD1uM="
+}
+```
+
+Copy and paste the entire response, **except for the `apiKey` property**, into the `Applications` section of the `Identity` configuration section in `appsettings.json`:
+
+```json
+{
+  "Identity": {
+    "Tokens": {
+      "SigningKey": "secret-signing-key",
+      "AccessTokenLifetime": "1:00:00:00",
+      "RefreshTokenLifetime": "1:00:10:00"
+    },
+    "Roles": [{
+      "Id": "admin",
+      "Name": "Administrator",
+      "Permissions": ["*"]
+    }],
+    "Users": [],
+    "Applications": [{
+      "id": "35dfe2518227454699a6febe27ae673f",
+      "name": "Postman",
+      "roles": [
+        "admin"
+      ],
+      "clientId": "ytUOVpe0NnDaRC9f",
+      "clientSecret": "LES7gpF61.|umSs1S1@Ft*H#<J,()i8y",
+      "hashedApiKey": "DplTmSOg7dAqHqnW/FzDysjqd6pFh8EiN/IzZ2n+pgc=",
+      "hashedApiKeySalt": "6dH9bxJmi5QLDvICV2MONhQxul9TKPA7dG+XiobQ8kQ=",
+      "hashedClientSecret": "pW/ek5PxrjgsvoZKoxidfgnSRh4rfPIOPt22fYL4bBg=",
+      "hashedClientSecretSalt": "c6FQ+sHJDWJjnPwOkxEjk1Ie4HXYDGeAycKCkscD1uM="
+    }]
+  }
+}
+```
+
+Restart the application and send the following request to the `/identity/users` endpoint using the API key we just created:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/identity/users' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: ApiKey 7974554F567065304E6E446152433966-e0931498-0e8e-4c1b-9eed-49bf78b6e1e6' \
+--data '{
+    "name": "admin",
+    "password": "password",
+    "roles": ["admin"]
+}'
+```
+
+This should give a response similar to the following:
+
+```json
+{
+  "id": "c641abef691448608da8be497704dacb",
+  "name": "admin",
+  "password": "password",
+  "roles": [
+    "admin"
+  ],
+  "hashedPassword": "TcRbxSqIDui2hQfINxVvXgSyxVw4oqfm2g6S8zNW84I=",
+  "hashedPasswordSalt": "HWAodoIPNWm/6kmIrrkTnKUs1nxt0Fc6cMMztV7pK3M="
+}
+```
+
+Copy and paste the entire response **except for the password property** into the `Users` field in appsettings.json:
+
+```json
+{
+  "Identity": {
+    "Tokens": {
+      "SigningKey": "secret-signing-key",
+      "AccessTokenLifetime": "1:00:00:00",
+      "RefreshTokenLifetime": "1:00:10:00"
+    },
+    "Roles": [{
+      "Id": "admin",
+      "Name": "Administrator",
+      "Permissions": ["*"]
+    }],
+    "Users": [{
+      "id": "c641abef691448608da8be497704dacb",
+      "name": "admin",
+      "roles": [
+        "admin"
+      ],
+      "hashedPassword": "TcRbxSqIDui2hQfINxVvXgSyxVw4oqfm2g6S8zNW84I=",
+      "hashedPasswordSalt": "HWAodoIPNWm/6kmIrrkTnKUs1nxt0Fc6cMMztV7pK3M="
+    }],
+    "Applications": [{
+      "id": "35dfe2518227454699a6febe27ae673f",
+      "name": "Postman",
+      "roles": [
+        "admin"
+      ],
+      "clientId": "ytUOVpe0NnDaRC9f",
+      "clientSecret": "LES7gpF61.|umSs1S1@Ft*H#<J,()i8y",
+      "hashedApiKey": "DplTmSOg7dAqHqnW/FzDysjqd6pFh8EiN/IzZ2n+pgc=",
+      "hashedApiKeySalt": "6dH9bxJmi5QLDvICV2MONhQxul9TKPA7dG+XiobQ8kQ=",
+      "hashedClientSecret": "pW/ek5PxrjgsvoZKoxidfgnSRh4rfPIOPt22fYL4bBg=",
+      "hashedClientSecretSalt": "c6FQ+sHJDWJjnPwOkxEjk1Ie4HXYDGeAycKCkscD1uM="
+    }]
+  }
+}
+```
+
+Restart the application and send the following request to the `/identity/tokens` endpoint using the API key we just created:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/identity/login' \
+--header 'Content-Type: application/json' \
+--data '{
+    "username": "admin",
+    "password": "password"
+}'
+````
+
+The response will include a new access token as well as a refresh token:
+
+```json
+{
+    "isAuthenticated": true,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6IioiLCJuYmYiOjE2ODIxNzEwODgsImV4cCI6MTY4MjI1NzQ4OCwiaWF0IjoxNjgyMTcxMDg4LCJpc3MiOiJodHRwOi8vZWxzYS5hcGkiLCJhdWQiOiJodHRwOi8vZWxzYS5hcGkifQ.vzf6e7ZzzbD-12PWD8ootbd91Vqz4Vf8aFqV36cFY8M",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6IioiLCJuYmYiOjE2ODIxNzEwODgsImV4cCI6MTY4MjI1ODA4OCwiaWF0IjoxNjgyMTcxMDg4LCJpc3MiOiJodHRwOi8vZWxzYS5hcGkiLCJhdWQiOiJodHRwOi8vZWxzYS5hcGkifQ.3C3zS1ByDZcXTaKXuF-3lQ7sA5k6SVDsoYwhcMEhzcQ"
+}
+```
+
+When you decode the access token, you'll see that it contains the user's name and permissions:
+
+```json
+{
+  "name": "admin",
+  "permissions": "*",
+  "nbf": 1682171088,
+  "exp": 1682257488,
+  "iat": 1682171088,
+  "iss": "http://elsa.api",
+  "aud": "http://elsa.api"
+}
+```
+
+We can now use the access token we just received to access the REST API. For example, we can send the following request to retrieve a list of all workflow definitions:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwZXJtaXNzaW9ucyI6IioiLCJuYmYiOjE2ODIxNzEwODgsImV4cCI6MTY4MjI1NzQ4OCwiaWF0IjoxNjgyMTcxMDg4LCJpc3MiOiJodHRwOi8vZWxzYS5hcGkiLCJhdWQiOiJodHRwOi8vZWxzYS5hcGkifQ.vzf6e7ZzzbD-12PWD8ootbd91Vqz4Vf8aFqV36cFY8M'
+```
+
+Instead of using the access token, we can use the API key instead:
+
+```shell
+curl --location 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: ApiKey 7974554F567065304E6E446152433966-e0931498-0e8e-4c1b-9eed-49bf78b6e1e6'
+```
+
+{% callout title="Access Tokens vs API Keys" %}
+For most scenarios, you'll probably want to use API keys instead of access tokens. API keys are easier to use and don't require you to manage access tokens.
+{% /callout %}
+
+---
+
 ## Trying it out
+
+Let's try out the REST API by creating a workflow definition and then invoking it.
 
 ### Creating a workflow via REST API.
 
@@ -133,8 +400,8 @@ The `publish` field will tell the endpoint to immediately publish the workflow s
 The following is the curl representation oif the request to send:
 
 ```shell
-curl --location --request POST 'https://localhost:7248/elsa/api/workflow-definitions' \
---header 'Authorization: Bearer {your_access_token}' \
+curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: ApiKey {api_key}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "Hello World",
@@ -183,8 +450,8 @@ The response should look something like this:
 To list all workflow definitions, we can send a GET request to the `/workflow-definitions` endpoint. For example:
 
 ```shell
-curl --location --request GET 'https://localhost:7248/elsa/api/workflow-definitions' \
---header 'Authorization: Bearer {your_access_token}'
+curl --location --request GET 'https://localhost:5001/elsa/api/workflow-definitions' \
+--header 'Authorization: ApiKey {api_key}'
 ```
 
 That will result in a response similar to the following:
@@ -212,17 +479,13 @@ That will result in a response similar to the following:
 To execute a workflow, send a POST request to the `/workflow-definitions/{definition_id}/execute` endpoint. For example:
 
 ```shell
-curl --location --request POST 'https://localhost:7248/elsa/api/workflow-definitions/a84e91cfee7644d7a977e78494be5c5a/execute' \
---header 'Authorization: Bearer {your_access_token}'
+curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions/a84e91cfee7644d7a977e78494be5c5a/execute' \
+--header 'Authorization: ApiKey {api_key}'
 ```
 
 The response will return the workflow instance ID, and to see that the workflow really executed, take a look at your application's console window to read the text that was written by the WriteLine activity:
 
 ![Response](/installation/console-output-1.png)
-
-Although being able to control your workflow server via a REST API is awesome, handcrafting workflow JSON probably not so much ;)
-
-Fortunately, we don't have to, thanks to the designer tool. Which is the topic of the next chapter.
 
 ## Persistence
 
@@ -252,3 +515,22 @@ elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore(ef =>
 When no connection string is provided for SQLite, like in our case, the following connection string is used by default: `"Data Source=elsa.sqlite.db;Cache=Shared;"`.
 
 This time around, workflows will be persisted even after you restart the application. 
+
+### MongoDB
+
+Elsa also ships with a MongoDB provider. To use it, add the `Elsa.Persistence.MongoDb` package:
+
+```shell
+dotnet add package Elsa.MongoDb
+```
+
+Update `Program.cs` to configure the Elsa Management feature to use the MongoDB provider:
+
+```clike
+// Configure management feature to use MongoDB.
+elsa.UseWorkflowManagement(management => management.UseMongoDb("localhost"));
+```
+
+### Custom persistence
+
+If you want to use a different persistence provider, you can implement your own persistence provider. For more information, see [Implementing a custom persistence provider](../persistence/implementation).

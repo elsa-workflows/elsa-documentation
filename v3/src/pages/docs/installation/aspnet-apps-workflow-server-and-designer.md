@@ -63,8 +63,8 @@ builder.Services.AddElsa(elsa =>
         identity.TokenOptions.SigningKey = "secret-token-signing-key";
     });
     
-    // Use default authentication (JWT).
-    elsa.UseDefaultAuthentication();
+    // Use default authentication (JWT + API Key).
+    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 });
 
 // Add Razor pages.
@@ -88,7 +88,8 @@ As you may have noticed, we configured the system to use a default admin user wh
 Internally, this will provide a user with admin privileges with the user name *"admin"* and password *"password"*.
 
 Never deploy applications to a production environment using this default username and password. We are using it here for demo purposes only.
-Later on, we will see how we can configure custom users and applications and take advantage of API keys.
+
+To configure the application with a different user name and password, see the the [Users and applications](./aspnet-apps-workflow-server#users-and-applications) section of the [ASP.NET workflow server](./aspnet-apps-workflow-server) chapter. 
 
 {% /callout %}
 
