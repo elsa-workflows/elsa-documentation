@@ -116,6 +116,31 @@ Adding workflows to your application unlocks powerful capabilities, such as easy
 
 ---
 
+## What's new
+
+Elsa 3 is a complete departure from previous versions of Elsa Workflows and was rebuilt from the ground up.
+The new version is much more flexible and extensible, and it comes with a new designer.
+
+The following is a list of the most important changes:
+
+- Targets .NET 6 and up.
+- Clear distinction between the core library, the management library and the runtime library, allowing for more flexibility.
+- Less dependencies, which makes it easier to integrate Elsa into existing applications.
+- New visual designer that boosts productivity to new levels. Think drag & drop, multi-select, undo, redo, copy & paste, and more.
+- New programming model that makes it easier to create workflows from code and custom activities.
+- Support for different kinds of diagrams, such as Flowchart and Sequence, with State Machine and BMPN 2.0 coming later.  
+- Workflow scheduler is now queue-based by default, as opposed to stack-based in previous versions for breadth-first execution.
+- Easily run activities in parallel using the `Task` and `Job` activity kinds.
+- Support for different kinds of workflow runtimes. The default runtime is a simple database-based runtime, but you can also use a distributed runtime that uses Proto.Actor to run workflows lock-free across multiple nodes.
+- Middleware pipeline architecture for both workflow & activity execution.
+- Simplified persistence abstraction, allowing you to use any persistence technology you want.
+- Workflow instances and execution log can be stored in different persistence stores, such as SQL Server and MongoDB, but also Elasticsearch.
+- API endpoints are now secured by default, and can be configured to use JWT tokens, API keys, or no authentication at all.
+- Activity inout & output is non-persisted by default (as opposed to previous versions of Elsa), but can be configured to be persisted by capturing them using workflow variables.
+- Versatile Workflow Context support, allowing you to configure multiple workflow context providers per workflow.
+
+---
+
 ## Features
 
 Elsa comes packed with features that make it easy to build workflow-driven applications.
