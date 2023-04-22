@@ -46,28 +46,6 @@ const navigation = [
         ],
     },
     {
-        title: 'Builder API',
-        links: [
-            { title: 'Introduction', href: '/docs/builder-api/introduction' },
-            { title: 'IWorkflow', href: '/docs/builder-api/iworkflow' },
-        ],
-    },
-    {
-        title: 'REST API',
-        links: [
-            { title: 'Introduction', href: '/docs/rest-api/introduction' },
-            { title: 'Executing workflows', href: '/docs/rest-api/executing-workflows' },
-            { title: 'Triggering events', href: '/docs/rest-api/triggering-events' }
-        ],
-    },
-    {
-        title: 'Designer',
-        links: [
-            { title: 'Introduction', href: '/docs/designer/introduction' },
-            { title: 'Creating workflows', href: '/docs/designer/creating-workflows' }
-        ],
-    },
-    {
         title: 'Activity library',
         links: [
             { title: 'Branching', href: '/docs/activity-library/branching' },
@@ -86,13 +64,6 @@ const navigation = [
         links: [
             { title: 'JavaScript', href: '/docs/workflow-expressions/javascript' },
             { title: 'Liquid', href: '/docs/workflow-expressions/liquid' }
-        ]
-    },
-    {
-        title: 'Security',
-        links: [
-            { title: 'Introduction', href: '/docs/security/introduction' },
-            { title: 'Identity', href: '/docs/security/identity' },
         ]
     }
 ]
