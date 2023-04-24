@@ -127,5 +127,5 @@ var sum = (int)result.WorkflowExecutionContext.Output["Sum"];
 {% callout title="Invoking Workflows" %}
 The above example shows how to invoke a workflow using the `IWorkflowRuntime` service.
 You can also invoke workflows using the HTTP API. This is useful if you want to invoke workflows from another application.
-For more information, see the [Invoking Workflows](/core-concepts/invoking-workflows) chapter.
+For more information, see the [Invoking Workflows](../guides/invoking-workflows) chapter.
 {% /callout %}
