@@ -1,0 +1,323 @@
+{
+  "definitionId": "ed3fa1c5e3ae48c2ae48006fd68b2c0b",
+  "name": "Employee Onboarding",
+  "description": "Models the onboarding process for new employees.",
+  "variables": [
+    {
+      "id": "4e75ee33451b4dea858a47363c511611",
+      "name": "Employee",
+      "typeName": "Object",
+      "storageDriverTypeName": "Elsa.Workflows.Core.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    }
+  ],
+  "root": {
+    "type": "Elsa.Flowchart",
+    "id": "Flowchart1",
+    "start": "SetVariable1",
+    "activities": [
+      {
+        "taskName": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "Create Email Account"
+          },
+          "memoryReference": {
+            "id": "RunTask1:input-1"
+          }
+        },
+        "payload": {
+          "typeName": "ObjectDictionary",
+          "expression": {
+            "type": "JavaScript",
+            "value": "return {\n    employee: getEmployee(),\n    description: \u0022Create an email account for the new employee.\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "RunTask1:input-2"
+          }
+        },
+        "id": "RunTask1",
+        "type": "Elsa.RunTask",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 1760,
+              "y": 2300
+            }
+          },
+          "displayText": "Create Email Account"
+        }
+      },
+      {
+        "taskName": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "Create GitHub Account"
+          },
+          "memoryReference": {
+            "id": "RunTask3:input-1"
+          }
+        },
+        "payload": {
+          "typeName": "ObjectDictionary",
+          "expression": {
+            "type": "JavaScript",
+            "value": "return {\n    employee: getEmployee(),\n    description: \u0022Create a GitHub account for the new employee.\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "RunTask3:input-2"
+          }
+        },
+        "id": "RunTask3",
+        "type": "Elsa.RunTask",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 2120,
+              "y": 2240
+            }
+          },
+          "displayText": "Create GitHub Account"
+        }
+      },
+      {
+        "taskName": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "Add to HR System"
+          },
+          "memoryReference": {
+            "id": "RunTask4:input-1"
+          }
+        },
+        "payload": {
+          "typeName": "ObjectDictionary",
+          "expression": {
+            "type": "JavaScript",
+            "value": "return {\n    employee: getEmployee(),\n    description: \u0022Add the new employee to the HR system.\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "RunTask4:input-2"
+          }
+        },
+        "id": "RunTask4",
+        "type": "Elsa.RunTask",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 2120,
+              "y": 2340
+            }
+          },
+          "displayText": "Add to HR System"
+        }
+      },
+      {
+        "taskName": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "Add to Payroll System"
+          },
+          "memoryReference": {
+            "id": "RunTask5:input-1"
+          }
+        },
+        "payload": {
+          "typeName": "ObjectDictionary",
+          "expression": {
+            "type": "JavaScript",
+            "value": "return {\n    employee: getEmployee(),\n    description: \u0022Add the new employee to the Payroll system.\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "RunTask5:input-2"
+          }
+        },
+        "id": "RunTask5",
+        "type": "Elsa.RunTask",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 2120,
+              "y": 2440
+            }
+          },
+          "displayText": "Add to HR System"
+        }
+      },
+      {
+        "taskName": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "Create Slack Account"
+          },
+          "memoryReference": {
+            "id": "RunTask2:input-1"
+          }
+        },
+        "payload": {
+          "typeName": "ObjectDictionary",
+          "expression": {
+            "type": "JavaScript",
+            "value": "return {\n    employee: getEmployee(),\n    description: \u0022Create a Slack account for the new employee.\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "RunTask2:input-2"
+          }
+        },
+        "id": "RunTask2",
+        "type": "Elsa.RunTask",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 2120,
+              "y": 2140
+            }
+          },
+          "displayText": "Create Slack Account"
+        }
+      },
+      {
+        "from": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "hr@acme.com"
+          },
+          "memoryReference": {
+            "id": "SendEmail1:input-1"
+          }
+        },
+        "to": {
+          "typeName": "Object",
+          "expression": {
+            "type": "JavaScript",
+            "value": "getEmployee().Email"
+          },
+          "memoryReference": {
+            "id": "SendEmail1:input-2"
+          }
+        },
+        "subject": {
+          "typeName": "String",
+          "expression": {
+            "type": "JavaScript",
+            "value": "\u0060Welcome aboard, ${getEmployee().Name}!\u0060"
+          },
+          "memoryReference": {
+            "id": "SendEmail1:input-3"
+          }
+        },
+        "body": {
+          "typeName": "String",
+          "expression": {
+            "type": "JavaScript",
+            "value": "\u0060Hi ${getEmployee().Name},\u003Cbr\u003E\u003Cbr\u003EAll of your accounts have been setup. Welcome aboard!\u0060"
+          },
+          "memoryReference": {
+            "id": "SendEmail1:input-4"
+          }
+        },
+        "id": "SendEmail1",
+        "type": "Email.SendEmail",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 2500,
+              "y": 2260
+            }
+          },
+          "displayText": "Send Welcome email"
+        }
+      },
+      {
+        "variable": {
+          "id": "4e75ee33451b4dea858a47363c511611",
+          "name": "Employee",
+          "typeName": "JSON",
+          "storageDriverTypeName": "Elsa.Workflows.Core.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+        },
+        "value": {
+          "typeName": "Object",
+          "expression": {
+            "type": "JavaScript",
+            "value": "getInput(\u0022Employee\u0022)"
+          },
+          "memoryReference": {
+            "id": "SetVariable1:input-1"
+          }
+        },
+        "id": "SetVariable1",
+        "type": "Elsa.SetVariable",
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 1360,
+              "y": 2300
+            }
+          },
+          "displayText": "Set Employee from input"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "source": "RunTask1",
+        "target": "RunTask2",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask1",
+        "target": "RunTask3",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "SetVariable1",
+        "target": "RunTask1",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask4",
+        "target": "SendEmail1",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask1",
+        "target": "RunTask4",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask5",
+        "target": "SendEmail1",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask1",
+        "target": "RunTask5",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask3",
+        "target": "SendEmail1",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      },
+      {
+        "source": "RunTask2",
+        "target": "SendEmail1",
+        "sourcePort": "Done",
+        "targetPort": "In"
+      }
+    ]
+  }
+}
