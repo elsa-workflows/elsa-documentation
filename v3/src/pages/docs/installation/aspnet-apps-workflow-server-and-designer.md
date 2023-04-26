@@ -103,13 +103,7 @@ In the project, create a new folder called `Pages` and create a new file called 
 Create another file called `Index.cshtml` with the following contents:
 
 ```html
-@page
-@using Elsa.Workflows.Designer
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-var serverUrl = Url.Content("elsa/api");
-}
-
+@page "/"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,7 +117,14 @@ var serverUrl = Url.Content("elsa/api");
 </head>
 <body>
 
-<component type="typeof(ElsaStudio)" render-mode="ServerPrerendered" param-ServerUrl="@serverUrl"/>
+<elsa-shell>
+    <elsa-workflow-toolbar></elsa-workflow-toolbar>
+    <div class="absolute inset-0" style="top: 64px;">
+        <elsa-studio server="https://localhost:5001/elsa/api" monaco-lib-path="/_content/Elsa.Workflows.Designer/monaco-editor/min"></elsa-studio>
+        <elsa-custom-activities-manager></elsa-custom-activities-manager>
+        <elsa-notifications-manager></elsa-notifications-manager>
+    </div>
+</elsa-shell>
 
 </body>
 </html>
