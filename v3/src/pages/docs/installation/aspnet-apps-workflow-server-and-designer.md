@@ -60,7 +60,7 @@ builder.Services.AddElsa(elsa =>
     elsa.UseIdentity(identity =>
     {
         identity.UseAdminUserProvider();
-        identity.TokenOptions.SigningKey = "secret-token-signing-key";
+        identity.TokenOptions = options => options.SigningKey = "secret-token-signing-key";
     });
     
     // Use default authentication (JWT + API Key).
@@ -96,7 +96,7 @@ To configure the application with a different user name and password, see the th
 In the project, create a new folder called `Pages` and create a new file called `_ViewImports.cshtml` with the following contents:
 
 ```razor
-@namespace Elsa.Samples.WorkflowServerAndDesigner.Pages
+@namespace WorkflowsApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 ```
 
@@ -104,6 +104,10 @@ Create another file called `Index.cshtml` with the following contents:
 
 ```html
 @page "/"
+@{
+    var serverUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}{Request.Path}";
+    var apiUrl = serverUrl + "elsa/api";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,7 +124,7 @@ Create another file called `Index.cshtml` with the following contents:
 <elsa-shell>
     <elsa-workflow-toolbar></elsa-workflow-toolbar>
     <div class="absolute inset-0" style="top: 64px;">
-        <elsa-studio server="https://localhost:5001/elsa/api" monaco-lib-path="/_content/Elsa.Workflows.Designer/monaco-editor/min"></elsa-studio>
+        <elsa-studio server="@apiUrl" monaco-lib-path="/_content/Elsa.Workflows.Designer/monaco-editor/min"></elsa-studio>
         <elsa-custom-activities-manager></elsa-custom-activities-manager>
         <elsa-notifications-manager></elsa-notifications-manager>
     </div>
