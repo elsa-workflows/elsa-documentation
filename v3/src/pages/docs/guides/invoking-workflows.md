@@ -48,12 +48,31 @@ The authorization token can be obtained as described in [ASP.NET workflow server
 You can define inputs and outputs for each workflow from the **Input/Output** tab.
 ![Workflow input and output](/guides/invoking-workflows/inputs.png)
 
-The result of the call should give you back an instance id that you can use to find the workflow instance in the dashboard.
+The result of the call should give you back the result below.
 ```
 {
-    "instanceId": "bce38520151b4325a39207e0e6f2dc21"
+    "workflowState": {
+        "definitionId": "2f6ba5802e254082b00bd4dab00e650a",
+        "definitionVersion": 1,
+        "status": "Finished",
+        "subStatus": "Finished",
+        "bookmarks": [],
+        "completionCallbacks": [],
+        "activityExecutionContexts": [],
+        "output": {
+            "OutputData": "hello there!"
+        },
+        "properties": {
+            "PersistentVariablesDictionary": {
+                "f765d2c1ef7843ed862488ae6f191884:Workflow1:subvar": ""
+            }
+        },
+        "id": "f765d2c1ef7843ed862488ae6f191884"
+    }
 }
 ```
+
+The id is the workflow instance id, you see data about the execution and the outputs of the workflow under 'output'.
 
 {% callout title="Input / Output" %}
 The above example talks about the inputs and outputs of a workflow.
