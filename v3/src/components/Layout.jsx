@@ -61,6 +61,12 @@ const navigation = [
         ]
     },
     {
+        title: 'Extensibility',
+        links: [
+            { title: 'Custom activities', href: '/docs/extensibility/custom-activities' },
+        ]
+    },
+    {
         title: 'Workflow expressions',
         links: [
             { title: 'JavaScript', href: '/docs/workflow-expressions/javascript' },

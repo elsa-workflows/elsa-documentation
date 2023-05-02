@@ -183,9 +183,22 @@ For example, the `TypedActivityProvider` provides activity types based on classe
 Another example is the `MassTransitActivityTypeProvider`, which provides activity types based on service bus message types.
 Future examples will include activity types based on GraphQL, OpenAPI, JavaScript functions, and more.
 
-### Dynamic expressions
+### Expressions
 
-Expressions can be used to dynamically evaluate values at runtime. For example, an expression can be used to dynamically set the value of an activity property based on other values.
+Expressions can be used to dynamically evaluate values at runtime. 
+Out of the box, Elsa supports JavaScript and Liquid expressions, but you can easily add your own expression evaluators.
+
+For example, the following JavaScript expression will evaluate to the current date and time:
+
+```javascript
+`The current date and time is: ${new Date()}`
+```
+
+The following Liquid expression will evaluate to the current date and time:
+
+```liquid
+The current date and time is: {{ "now" | date: "%Y-%m-%d %H:%M:%S" }}
+```
 
 ### Persistence
 
