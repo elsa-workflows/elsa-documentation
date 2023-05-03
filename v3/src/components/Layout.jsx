@@ -67,10 +67,10 @@ const navigation = [
         ]
     },
     {
-        title: 'Workflow expressions',
+        title: 'Expressions',
         links: [
-            { title: 'JavaScript', href: '/docs/workflow-expressions/javascript' },
-            { title: 'Liquid', href: '/docs/workflow-expressions/liquid' }
+            { title: 'JavaScript', href: '/docs/expressions/javascript' },
+            { title: 'Liquid', href: '/docs/expressions/liquid' }
         ]
     }
 ]
