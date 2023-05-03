@@ -48,7 +48,7 @@ Similarly, there are two ways to set variables in the workflow:
 - `setVariable('myVariable', 'myValue')`
 - `setMyVariable('myValue')`
 
-## Workflow input
+### Workflow input
 
 To get the input of the workflow, use the `getInput()` function.
 
