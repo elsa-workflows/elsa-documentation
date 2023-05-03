@@ -11,7 +11,14 @@ Elsa uses the [Fluid library](https://github.com/sebastienros/fluid) to implemen
 
 These are built-in Liquid filters that are common to most Liquid implementations.
 
-| Filter | Description                 | Example                     |
-|--------|-----------------------------|-----------------------------|
-| `json` | Formats the input into JSON | `{{ some_object \| json }}` |
+| Filter   | Description                              | Example                      |
+|----------|------------------------------------------|------------------------------|
+| `json`   | Serializes the input into JSON.          | `{{ some_value \| json }}`   |
+| `base64` | Converts the input into a base64 string. | `{{ some_value \| base64 }}` |
 
+## Workflow
+
+| Object          | Description                                  | Example                      |
+|-----------------|----------------------------------------------|------------------------------|
+| `Variables`     | Provides access to workflow variable values. | `{{ Variables.MyVariable }}` |
+| `CorrelationId` | The correlation ID of the workflow.          | `{{ CorrelationId }}`        |
