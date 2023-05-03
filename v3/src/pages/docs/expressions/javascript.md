@@ -5,6 +5,8 @@ description: A glossary of JavaScript expressions.
 
 When working with Elsa, you'll often need to write JavaScript expressions. This page provides a glossary of JavaScript expressions that you can use.
 
+Elsa uses the [Jint library](https://github.com/sebastienros/jint) to implement JavaScript. More functions can be found there, as well as details on providing your own functions.
+
 ## Common
 
 These are built-in JS functions that are common to most JavaScript implementations.
