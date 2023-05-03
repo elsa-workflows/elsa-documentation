@@ -5,33 +5,27 @@ description: A glossary of JavaScript expressions.
 
 When working with Elsa, you'll often need to write JavaScript expressions. This page provides a glossary of JavaScript expressions that you can use.
 
-## Glossary
+## Common
 
-| Function                                            | Description                                                                                                                                                                   | Example                    |
-|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| **Common JavaScript functions**                     | These are built-in JS functions that are common to most JavaScript implementations.                                                                                           |                            |
-| `JSON.parse`                                        | Parse a JavaScript object. Also works with `ExpandoObject` objects.                                                                                                           |                            |
-|                                                     |                                                                                                                                                                               |                            |
-| **Elsa specific functions**                         |                                                                                                                                                                               |                            |
-| `getVariable('myVariable')`                         | Gets a variable from the workflow.                                                                                                                                            |                            |
-| `setVariable('myVariable', 'myValue')`              | Sets a variable in the workflow.                                                                                                                                              |                            |
-| `get{MyVariable}()`                                 | Gets a variable from the workflow. This is a shorthand for `getVariable('myVariable')`.                                                                                       | `getMyVariable()`          |
-| `set{MyVariable}('myValue')`                        | Sets a variable in the workflow. This is a shorthand for `setVariable('myVariable', 'myValue')`                                                                               | `setMyVariable('myValue')` |
-| `getInput('name')`                                  | Gets the input of the workflow.                                                                                                                                               |                            |
-| `getWorkflowInstanceId()`                           | Gets the ID of the workflow instance.                                                                                                                                         |                            |
-| `getCorrelationId()`                                | Gets the correlation ID of the workflow instance.                                                                                                                             |                            |
-| `setCorrelationId('myCorrelationId')`               | Sets the correlation ID of the workflow instance.                                                                                                                             |                            |
-| `isNullOrWhiteSpace('')`                            | Returns `true` if the string is `null`, empty, or consists only of white-space characters.                                                                                    |                            |
-| `isNullOrEmpty('')`                                 | Returns `true` if the string is `null` or empty.                                                                                                                              |                            |
-| `parseGuid('00000000-0000-0000-0000-000000000000')` | Parses a string into a GUID.                                                                                                                                                  |                            |
-| `newGuid()`                                         | Generates a new GUID.                                                                                                                                                         |                            |
-| `newGuidString()`                                   | Generates a new GUID and returns it as a string.                                                                                                                              |                            |
-| `newShortGuid()`                                    | Generates a new GUID and returns it as a short string.                                                                                                                        |                            |
-| `toJson('{"name": "Alice"}')`                       | Converts an object to JSON. Use this instead of `JSON.stringify()` when you need to serialize a .NET object to JSON. `JSON.stringify()` only works on `ExpandObject` objects. |                            |
+These are built-in JS functions that are common to most JavaScript implementations.
 
-## Explanations
+| Function                   | Description                                                                                                                                                                             | Example                             |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| `JSON.parse(Object)`       | Parse a JavaScript object. Also works with `ExpandoObject` objects.                                                                                                                     | `JSON.parse('{"name": "Alice"}')`   |
+| `JSON.stringify(string)`   | Stringify a JavaScript object. Only works with JSON objects (which are ExpandoObjects in Jint). Use `toJson()` instead if you need to serialize .NET objects other than `ExpandoObject` | `JSON.stringify({ name: "Alice" })` |
+| `parseInt(string): number` | Parses the specified string into a `number`.                                                                                                                                            | `parseInt('42')`                    |
 
-Let's take a look at a few examples.
+## Workflow variables and input
+
+The following functions are specific to handling workflow variables and input.
+
+| Function                   | Description                        | Example                                |
+|----------------------------|------------------------------------|----------------------------------------|
+| `getVariable(string): any` | Gets a variable from the workflow. | `getVariable('myVariable')`            |
+| `setVariable(string, any)` | Sets a variable in the workflow.   | `setVariable('myVariable', 'myValue')` |
+| `get{VariableName}(): any` | Gets a variable from the workflow. | `getMyVariable()`                      |
+| `set{VariableName}(any)`   | Sets a variable in the workflow.   | `setMyVariable('myValue')`             |
+| `getInput(string): any`    | Gets the input of the workflow.    | `getInput('name')`                     |
 
 ### Workflow variables
 
@@ -67,3 +61,34 @@ You can get the `name` property using the following expression:
 ```javascript
 getInput('name')
 ```
+
+## Workflow
+
+These functions are specific to working with workflows. 
+
+| Function                              | Description                                                                                                                                                                   | Example                                             |
+|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| `getWorkflowInstanceId(): string`     | Gets the ID of the workflow instance.                                                                                                                                         | `getWorkflowInstanceId()`                           |
+| `getCorrelationId(): string`          | Gets the correlation ID of the workflow instance.                                                                                                                             | `getCorrelationId()`                                |
+| `setCorrelationId(string)`            | Sets the correlation ID of the workflow instance.                                                                                                                             | `setCorrelationId('myCorrelationId')`               |
+| `isNullOrWhiteSpace(string): boolean` | Returns `true` if the string is `null`, empty, or consists only of white-space characters.                                                                                    | `isNullOrWhiteSpace('')`                            |
+| `isNullOrEmpty(string): boolean`      | Returns `true` if the string is `null` or empty.                                                                                                                              | `isNullOrEmpty('')`                                 |
+| `parseGuid(string): Guid`             | Parses a string into a GUID.                                                                                                                                                  | `parseGuid('00000000-0000-0000-0000-000000000000')` |
+| `newGuid(): Guid`                     | Generates a new GUID.                                                                                                                                                         | `newGuid()`                                         |
+| `newGuidString(): string`             | Generates a new GUID and returns it as a string.                                                                                                                              | `newGuidString()`                                   |
+| `newShortGuid(): string`              | Generates a new GUID and returns it as a short string.                                                                                                                        | `newShortGuid()`                                    |
+| `toJson(any)`                         | Converts an object to JSON. Use this instead of `JSON.stringify()` when you need to serialize a .NET object to JSON. `JSON.stringify()` only works on `ExpandObject` objects. | `toJson('{"name": "Alice"}')`                       |
+
+## Utility
+
+These functions are useful for working with strings, numbers, GUIDs, collections and more.
+
+| Function                              | Description                                                                                                                                                                   | Example                                             |
+|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| `isNullOrWhiteSpace(string): boolean` | Returns `true` if the string is `null`, empty, or consists only of white-space characters.                                                                                    | `isNullOrWhiteSpace('')`                            |
+| `isNullOrEmpty(string): boolean`      | Returns `true` if the string is `null` or empty.                                                                                                                              | `isNullOrEmpty('')`                                 |
+| `parseGuid(string): Guid`             | Parses a string into a GUID.                                                                                                                                                  | `parseGuid('00000000-0000-0000-0000-000000000000')` |
+| `newGuid(): Guid`                     | Generates a new GUID.                                                                                                                                                         | `newGuid()`                                         |
+| `newGuidString(): string`             | Generates a new GUID and returns it as a string.                                                                                                                              | `newGuidString()`                                   |
+| `newShortGuid(): string`              | Generates a new GUID and returns it as a short string.                                                                                                                        | `newShortGuid()`                                    |
+| `toJson(any)`                         | Converts an object to JSON. Use this instead of `JSON.stringify()` when you need to serialize a .NET object to JSON. `JSON.stringify()` only works on `ExpandObject` objects. | `toJson('{"name": "Alice"}')`                       |
