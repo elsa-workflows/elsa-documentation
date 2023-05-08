@@ -141,6 +141,28 @@ The following is a list of the most important changes:
 
 ---
 
+## Comparison with other workflow engines
+
+The following table compares Elsa with other workflow engines:
+
+| Engine                                                                               | Embedd in application | Free | Open source | MIT/Apache | Web designer | Reusable designer | Extensible triggers | BPMN 2.0 |
+|--------------------------------------------------------------------------------------|-----------------------|------|-------------|------------|--------------|-------------------|---------------------|----------|
+| Elsa                                                                                 | x                     | x    | x           | x          | x            | x                 | x                   |          |
+| [Orchard Core](https://orchardcore.net)                                              | x                     | x    | x           | x          | x            |                   | x                   |          |
+| [Wexflow](https://github.com/aelassas/wexflow)                                       | x                     | x    | x           | x          | x            |                   |                     |          |
+| [Durable Task Framework](https://github.com/Azure/durabletask)                       | x                     | x    | x           | x          |              |                   |                     |          |
+| [Logic Apps](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-overview) |                       | x    |             |            | x            |                   |                     |          |
+| [Workflow Core](https://github.com/danielgerlag/workflow-core)                       | x                     | x    | x           | x          |              |                   |                     |          |
+| [Workflowengine](https://workflowengine.io/)                                         | x                     |      |             |            | x            | x                 |                     | x        |
+| [Slickflow](https://github.com/besley/Slickflow)                                     | x                     | x    | x           |            | x            | x                 |                     | x        |
+
+{% callout type="note" %}
+We did our best to make the above table as accurate as possible. However, we cannot guarantee that the information is 100% correct.
+If you find any inaccuracies, please let us know.
+{% /callout %}
+
+---
+
 ## Features
 
 Elsa comes packed with features that make it easy to build workflow-driven applications.
