@@ -79,9 +79,9 @@ Create another file called `Index.cshtml` with the following contents:
 </html>
 ```
 
-This will include the necessary scripts and styles provided by the `Elsa.Workflows.Designer` package and render the `ElsaStudio` razor component using the `component` tag helper.
+This will include the necessary scripts and styles provided by the `Elsa.Workflows.Designer` package.
 
-Make sure that the URL for `param-ServerUrl` contains a valid URL pointing to a workflow server (the one we created in the previous chapter).
+Make sure that the URL for `server` contains a valid URL pointing to an Elsa workflows server (for example, the one we created in the [previous chapter](./aspnet-apps-workflow-server)).
 When running the workflow server, pay attention to the port number being used - this is likely different than the one used here. 
 
 ## Trying it out
