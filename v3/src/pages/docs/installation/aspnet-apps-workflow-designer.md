@@ -73,14 +73,7 @@ Create another file called `Index.cshtml` with the following contents:
 </head>
 <body>
 
-<elsa-shell>
-    <elsa-workflow-toolbar></elsa-workflow-toolbar>
-    <div class="absolute inset-0" style="top: 64px;">
-        <elsa-studio server="https://localhost:5001/elsa/api" monaco-lib-path="/_content/Elsa.Workflows.Designer/monaco-editor/min"></elsa-studio>
-        <elsa-custom-activities-manager></elsa-custom-activities-manager>
-        <elsa-notifications-manager></elsa-notifications-manager>
-    </div>
-</elsa-shell>
+<elsa-studio server="https://localhost:5001/elsa/api" monaco-lib-path="/_content/Elsa.Workflows.Designer/monaco-editor/min"></elsa-studio>
 
 </body>
 </html>
