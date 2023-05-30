@@ -385,12 +385,14 @@ With the application running, we're going to send the following JSON payload to 
 
 ```json
 {
+  "model": {
     "name": "Hello World",
     "root": {
-        "type": "Elsa.WriteLine",
-        "text": "Hello World!"
-    },
-    "publish": true
+      "type": "Elsa.WriteLine",
+      "text": "Hello World!"
+    }
+  },
+  "publish": true
 }
 ```
 
@@ -417,31 +419,38 @@ The response should look something like this:
 
 ```json
 {
-    "id": "de9ea6acaa774d04aafdad86248cc29d",
-    "definitionId": "a84e91cfee7644d7a977e78494be5c5a",
-    "name": "Hello World",
-    "createdAt": "2022-12-29T18:36:37.279474+00:00",
+  "id": "c4f4ed765a864492af1c976039e474f0",
+  "definitionId": "8633e947391a4038bd59fd601169480c",
+  "name": "Hello World",
+  "createdAt": "2023-05-30T17:45:18.944564+00:00",
+  "version": 1,
+  "variables": [],
+  "inputs": [],
+  "outputs": [],
+  "outcomes": [],
+  "customProperties": {},
+  "isLatest": true,
+  "isPublished": true,
+  "root": {
+    "text": {
+      "typeName": "String",
+      "expression": {
+        "type": "Literal",
+        "value": "Hello World!"
+      },
+      "memoryReference": {
+        "id": "WriteLine1:input-1"
+      }
+    },
+    "id": "WriteLine1",
+    "type": "Elsa.WriteLine",
     "version": 1,
-    "variables": [],
-    "metadata": {},
-    "isLatest": true,
-    "isPublished": true,
-    "root": {
-        "text": {
-            "typeName": "String",
-            "expression": {
-                "type": "Literal",
-                "value": "Hello World!"
-            },
-            "memoryReference": {}
-        },
-        "type": "Elsa.WriteLine",
-        "version": 1,
-        "canStartWorkflow": false,
-        "runAsynchronously": false,
-        "customProperties": {},
-        "metadata": {}
-    }
+    "customProperties": {
+      "CanStartWorkflow": false,
+      "RunAsynchronously": false
+    },
+    "metadata": {}
+  }
 }
 ```
 
@@ -458,19 +467,19 @@ That will result in a response similar to the following:
 
 ```json
 {
-    "items": [
-        {
-            "id": "de9ea6acaa774d04aafdad86248cc29d",
-            "definitionId": "a84e91cfee7644d7a977e78494be5c5a",
-            "name": "Hello World",
-            "version": 1,
-            "isLatest": true,
-            "isPublished": true,
-            "materializerName": "Json",
-            "createdAt": "2022-12-29T18:36:37.279474+00:00"
-        }
-    ],
-    "totalCount": 1
+  "items": [
+    {
+      "id": "c4f4ed765a864492af1c976039e474f0",
+      "definitionId": "8633e947391a4038bd59fd601169480c",
+      "name": "Hello World",
+      "version": 1,
+      "isLatest": true,
+      "isPublished": true,
+      "materializerName": "Json",
+      "createdAt": "2023-05-30T17:45:18.944564+00:00"
+    }
+  ],
+  "totalCount": 1
 }
 ```
 
@@ -518,18 +527,30 @@ This time around, workflows will be persisted even after you restart the applica
 
 ### MongoDB
 
-Elsa also ships with a MongoDB provider. To use it, add the `Elsa.Persistence.MongoDb` package:
+{% callout title="MongoDB" type="note" %}
+The MongoDB provider is coming soon.
+{% /callout %}
 
-```shell
-dotnet add package Elsa.MongoDb
-```
+[//]: # (Elsa also ships with a MongoDB provider. To use it, add the `Elsa.MongoDb` package:)
 
-Update `Program.cs` to configure the Elsa Management feature to use the MongoDB provider:
+[//]: # ()
+[//]: # (```shell)
 
-```clike
-// Configure management feature to use MongoDB.
-elsa.UseWorkflowManagement(management => management.UseMongoDb("localhost"));
-```
+[//]: # (dotnet add package Elsa.MongoDb)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (Update `Program.cs` to configure the Elsa Management feature to use the MongoDB provider:)
+
+[//]: # ()
+[//]: # (```clike)
+
+[//]: # (// Configure management feature to use MongoDB.)
+
+[//]: # (elsa.UseWorkflowManagement&#40;management => management.UseMongoDb&#40;"localhost"&#41;&#41;;)
+
+[//]: # (```)
 
 ### Custom persistence
 
