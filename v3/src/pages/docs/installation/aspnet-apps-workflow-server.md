@@ -554,4 +554,4 @@ The MongoDB provider is coming soon.
 
 ### Custom persistence
 
-If you want to use a different persistence provider, you can implement your own persistence provider. For more information, see [Implementing a custom persistence provider](../persistence/implementation).
+If you want to use a different persistence provider, you can implement your own persistence provider. For more information, see [Implementing a custom persistence provider](../extensibility/custom-persistence).
