@@ -17,6 +17,16 @@ These are built-in JS functions that are common to most JavaScript implementatio
 | `JSON.stringify(string)`   | Stringify a JavaScript object. Only works with JSON objects (which are ExpandoObjects in Jint). Use `toJson()` instead if you need to serialize .NET objects other than `ExpandoObject` | `JSON.stringify({ name: "Alice" })` |
 | `parseInt(string): number` | Parses the specified string into a `number`.                                                                                                                                            | `parseInt('42')`                    |
 
+## Activity output
+
+The following functions are specific to handling activity output.
+
+| Function                                 | Description                                     | Example                               |
+|------------------------------------------|-------------------------------------------------|---------------------------------------|
+| `getOutputFrom(string, string?): any`    | Gets the output of the activity by activity ID. | `getOutputFrom('HttpEndpoint1')`      |
+| `get{OutputName}From{ActivityId}(): any` | Gets the output of the activity by activity ID. | `getParsedContentFromHttpEndpoint1()` |
+| `getLastResult(): any`                   | Gets the last result.                           | `getLastResult()`                     |
+
 ## Workflow variables and input
 
 The following functions are specific to handling workflow variables and input.

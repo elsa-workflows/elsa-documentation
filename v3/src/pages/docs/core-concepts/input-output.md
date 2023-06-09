@@ -17,11 +17,11 @@ Similarly, output can refer to two things:
 
 Activities can receive input and return output.
 
-Input is provided via an activity's <c>ActivityExecutionContext</c> object, which is passed to the <c>ExecuteAsync</c> method.
+Input is provided via an activity's `ActivityExecutionContext` object, which is passed to the `ExecuteAsync` method.
 
-Output can be set via the <c>ActivityExecutionContext</c> object.
+Output can be set via the `ActivityExecutionContext` and `ExpressionExecutionContext` objects
 
-The following is an example of an activity that receives input and returns output:
+The following is an example of a custom activity that receives input and returns output:
 
 ```clike
 public class Sum : CodeActivity<int>
@@ -40,12 +40,14 @@ public class Sum : CodeActivity<int>
     {
         var a = A.Get(context);
         var b = B.Get(context);
+        
         var result = a + b;
+        
         context.SetResul(result);
     }
 ```
 
-The above activity receives two inputs, <c>A</c> and <c>B</c>, and returns a single output, <c>Result</c>.
+The above activity receives two inputs, `A` and `B`, and returns a single output, `Result`.
 
 We have seen this activity in action in the [previous chapter](./activity#input-and-output).
 
