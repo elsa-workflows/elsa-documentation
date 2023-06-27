@@ -406,12 +406,14 @@ curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definit
 --header 'Authorization: ApiKey {api_key}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
+  "model": {
     "name": "Hello World",
     "root": {
-        "type": "Elsa.WriteLine",
-        "text": "Hello World!"
-    },
-    "publish": true
+      "type": "Elsa.WriteLine",
+      "text": "Hello World!"
+    }
+  },
+  "publish": true
 }'
 ```
 
