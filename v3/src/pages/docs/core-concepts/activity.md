@@ -99,10 +99,6 @@ var workflow = new Workflow
 ```
 
 ---
-
-## Outcomes
----
-
 ## Metadata
 
 Activities can be annotated with metadata using the `ActivityAttribute` attribute.
@@ -116,6 +112,33 @@ The following is an example of annotating an activity with metadata:
     Category = "Demo",
     Description = "A simple activity that writes \"Hello World!\" to the console."
 )]
+```
+---
+## Outcomes
+
+Custom Activity outcome Nodes can be defined as follows by Annotatting the the Metadata with the "FlowNode" attribute as follows:
+
+```clike
+[Activity(
+       "Demo", "Demo", "Simple activity ")]
+    [FlowNode("Pass", "Fail")]
+```
+This produces 2 outcomes of the Activity a in this case a Pass or Fail, this can be implemented as follows 
+
+```clike
+[Activity(
+       "Demo", "Demo", "Simple activity ")]
+    [FlowNode("Pass", "Fail")]
+    public class SimpleActivity:CodeActivity
+    {
+      
+        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+        {
+            var outcome = 2 > 1 ? "Pass" : "Fail";
+
+            await context.CompleteActivityAsync(new Outcomes(outcome));
+        }
+    }
 ```
 
 ---
