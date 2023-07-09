@@ -117,6 +117,24 @@ The following is an example of annotating an activity with metadata:
     Description = "A simple activity that writes \"Hello World!\" to the console."
 )]
 ```
+ Variables inputs Metadata can also be annotated using the `InputAttribute` attribute.
+ Simmilar to above, this allows the Designer to display "friendly names" and descriptions of an input.
+
+ ```clike
+[InputAttribute(
+            AutoEvaluate = false, 
+            DisplayName = "Name of recipient",
+            Description = "This is a Description of the Input")]
+
+        public Input<string> Name { get; set; }
+
+ [InputAttribute(
+            AutoEvaluate = false,
+            DisplayName = "Message to Send",
+            Description = "Write your Message to send")]
+
+        public Input<string> Message { get; set; }
+```
 
 ---
 
