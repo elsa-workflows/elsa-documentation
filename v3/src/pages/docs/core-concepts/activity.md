@@ -214,6 +214,40 @@ If you need to run multiple activities, simply install a container activity such
 
 ---
 
+## Dependency Injection  
+
+Elsa 3.0 currently does not support direct Dependency injection.
+
+Therefore, calling a Dependency in the Traditional manner,as follows will not be possible. 
+
+```
+public IApiService _apiService { get; set; }
+
+    public simpleActivity(IApiService apiService)
+    {
+        _apiService = apiService;
+    }
+
+```
+
+Should a dependency be needed it can be retrived from the Elsa Activity Execution Context, using `context.GetRequiredService` as Follows:
+
+```
+ public IApiService _apiService { get; set; }
+
+        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+        {
+            
+           _apiService =  context.GetRequiredService<IApiService>();
+
+            await context.CompleteActivityAsync(new Outcomes(outcome));
+        }
+
+```
+Be sure to add the Dependency into the application context in the `Program.cs` file.
+
+---
+
 ## Blocking activities
 
 A blocking activity is an activity that creates a bookmark and waits for an external event to resume execution. This is useful when you want to wait for some external event to occur before continuing execution.
