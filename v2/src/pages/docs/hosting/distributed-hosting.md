@@ -130,13 +130,13 @@ Elsa comes with the following temporal services:
 To register the temporal activities using Quartz.NET as the provider, you would do so as follows:
 
 ```c#
-servives.AddElsa(elsa => elsa.AddQuartzTemporalActivities());
+services.AddElsa(elsa => elsa.AddQuartzTemporalActivities());
 ```
 
 And to use Hangfire instead, you do so as follows:
 
 ```c#
-servives.AddElsa(elsa => elsa.AddHangfireTemporalActivities());
+services.AddElsa(elsa => elsa.AddHangfireTemporalActivities());
 ```
 
 By default, both Quartz.NET and Hangfire are configured to use an in-memory storage provider, which works well for single-node Elsa Server applications.
