@@ -24,6 +24,7 @@ CD into the project's root directory and add the following packages:
 cd WorkflowServer.Api
 dotnet add package Elsa
 dotnet add package Elsa.Http
+dotnet add package Elsa.Identity
 dotnet add package Elsa.Workflows.Api
 ```
 
