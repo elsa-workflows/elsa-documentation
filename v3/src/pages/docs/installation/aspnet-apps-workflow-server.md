@@ -480,7 +480,8 @@ That will result in a response similar to the following:
       "isLatest": true,
       "isPublished": true,
       "materializerName": "Json",
-      "createdAt": "2023-05-30T17:45:18.944564+00:00"
+      "createdAt": "2023-05-30T17:45:18.944564+00:00",
+      "isReadonly": false
     }
   ],
   "totalCount": 1
