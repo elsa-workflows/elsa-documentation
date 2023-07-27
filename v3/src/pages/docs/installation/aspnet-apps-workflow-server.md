@@ -112,7 +112,8 @@ The response should look something like this:
 ```json
 {
     "isAuthenticated": true,
-    "accessToken": "{access_token}"
+    "accessToken": "{access_token}",
+    "refreshToken": "{refresh_token}"
 }
 ```
 
