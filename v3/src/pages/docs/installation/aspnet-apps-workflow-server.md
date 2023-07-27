@@ -493,7 +493,7 @@ That will result in a response similar to the following:
 To execute a workflow, send a POST request to the `/workflow-definitions/{definition_id}/execute` endpoint. For example:
 
 ```shell
-curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions/a84e91cfee7644d7a977e78494be5c5a/execute' \
+curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions/8633e947391a4038bd59fd601169480c/execute' \
 --header 'Authorization: ApiKey {api_key}'
 ```
 
