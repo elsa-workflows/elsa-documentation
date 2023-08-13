@@ -1,32 +1,112 @@
 ---
-title: Getting started
-pageTitle: Add workflow capabilities to any .NET project.
-description: Build workflow-driven applications using Elsa Workflows.
+title: Introduction
+pageTitle: Unleash the Power of Workflows in Your .NET Projects with Elsa.
+description: Discover the potential of your .NET applications with Elsa Workflows. Create, modify, and manage workflows with ease, both programmatically and visually.
 ---
 
-Learn how to get Elsa Workflows set up in your project.
+Elsa Workflows is a powerful and flexible set of open-source .NET libraries designed to add workflow capabilities to any .NET application.
+With Elsa, developers can seamlessly integrate business processes and workflows into their applications, enhancing functionality and improving user experience.
+
+Workflows in Elsa can be defined in two ways:
+
+- **Programmatically**: By writing .NET code, developers can define complex workflows tailored to specific business needs.
+- **Visually**: Using the built-in designer, non-developers or those who prefer a visual approach can create and modify workflows with ease.
+
+Elsa's versatility makes it suitable for a wide range of applications, from simple task automation to complex business process management. 
+Its modular architecture allows for easy integration with existing systems, making it a top choice for developers looking to add workflow functionality to their projects.
+
+---
+
+## Getting Started
+
+Embark on your Elsa Workflows journey! Whether you're new to workflows or an experienced developer, we've got the resources to help you integrate Elsa seamlessly into your project.
 
 {% quick-links %}
 
-{% quick-link title="Installation" icon="installation" href="/docs/installation/packages" description="Step-by-step guides to setting up your system and installing the library." /%}
+{% quick-link title="Installation" icon="installation" href="/docs/installation/packages" description="Begin with our step-by-step guides to set up your system and install the necessary libraries." /%}
 
-{% quick-link title="Activity library" icon="presets" href="/docs/activity-library/branching" description="Explore the activity library." /%}
+{% quick-link title="Activity Library" icon="presets" href="/docs/activity-library/branching" description="Dive into the diverse activity library and discover the building blocks of your workflows." /%}
 
-{% quick-link title="Concepts" icon="plugins" href="/docs/core-concepts/programmatic-vs-designer" description="Learn more about the core concepts." /%}
+{% quick-link title="Concepts" icon="plugins" href="/docs/core-concepts/programmatic-vs-designer" description="Grasp the foundational concepts behind Elsa and understand its powerful capabilities." /%}
 
-{% quick-link title="Guides" icon="theming" href="/docs/guides/http-workflows" description="Learn more by doing." /%}
+{% quick-link title="Guides" icon="theming" href="/docs/guides/http-workflows" description="Roll up your sleeves and learn through hands-on guides and tutorials." /%}
 
 {% /quick-links %}
 
+
 ---
 
-## Introduction
 
-Elsa Workflows is a set of open source .NET libraries that add workflow capabilities to any .NET application.
-Workflows can be created either from code or using the designer.
+### Overview of Elsa Workflows
 
-The programmatic API to create workflows is loosely inspired on that of Windows Workflows Foundation 4, where you can define sequential workflows for example.
-For example, the following workflow prompts the user for their name and prints it out to the console:
+Elsa Workflows is not just another workflow engine; it's a robust and flexible solution designed to breathe life into your .NET applications. With Elsa, you can model both simple and complex business processes, ensuring that your applications are not only functional but also efficient and user-friendly.
+
+#### **Why Elsa?**
+- **Flexibility**: Whether you're looking to automate a simple task or design a complex, multi-step business process, Elsa's got you covered. Its modular design ensures that you can tailor it to fit your exact needs.
+  
+- **Visual & Programmatic Design**: With Elsa, you don't have to choose between coding and designing. You can define workflows programmatically for precision or use the intuitive visual designer for rapid development and collaboration.
+  
+- **Integration Ready**: Elsa is designed to play well with others. Whether you're integrating with third-party services or your existing systems, Elsa makes it a breeze.
+  
+- **Open Source**: Being open source, Elsa benefits from a community of contributors who continuously enhance its capabilities. You get a tool that's not only powerful but also up-to-date with the latest industry standards.
+
+#### **Key Features**
+- **Activity Library**: A rich set of out-of-the-box activities that serve as the building blocks for your workflows.
+  
+- **Triggers**: Kick off workflows automatically based on specific events or conditions.
+  
+- **Long & Short Running Workflows**: Whether you need a workflow that runs over days, waiting for user input, or one that completes in milliseconds, Elsa can handle it.
+  
+- **Extensibility**: Need something unique? Elsa is designed to be extensible, allowing you to add custom activities or integrate with other systems seamlessly.
+
+#### **Potential Use Cases**
+- **Business Process Automation**: Streamline business processes like order processing, HR onboarding, or content approval.
+  
+- **Task Automation**: Automate repetitive tasks, from data entry to report generation.
+  
+- **Integration Workflows**: Connect disparate systems and ensure smooth data flow between them.
+  
+- **Alerts & Monitoring**: Set up workflows to monitor systems and send alerts or take corrective actions automatically.
+
+Dive deeper into the documentation to discover all that Elsa Workflows has to offer and start your journey towards creating dynamic, workflow-driven applications!
+
+---
+
+### Benefits of using Elsa Workflows
+
+Elsa Workflows brings a plethora of advantages to the table, making it a top choice for developers and businesses alike. Here's why you should consider Elsa for your workflow needs:
+
+- **Rapid Development**: With Elsa's visual designer and extensive activity library, you can design and deploy workflows in record time, accelerating your development cycle.
+
+- **Scalability**: Built on .NET, Elsa is inherently scalable, ensuring that as your business grows, your workflows can handle the increased load with ease.
+
+- **Cost-Efficient**: Automating processes with Elsa can lead to significant cost savings by reducing manual effort, minimizing errors, and optimizing resource usage.
+
+- **Flexibility**: Elsa's dual approach of programmatic and visual design means you can craft workflows that fit your exact requirements, no matter how intricate.
+
+- **Open-Source Advantage**: Being open-source, Elsa is continuously improved by a community of developers. This ensures you always have access to the latest features and best practices.
+
+- **Seamless Integration**: Elsa is designed to integrate smoothly with other systems, be it databases, third-party services, or custom applications, ensuring a cohesive ecosystem.
+
+- **Enhanced User Experience**: Automated and optimized processes lead to faster response times, consistent outcomes, and a better overall user experience.
+
+- **Robust Security**: With built-in features for authentication and authorization, Elsa ensures that your workflows and data remain secure.
+
+- **Transparent Monitoring & Logging**: Keep an eye on your workflows with Elsa's monitoring capabilities. Track progress, diagnose issues, and ensure everything runs smoothly.
+
+- **Community & Support**: Join a thriving community of Elsa enthusiasts. Whether you have a question, need guidance, or want to share your expertise, the Elsa community is there for you.
+
+Harness the power of Elsa Workflows and elevate your applications to new heights of efficiency and user satisfaction!
+
+---
+
+### Dive into Elsa's Programmatic API
+
+Elsa Workflows offers a programmatic API that draws inspiration from the Windows Workflows Foundation 4. This API provides developers with a powerful toolset to define workflows with precision and flexibility.
+
+#### **Sequential Workflows**
+
+Sequential workflows allow you to define a series of activities that execute in a specific order. Here's a simple example that prompts the user for their name and then displays it:
 
 ```clike
 // Define a workflow variable to capture the output of the ReadLine activity.
@@ -48,11 +128,12 @@ var workflow = new Sequence
 };
 ```
 
-Output:
-
 ![Output](./sample-workflow-console.gif)
 
-Besides `Sequence`, Elsa also supports `Flowchart` activities, which allow you to define a workflow as a graph of activities:
+#### Flowchart Workflows
+
+For more complex workflows, Elsa supports `Flowchart` activities. 
+These allow you to define workflows as a graph of interconnected activities, offering greater flexibility:
 
 ```clike
 public class BraidedWorkflow : WorkflowBase
@@ -102,117 +183,118 @@ public class BraidedWorkflow : WorkflowBase
 }
 ```
 
-When visualized, the above graph looks like this:
+When visualized, the flowchart workflow appears as:
 
 ![Designer](./introduction/braided-flowchart-workflow.png)
 
-In addition to creating them in code, you can create workflows with the designer:
+#### Visual Designer
+
+For those who prefer a visual approach or want to collaborate with non-developers, Elsa offers an intuitive designer:
 
 ![Designer](./sample-workflow-designer.gif)
 
-Workflows can execute from within your own application as well as from external applications.
+#### Unleash the Power of Workflows in Your .NET Projects
 
-Adding workflows to your application unlocks powerful capabilities, such as easy to update business logic, microservice orchestration, recurring tasks, data processing, message processing, and virtually anything else you can think of.
+By integrating workflows into your application, you open the door to a myriad of possibilities. 
+From easily updating business logic and orchestrating microservices to handling recurring tasks, data processing, and message processing, the potential is vast. 
+With Elsa, you're limited only by your imagination!
 
 ---
 
-## What's new
+## What's New
 
-Elsa 3 is a complete departure from previous versions of Elsa Workflows and was rebuilt from the ground up.
-The new version is much more flexible and extensible, and it comes with a new designer.
+Elsa 3 represents a monumental leap from its predecessor, Elsa 2. This version is not just an upgrade; it's a complete rewrite, bringing forth a plethora of improvements, new features, and architectural changes. Here's a comprehensive overview of what Elsa 3 brings to the table:
 
-The following is a list of the most important changes:
+### **Core Enhancements**
 
-- Targets .NET 6 and up.
-- Clear distinction between the core library, the management library and the runtime library, allowing for more flexibility.
-- Less dependencies, which makes it easier to integrate Elsa into existing applications.
-- New visual designer that boosts productivity to new levels. Think drag & drop, multi-select, undo, redo, copy & paste, and more.
-- New programming model that makes it easier to create workflows from code and custom activities.
-- Support for different kinds of diagrams, such as Flowchart and Sequence, with State Machine and BMPN 2.0 coming later.  
-- Workflow scheduler is now queue-based by default, as opposed to stack-based in previous versions for breadth-first execution.
-- Easily run activities in parallel using the `Task` and `Job` activity kinds.
-- Support for different kinds of workflow runtimes. The default runtime is a simple database-based runtime, but you can also use a distributed runtime that uses Proto.Actor to run workflows lock-free across multiple nodes.
-- Middleware pipeline architecture for both workflow & activity execution.
-- Simplified persistence abstraction, allowing you to use any persistence technology you want.
-- Workflow instances and execution log can be stored in different persistence stores, such as SQL Server and MongoDB, but also Elasticsearch.
-- API endpoints are now secured by default, and can be configured to use JWT tokens, API keys, or no authentication at all.
-- Activity inout & output is non-persisted by default (as opposed to previous versions of Elsa), but can be configured to be persisted by capturing them using workflow variables.
-- Versatile Workflow Context support, allowing you to configure multiple workflow context providers per workflow.
+- **.NET 6 Targeting**: Elsa 3 is designed for the future, targeting .NET 6 and beyond.
+  
+- **Architectural Clarity**: A clear distinction has been made between the core library, the management library, and the runtime library. This separation ensures enhanced flexibility and integration capabilities.
+  
+- **Reduced Dependencies**: With fewer dependencies, integrating Elsa into your existing applications is now more seamless than ever.
+
+### **Designer & Programming Model**
+
+- **Revamped Visual Designer**: Experience a state-of-the-art designer equipped with features like drag & drop, multi-select, undo, redo, copy & paste, and more.
+  
+- **Innovative Programming Model**: Crafting workflows from code and developing custom activities have never been easier, thanks to the new programming model.
+
+- **Diverse Diagram Support**: Beyond the traditional Flowchart and Sequence diagrams, Elsa 3 paves the way for future support for State Machine and BPMN 2.0 diagrams.
+
+### **Execution & Runtime**
+
+- **Queue-Based Scheduler**: Elsa 3 adopts a queue-based workflow scheduler, transitioning from the stack-based approach of previous versions. This change promotes breadth-first execution.
+  
+- **Parallel Activity Execution**: Activities can now run concurrently using the `Task` and `Job` activity kinds.
+  
+- **Versatile Workflow Runtimes**: While the default runtime is database-based, Elsa 3 introduces support for a distributed runtime using Proto.Actor, enabling lock-free workflow execution across multiple nodes.
+
+- **Middleware Pipeline**: A middleware pipeline architecture has been implemented for both workflow and activity execution.
+
+### **Persistence & Security**
+
+- **Flexible Persistence**: The simplified persistence abstraction in Elsa 3 allows you to choose from a range of persistence technologies. Whether it's SQL Server, MongoDB, or Elasticsearch, Elsa 3 has got you covered.
+  
+- **Secured API Endpoints**: By default, API endpoints are now secured. You have the flexibility to configure authentication using JWT tokens, API keys, or even opt for no authentication.
+
+- **Non-Persistent Activity Data**: Activity input & output are non-persistent by default, ensuring data security. However, if persistence is required, workflow variables can be used to capture and store the data.
+
+### **Workflow Context**
+
+- **Enhanced Workflow Context**: Elsa 3 introduces versatile Workflow Context support, allowing the configuration of multiple workflow context providers for each workflow.
 
 ---
 
 ## Features
 
-Elsa comes packed with features that make it easy to build workflow-driven applications.
+Elsa Workflows is a robust platform designed to simplify the creation and management of workflow-driven applications. Here's a comprehensive overview of its feature set:
 
-### Programmatic workflows
+### **Workflow Creation**
 
-Workflows can be created from code. This allows you to create workflows in a strongly typed manner, and to reuse them in multiple places.
+- **Programmatic Workflows**: Craft workflows programmatically using code. This approach offers strong typing and the ability to reuse workflows across different scenarios.
 
-### Designed workflows
+- **Visual Designer**: Use Elsa's intuitive visual designer to create workflows. This graphical approach is perfect for those who prefer a visual representation and offers the same reusability benefits.
 
-Workflows can be created using the designer. This allows you to create workflows visually, and to reuse them in multiple places.
+### **Workflow Execution Types**
 
-### Short running workflows
+- **Short-Running Workflows**: These workflows execute seamlessly from start to finish without any suspension. They're ideal for tasks like sending emails or executing a series of steps.
 
-Short running workflows are workflows that execute from start to end without entering suspension states in between. Examples are workflows that involve orchestrating short running tasks, such as sending emails, or workflows that involve executing a series of steps.
+- **Long-Running Workflows**: Designed for tasks that require suspension and resumption. Examples include workflows that await external events or those that orchestrate lengthy tasks.
 
-### Long running workflows
+### **Activity Management**
 
-Long running workflows are workflows that can suspend and resume execution at any point in time. Examples are workflows that involve orchestrating long running tasks, such as human workflows, or workflows that involve waiting for external events to occur.
+- **Composite Activities**: Activities like `Sequence` and `Flowchart` that can encapsulate other activities. You can design your own composite activities either programmatically or using the visual designer. These can be reused across different workflows.
 
-### Composite activities
+- **Triggers**: Activities designed to initiate a workflow. Examples include `HttpEndpoint` and `Timer`.
 
-Composite activities are activities that can contain other activities. Examples are `Sequence` and `Flowchart`.
-You can also model your own composite activities. This can be done using code or using the designer.
-These activities can be reused in other workflows.
+- **Activities**: The fundamental building blocks of workflows. Elsa comes with a rich set of activities like `WriteLine`, `SendEmail`, `HttpRequest`, and more. The platform's extensibility allows you to add custom activities as needed.
 
-### Triggers
+- **Activity Providers**: These providers supply activity types to Elsa. For instance, `TypedActivityProvider` offers activity types based on `IActivity` implementations. Elsa's flexibility will soon support activity types from GraphQL, OpenAPI, JavaScript functions, and more.
 
-Triggers are activities that can be used to start a workflow. Examples are `HttpEndpoint` and `Timer`.
+### **Dynamic Expressions**
 
-### Activities
+- **Expressions**: Dynamically evaluate values during runtime. Elsa natively supports JavaScript and Liquid expressions, but it's designed to accommodate custom expression evaluators.
 
-Activities are the building blocks of workflows. Examples are `WriteLine`, `ReadLine`, `SendEmail`, `HttpRequest`, `Timer`, `Fork`, `Join`, `Switch`, `While`, `DoWhile`, `ForEach`, `Delay`, `SetVariable`.
-In addition, Elsa was built to be extensible, so you can easily add your own activities.
+    - **JavaScript Example**:
+      ```javascript
+      `The current date and time is: ${new Date()}`
+      ```
 
-### Activity providers
+    - **Liquid Example**:
+      ```liquid
+      The current date and time is: {{ "now" | date: "%Y-%m-%d %H:%M:%S" }}
+      ```
 
-Activity providers are responsible for providing activity types to the system.
-For example, the `TypedActivityProvider` provides activity types based on classes that implement `IActivity`.
-Another example is the `MassTransitActivityTypeProvider`, which provides activity types based on service bus message types.
-Future examples will include activity types based on GraphQL, OpenAPI, JavaScript functions, and more.
+### **Persistence & Hosting**
 
-### Expressions
+- **Persistence**: Elsa allows workflows to be saved to a database, enabling their resumption even after application restarts. The persistence mechanism is abstract, allowing for custom persistence providers.
 
-Expressions can be used to dynamically evaluate values at runtime. 
-Out of the box, Elsa supports JavaScript and Liquid expressions, but you can easily add your own expression evaluators.
+- **Workflow Hosting**: Integrate and execute workflows directly within your application, offering a seamless user experience.
 
-For example, the following JavaScript expression will evaluate to the current date and time:
+### **Integration Capabilities**
 
-```javascript
-`The current date and time is: ${new Date()}`
-```
+- **External Application Integration**: Elsa workflows can be triggered from any external application capable of making HTTP requests. Conversely, Elsa workflows can interact with external applications through HTTP requests, webhooks, service bus messages, gRPC, and more.
 
-The following Liquid expression will evaluate to the current date and time:
-
-```liquid
-The current date and time is: {{ "now" | date: "%Y-%m-%d %H:%M:%S" }}
-```
-
-### Persistence
-
-Workflows can be persisted to a database. This allows you to resume workflows after your application has restarted.
-Persistence is abstracted away, so you can plug in your own persistence provider.
-
-### Workflow hosting
-
-Workflows can be hosted in your own application. This allows you to execute workflows from within your own application.
-
-### Integration with external applications
-
-Workflows can be executed from external applications. This allows you to execute workflows from any application that can make HTTP requests.
-And vice versa, workflows can make HTTP requests to external applications, either explicitly via HTTP Request activities, custom code, or implicitly via webhooks, service bus messages and gRPC.
 
 ## Join the community!
 

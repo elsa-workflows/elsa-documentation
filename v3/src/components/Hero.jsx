@@ -59,7 +59,7 @@ export function Hero() {
                 Open Source .NET Workflows Library.
               </p>
               <p className="mt-3 text-2xl tracking-tight text-slate-400">
-                Enable workflow execution in any .NET application using code or a visual workflow designer.
+                Unleash the Power of Workflows in Your .NET Projects.
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
                 <Button href="/">Get started</Button>
