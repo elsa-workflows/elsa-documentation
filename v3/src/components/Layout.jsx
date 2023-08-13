@@ -14,14 +14,18 @@ import {HeroAndroid} from "@/components/HeroAndroid";
 
 const navigation = [
     {
+        title: 'Getting Started',
+        links: [
+            { title: 'Initial setup and prerequisites', href: '/docs/getting-started/initial-setup-and-prerequisites' }
+        ]
+    },
+    {
         title: 'Installation',
         links: [
             { title: 'Packages', href: '/docs/installation/packages' },
-            { title: 'Console apps', href: '/docs/installation/console-apps' },
-            { title: 'ASP.NET apps', href: '/docs/installation/aspnet-apps' },
-            { title: 'ASP.NET workflow server', href: '/docs/installation/aspnet-apps-workflow-server' },
-            { title: 'ASP.NET workflow designer', href: '/docs/installation/aspnet-apps-workflow-designer' },
-            { title: 'ASP.NET server + designer', href: '/docs/installation/aspnet-apps-workflow-server-and-designer' },
+            { title: 'Elsa Console', href: '/docs/installation/elsa-console' },
+            { title: 'Elsa Server', href: '/docs/installation/elsa-server' },
+            { title: 'Elsa Studio', href: '/docs/installation/elsa-studio' },
             { title: 'Docker', href: '/docs/installation/docker' }
         ],
     },
