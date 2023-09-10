@@ -1,13 +1,13 @@
 ---
-title: ASP.NET workflow designer
-description: Installing the workflow designer in an ASP.NET application. 
+title: Elsa Studio Application
+description: Setting up Elsa Studio in ASP.NET Core apps and connecting to a workflow server. 
 ---
 
 ## Introduction
 
 In the previous chapter, we looked at setting up a workflow server in ASP.NET and looked at creating and executing workflows using the REST API.
 
-In this chapter, we will create a separate ASP.NET app that hosts the workflow designer that connects to the ASP.NET workflow server we created in the previous chapter. 
+In this chapter, we will create a separate ASP.NET Blazor Webassembly app that hosts Elsa Studio that connects to the workflow server. 
 
 ## Setup
 
@@ -17,11 +17,11 @@ Create a new empty ASP.NET app using the following command:
 dotnet new web -n "ElsaStudio" -f net7.0
 ```
 
-CD into the project's root directory and add the `Elsa` and `WorkflowDesigner.Web` packages:
+CD into the project's root directory and add the `Elsa.Studio` bundle package:
 
 ```shell
-cd WokflowDesigner.Web
-dotnet add package Elsa.Workflows.Designer
+cd ElsaStudio
+dotnet add package Elsa.Studio
 ```
 
 Next, open `Program.cs` file and replace its contents with the following code:

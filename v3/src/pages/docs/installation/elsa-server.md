@@ -1,7 +1,15 @@
 ---
 title: Elsa Server Application
-description: Setting up Elsa in ASP.NET Core apps and exposing workflows as endpoints.
+description: Setting up Elsa Workflows in ASP.NET Core apps and exposing workflows as endpoints.
 ---
+
+## Introduction
+
+In the previous chapter, we looked at a simple console application to execute a workflow.
+
+In this chapter, we will create an ASP.NET app that hosts Elsa Workflows that acts as a workflow server.
+
+## Setup
 
 Create a new empty ASP.NET app using the following command:
 
