@@ -135,7 +135,7 @@ As mentioned before, this will cause any inbound HTTP request to be matched agai
 
 ### Designer
 
-A complete description of configuring the designer in an ASP.NET project can be found [here](../installation/aspnet-apps-workflow-server-and-designer), but we'll repeat the steps here inline for completeness' sake.
+A complete description of configuring the designer in an ASP.NET project can be found [here](../installation/elsa-studio), but we'll repeat the steps here inline for completeness' sake.
 
 We already installed the necessary packages and added the necessary services, but we also need to create a couple of Razor files:
 
