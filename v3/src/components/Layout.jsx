@@ -47,6 +47,7 @@ const navigation = [
             { title: 'Input / output', href: '/docs/core-concepts/input-output' },
             { title: 'Trigger', href: '/docs/core-concepts/trigger' },
             { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
+            { title: 'Incident', href: '/docs/core-concepts/incident' },
         ],
     },
     {
@@ -74,6 +75,14 @@ const navigation = [
         links: [
             { title: 'JavaScript', href: '/docs/expressions/javascript' },
             { title: 'Liquid', href: '/docs/expressions/liquid' }
+        ]
+    },
+    {
+        title: 'Incidents',
+        links: [
+            { title: 'Introduction', href: '/docs/incidents/introduction' },
+            { title: 'Strategies', href: '/docs/incidents/strategies' },
+            { title: 'Configuration', href: '/docs/incidents/configuration' }
         ]
     }
 ]
