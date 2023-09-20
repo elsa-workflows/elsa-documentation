@@ -41,6 +41,13 @@ const navigation = [
         ],
     },
     {
+      title: 'Workflow Samples',
+        links: [
+            { title: 'HTTP - Hello World', href: '/docs/samples/http/hello-world' },
+            { title: 'HTTP - Backend API', href: '/docs/samples/http/backend-api' },
+        ]
+    },
+    {
         title: 'Core concepts',
         links: [
             { title: 'Programmatic vs designer', href: '/docs/core-concepts/programmatic-vs-designer' },
