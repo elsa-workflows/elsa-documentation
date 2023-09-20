@@ -25,7 +25,9 @@ const navigation = [
             { title: 'Packages', href: '/docs/installation/packages' },
             { title: 'Elsa Console', href: '/docs/installation/elsa-console' },
             { title: 'Elsa Server', href: '/docs/installation/elsa-server' },
-            { title: 'Elsa Studio', href: '/docs/installation/elsa-studio' },
+            { title: 'Elsa Studio (Blazor Wasm)', href: '/docs/installation/elsa-studio-blazorwasm' },
+            { title: 'Elsa Studio (Blazor Server)', href: '/docs/installation/elsa-studio-blazorserver' },
+            { title: 'Elsa Studio (Stencil)', href: '/docs/installation/elsa-studio-stencil' },
             { title: 'Docker', href: '/docs/installation/docker' }
         ],
     },

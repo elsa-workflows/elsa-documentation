@@ -1,13 +1,18 @@
 ---
-title: Elsa Studio Application
-description: Setting up Elsa Studio in ASP.NET Core apps and connecting to a workflow server. 
+title: Elsa Studio (Stencil)
+description: Installing the workflow designer in an ASP.NET application. 
 ---
+
+{% callout title="Deprecation Notice" type="warning" %}
+This chapter is about the legacy version of the workflow designer. It is still available for use, but it is no longer being actively developed. 
+Instead, we recommend using the [Blazor version](./elsa-studio) of the workflow designer.
+{% /callout %}
 
 ## Introduction
 
-In the previous chapter, we looked at setting up a workflow server in ASP.NET and looked at creating and executing workflows using the REST API.
+We looked at setting up a workflow server in ASP.NET and looked at creating and executing workflows using the REST API.
 
-In this chapter, we will create a separate ASP.NET Blazor Webassembly app that hosts Elsa Studio that connects to the workflow server. 
+In this chapter, we will create a separate ASP.NET app that hosts the workflow designer that connects to the ASP.NET workflow server we created in the previous chapter.
 
 ## Setup
 
@@ -17,11 +22,11 @@ Create a new empty ASP.NET app using the following command:
 dotnet new web -n "ElsaStudio" -f net7.0
 ```
 
-CD into the project's root directory and add the `Elsa.Studio` bundle package:
+CD into the project's root directory and add the `Elsa` and `WorkflowDesigner.Web` packages:
 
 ```shell
-cd ElsaStudio
-dotnet add package Elsa.Studio
+cd WokflowDesigner.Web
+dotnet add package Elsa.Workflows.Designer
 ```
 
 Next, open `Program.cs` file and replace its contents with the following code:
@@ -46,7 +51,7 @@ app.MapRazorPages();
 app.Run();
 ```
 
-Notice that nothing specific to Elsa wa added here. It's a basic setup for an ASP.NET web app with Razor pages.
+Notice that nothing specific to Elsa was added here. It's a basic setup for an ASP.NET web app with Razor pages.
 
 In the project, create a new folder called `Pages` and create a new file called `_ViewImports.cshtml` with the following contents:
 
@@ -82,7 +87,7 @@ Create another file called `Index.cshtml` with the following contents:
 This will include the necessary scripts and styles provided by the `Elsa.Workflows.Designer` package.
 
 Make sure that the URL for `server` contains a valid URL pointing to an Elsa workflows server (for example, the one we created in the [previous chapter](./aspnet-apps-workflow-server)).
-When running the workflow server, pay attention to the port number being used - this is likely different than the one used here. 
+When running the workflow server, pay attention to the port number being used - this is likely different than the one used here.
 
 ## Trying it out
 
