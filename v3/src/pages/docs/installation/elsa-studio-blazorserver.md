@@ -22,9 +22,9 @@ To setup Elsa Studio, we'll go through the following steps:
 
 Let's delve into each step in detail:
 
-### 1. Creating a New Blazor Webassembly App
+### 1. Creating a New Blazor Server App
 
-Kickstart your project by generating a new Blazor Webassembly application using the following command:
+Kickstart your project by generating a new Blazor Server application using the following command:
 
 ```shell
 dotnet new blazorserver-empty -n "ElsaStudioBlazorServer" -f net7.0
