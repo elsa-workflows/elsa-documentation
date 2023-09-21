@@ -45,6 +45,7 @@ const navigation = [
         links: [
             { title: 'HTTP - Hello World', href: '/docs/samples/http/hello-world' },
             { title: 'HTTP - Backend API', href: '/docs/samples/http/backend-api' },
+            { title: 'HTTP - Post Users API', href: '/docs/samples/http/post-users-api' },
         ]
     },
     {
