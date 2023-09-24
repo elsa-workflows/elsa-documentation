@@ -43,8 +43,6 @@ Variables in Elsa Workflows can be of any type supported by .NET, enhancing the 
 - **Memory:** Variables are accessible only during the workflow's lifetime. Use this provider for storing temporary data and or data that is non-serializable.
 - **Workflow Instance:** Variables are preserved alongside the workflow instance. Use this provider for storing data that is serializable and needs to be preserved for the workflow's lifetime.
 
-Certainly! Below is a way to combine the two callouts into a single one:
-
 {% callout title="Important Information on Variable Storage" type="warning" %}
 - *Workflow Instance Storage*: Ensure that the variable type is serializable when using the Workflow Instance storage provider to avoid throwing an exception.
 - *Memory Storage:* Remember that values will be lost if your workflow is persisted and resumed later while using the Memory storage provider.
