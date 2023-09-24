@@ -54,6 +54,7 @@ const navigation = [
             { title: 'Programmatic vs designer', href: '/docs/core-concepts/programmatic-vs-designer' },
             { title: 'Workflow', href: '/docs/core-concepts/workflow' },
             { title: 'Activity', href: '/docs/core-concepts/activity' },
+            { title: 'Variables', href: '/docs/core-concepts/variables' },
             { title: 'Input / output', href: '/docs/core-concepts/input-output' },
             { title: 'Trigger', href: '/docs/core-concepts/trigger' },
             { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
