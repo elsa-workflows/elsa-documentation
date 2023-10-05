@@ -59,6 +59,7 @@ const navigation = [
             { title: 'Trigger', href: '/docs/core-concepts/trigger' },
             { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
             { title: 'Incident', href: '/docs/core-concepts/incident' },
+            { title: 'Alteration', href: '/docs/core-concepts/alteration' },
         ],
     },
     {
@@ -94,6 +95,17 @@ const navigation = [
             { title: 'Introduction', href: '/docs/incidents/introduction' },
             { title: 'Strategies', href: '/docs/incidents/strategies' },
             { title: 'Configuration', href: '/docs/incidents/configuration' }
+        ]
+    },
+    {
+        title: 'Alterations',
+        links: [
+            { title: 'Introduction', href: '/docs/alterations/introduction' },
+            { title: 'Alteration Plans', href: '/docs/alterations/alteration-plans' },
+            { title: 'Alteration Plans API', href: '/docs/alterations/alteration-plans-api' },
+            { title: 'Run Alterations', href: '/docs/alterations/run-alterations' },
+            { title: 'Run Alterations API', href: '/docs/alterations/run-alterations-api' },
+            { title: 'Extensibility', href: '/docs/alterations/extensibility' },
         ]
     }
 ]
