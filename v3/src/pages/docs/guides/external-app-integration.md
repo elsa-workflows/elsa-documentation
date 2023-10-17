@@ -55,7 +55,7 @@ We will have the workflow run the first task, and once it completes, the remaini
 The workflow server application is a simple ASP.NET Core application that hosts the workflow engine.
 It uses the `Elsa.Webhooks` package to handle the `RunTaskRequest` domain event.
 
-To setup this application, please follow the steps in the [ASP.NET Core application](../installation/aspnet-apps-workflow-server-and-designer) guide, and update the Program.cs file as follows:
+To setup this application, please follow the steps in the [ASP.NET Core application](../installation/elsa-studio) guide, and update the Program.cs file as follows:
 
 ```clike
 services

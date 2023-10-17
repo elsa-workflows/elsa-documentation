@@ -2,16 +2,16 @@
 title: Dashboard
 ---
 
-In this quickstart, we will take a look at a minimum ASP.NET Core application that hosts the Elsa Dashboard component and connect it to an [Elsa Server](quickstarts-aspnetcore-server-api-endpoints.md).
+In this quickstart, we will take a look at a minimum ASP.NET Core application that hosts the Elsa Dashboard component and connect it to an [Elsa Server](elsa-server).
 
 > **ElsaDashboard + Docker**
 >
 > Although it is useful to be able to setup your own Elsa Dashboard project in order to customize certain aspects, on many occasions you may find that the basic dashboard is al you need in order to connect to an Elsa Server.
 >
-> Elsa ships with a pre-made project called [ElsaDashboard.Web](https://github.com/elsa-workflows/elsa-core/tree/master/src/dashboards/aspnetcore/ElsaDashboard) which you can configure to talk to an existing Elsa Server.
+> Elsa ships with a pre-made project called [ElsaDashboard.Web](https://github.com/elsa-workflows/elsa-core/tree/master/src/dashboards/ElsaDashboard) which you can configure to talk to an existing Elsa Server.
 > In addition, there is a Dockerfile that you can build and run as well.
 >
-> For more information, checkout the [ElsaDashboard + Docker](quickstarts/quickstarts-elsa-dashboard-docker) quickstart.
+> For more information, checkout the [Docker](elsa-docker) quickstart.
 
 We will:
 

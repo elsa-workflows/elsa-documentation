@@ -63,13 +63,12 @@ Next, let's install and configure Elsa.
 Install the following packages:
 
 ```shell
-dotnet add package Elsa
-dotnet add package Elsa.EntityFrameworkCore.Sqlite
-dotnet add package Elsa.Http
-dotnet add package Elsa.Identity
-dotnet add package Elsa.Liquid
-dotnet add package Elsa.Workflows.Api
-dotnet add package Elsa.Workflows.Designer
+dotnet add package Elsa --prerelease
+dotnet add package Elsa.EntityFrameworkCore.Sqlite --prerelease
+dotnet add package Elsa.Http --prerelease
+dotnet add package Elsa.Identity --prerelease
+dotnet add package Elsa.Liquid --prerelease
+dotnet add package Elsa.Workflows.Api --prerelease
 ```
 
 ### Program
@@ -77,10 +76,9 @@ dotnet add package Elsa.Workflows.Designer
 Update `Program.cs` with the following code:
 
 ```clike
-using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
+using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
-using WorkflowApp.Web.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,16 +91,16 @@ builder.Services.AddElsa(elsa =>
 {
     elsa.UseIdentity(identity =>
     {
-        identity.IdentityOptions.CreateDefaultAdmin = true;
-        identity.TokenOptions.SigningKey = "my-secret-signing-key";
+        identity.UseAdminUserProvider();
+        identity.TokenOptions = tokenOptions => tokenOptions.SigningKey = "my-secret-signing-key";
     });
     elsa.UseDefaultAuthentication();
-    elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore(m => m.UseSqlite()));
+    elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore());
+    elsa.UseWorkflowRuntime(runtime => runtime.UseEntityFrameworkCore());
     elsa.UseJavaScript();
     elsa.UseLiquid();
     elsa.UseWorkflowsApi();
-    elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/wf");
-    elsa.AddWorkflow<WeatherForecastWorkflow>();
+    elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/workflows");
 });
 
 var app = builder.Build();
@@ -133,55 +131,7 @@ To remove the prefix entirely, provide an empty string instead:
 As mentioned before, this will cause any inbound HTTP request to be matched against a workflow, which can potentially decrease overall performance of the app, so use with care.  
 {% /callout %}
 
-### Designer
-
-A complete description of configuring the designer in an ASP.NET project can be found [here](../installation/aspnet-apps-workflow-server-and-designer), but we'll repeat the steps here inline for completeness' sake.
-
-We already installed the necessary packages and added the necessary services, but we also need to create a couple of Razor files:
-
-**Pages/_ViewImports.cshtml**
-
-```clike
-@namespace WorkflowApp.Web.Pages
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-```
-
-**Pages/Index.cshtml**
-
-```clike
-@page
-@using Elsa.Workflows.Designer
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    var serverUrl = Url.Content("elsa/api");
-}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Elsa Workflows 3.0</title>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link rel="stylesheet" href="_content/Elsa.Workflows.Designer/elsa-workflows-designer/elsa-workflows-designer.css">
-    <script src="_content/Elsa.Workflows.Designer/monaco-editor/min/vs/loader.js"></script>
-    <script type="module" src="_content/Elsa.Workflows.Designer/elsa-workflows-designer/elsa-workflows-designer.esm.js"></script>
-</head>
-<body>
-
-<component type="typeof(ElsaStudio)" render-mode="ServerPrerendered" param-ServerUrl="@serverUrl"/>
-
-</body>
-</html>
-```
-
-Restart the application and navigate to `http://localhost:5085/`, which should present you with a login screen:
-
-![Login screen](/guides/http-workflows/login.png)
-
-With that out of the way, let's continue and create the workflow, first in code.
-
-## Workflow from code
+## Workflow from Code
 
 The workflow we'll be creating will be able to do the following:
 
@@ -198,8 +148,9 @@ using System.Net;
 using System.Net.Mime;
 using System.Text;
 using Elsa.Http;
+using Elsa.Workflows.Core;
 using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Services;
+using Elsa.Workflows.Core.Contracts;
 
 namespace WorkflowApp.Web.Workflows;
 
@@ -308,24 +259,45 @@ To register the workflow with the workflow runtime, go back to `Program.cs` and 
 elsa.AddWorkflow<WeatherForecastWorkflow>();
 ```
 
-Restart the application, and this time navigate to `http://localhost:5085/wf/weatherforecast`.
+Restart the application, and this time navigate to `http://localhost:5085/workflows/weatherforecast`.
 
 The result should look similar to this:
 
 ![Weather forecast response](/guides/http-workflows/weatherforecast-response-html.png)
 
-## Workflow from designer
+## Workflow from Designer
 
-Now that we have seen how to create the workflow from code, let's take a look at creating the same workflow using the designer.
+An alternative to creating workflows in code is to use Elsa Studio, which is a web application that allows you to create and manage workflows.
+To setup an ASP.NET application that hosts Elsa Studio, follow the instructions [here](../installation/elsa-studio-blazorwasm.md).
 
-The following takes you through the creation of the workflow step-by-step [using Scribe](https://scribehow.com/shared/Workflow__pTWktzWTQXWQ5FEfPWLvtw).
+{% callout title="Connecting Elsa Studio to Elsa Server" %}
+Make sure to have your Elsa Studio application configured to point to the Elsa Server URL we created in this guide. For example: http://localhost:5085/elsa/api.
+{% /callout %}
 
-The liquid template that is used can be downloaded from [here](/guides/http-workflows/weatherforecast-template.liquid)
+### Liquid
 
-{% scribe-how id="Workflow__pTWktzWTQXWQ5FEfPWLvtw" %} 
-{% /scribe-how %}
+When designing workflows in Elsa Studio, you can use the Liquid expression language to dynamically generate values. This is especially useful when writing HTML responses.
+Because we want to use the `WeatherForecast` model in our HTML response, we need to register it with the Liquid engine.
 
-You can also watch the video to re-create the workflow using the designer:
+Elsa will do this for us when we register `WeatherForecast` as a workflow variable type.
 
-{% youtube id="0w-gDOnG7Uo" %}
-{% /youtube %}
+To do so, update the workflow management setup in **Program.cs** by adding the following line:
+
+```clike
+management.AddVariableType<WeatherForecast>(category: "Weather");
+```
+
+When Elsa Studio is setup, start the app, create a new workflow and import the following JSON file:
+
+[weatherforecast-workflow.json](/guides/http-workflows/weatherforecast-workflow.json)
+
+Publish the workflow and navigate to `http://localhost:5085/workflows/weatherforecast-from-designer`.
+
+You should be seeing the same result as before.
+
+You can find the final source code for this guide [here](https://github.com/elsa-workflows/elsa-guides/tree/v3/src/guides/http-workflows/WorkflowApp.Web).
+
+## Conclusion
+
+In this guide, we learned how to create workflows that can handle inbound HTTP requests, send HTTP requests and write output to the HTTP response object.
+

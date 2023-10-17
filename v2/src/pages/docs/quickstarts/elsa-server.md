@@ -5,9 +5,11 @@ title: Elsa Server
 In this quickstart, we will take a look at a minimum ASP.NET Core application that sets up an Elsa Server.
 We will also install some more commonly used activities such as `Timer`, `Cron` and `SendEmail` to implement simple recurring workflows.
 
-> The purpose of this application is to be a workflow server. This means that it will host and execute workflows, but it will not host the dashboard UI.
-> Setting up the dashboard UI is explained [here](quickstarts-aspnetcore-server-dashboard.md).
-> It's of course also possible to combine the workflow host with a web app that hosts the dashboard UI, which is explained [here](quickstarts-aspnetcore-server-dashboard-and-api-endpoints.md).
+{% callout title="Server Only" %}
+The purpose of this application is to be a workflow server. This means that it will host and execute workflows, but it will not host the dashboard UI.
+Setting up the dashboard UI is explained [here](elsa-dashboard).
+It's of course also possible to combine the workflow host with a web app that hosts the dashboard UI, which is explained [here](elsa-dashboard-and-server).
+{% /callout %}
 
 We will:
 

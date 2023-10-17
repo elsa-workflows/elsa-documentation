@@ -2,7 +2,7 @@
 title: Installing Elsa Dashboard
 ---
 
-The UI portion of Elsa Workflows is provided as a set of HTML web components in the form of the [@elsa-workflows/elsa-workflow-designer](https://www.npmjs.com/package/@elsa-workflows/elsa-workflow-designer) NPM package.
+The UI portion of Elsa Workflows is provided as a set of HTML web components in the form of the [@elsa-workflows/elsa-workflows-studio](https://www.npmjs.com/package/@elsa-workflows/elsa-workflows-studio) NPM package.
 
 The web components can be used as normal HTML tags in your own HTML documents, which means that you can re-host the designer and even the dashboard UI in your own web application.
 

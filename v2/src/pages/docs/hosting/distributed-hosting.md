@@ -25,7 +25,7 @@ One of the most important reasons of running multiple Elsa nodes besides redunda
 The following code snippet demonstrates configuring Elsa to use RabbitMQ as the broker for Rebus:
 
 ```c#
-services.AddElsa(elsa => elsa.UseRabbitMq("amqp://localhost:5672");
+services.AddElsa(elsa => elsa.UseRabbitMq("amqp://localhost:5672"));
 ```
 
 > Make sure to add the `Elsa.Rebus.RabbitMq` package and import the `Elsa.Rebus.RabbitMq` namespace.
@@ -33,7 +33,7 @@ services.AddElsa(elsa => elsa.UseRabbitMq("amqp://localhost:5672");
 Elsa currently ships with support for RabbitMq and Azure Service Bus packages for Rebus, but any provider supported by Rebus is also supported by Elsa. The packages mentioned here are there for convenience, but if you wanted to use Rebus' [Rebus.GoogleCloudPubSub](https://github.com/rebus-org/Rebus.GoogleCloudPubSub) for example, you can add that package directly and configure it as follows:
 
 ```c#
-services.AddElsa(elsa => elsa.UseServiceBus(context => context.Configurer.Transport(t => t.UsePubSub(context.QueueName)));
+services.AddElsa(elsa => elsa.UseServiceBus(context => context.Configurer.Transport(t => t.UsePubSub(context.QueueName))));
 ```
 
 Note: Whatever provider you are going to use, remember to keep the ```context.QueueName```, i.e. **Do not change it with a custom name!**
@@ -130,13 +130,13 @@ Elsa comes with the following temporal services:
 To register the temporal activities using Quartz.NET as the provider, you would do so as follows:
 
 ```c#
-servives.AddElsa(elsa => elsa.AddQuartzTemporalActivities());
+services.AddElsa(elsa => elsa.AddQuartzTemporalActivities());
 ```
 
 And to use Hangfire instead, you do so as follows:
 
 ```c#
-servives.AddElsa(elsa => elsa.AddHangfireTemporalActivities());
+services.AddElsa(elsa => elsa.AddHangfireTemporalActivities());
 ```
 
 By default, both Quartz.NET and Hangfire are configured to use an in-memory storage provider, which works well for single-node Elsa Server applications.
@@ -172,7 +172,7 @@ services.AddElsa(elsa => elsa
         store.UseJsonSerializer();
         store.UseSqlServer("Server=local;Database=Elsa;");
         store.UseClustering();
-    }));
+    })));
 ```
 
 ### Hangfire

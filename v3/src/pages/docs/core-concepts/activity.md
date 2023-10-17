@@ -114,31 +114,24 @@ The following is an example of annotating an activity with metadata:
 )]
 ```
 ---
+
 ## Outcomes
-
-Custom Activity outcome Nodes can be defined as follows by Annotatting the the Metadata with the "FlowNode" attribute as follows:
+Custom activity outcomes can be defined by annotating the class with the `FlowNodeAttribute` attribute as follows
 
 ```clike
-[Activity(
-       "Demo", "Demo", "Simple activity ")]
-    [FlowNode("Pass", "Fail")]
+[Activity("Demo", "Demo", "Simple activity ")]
+[FlowNode("Pass", "Fail")]
 ```
-This produces 2 outcomes of the Activity a in this case a Pass or Fail, this can be implemented as follows 
+This produces two outcomes of the activity. In this case, a "Pass" or "Fail". To produce an outcome, use the `CompleteActivityWithOutcomesAsync` method, as follows
 
 ```clike
-[Activity(
-       "Demo", "Demo", "Simple activity ")]
-    [FlowNode("Pass", "Fail")]
-    public class SimpleActivity:CodeActivity
-    {
-      
-        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
-        {
-            var outcome = 2 > 1 ? "Pass" : "Fail";
 
-            await context.CompleteActivityAsync(new Outcomes(outcome));
-        }
-    }
+ protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+{
+    var outcome = 2 > 1 ? "Pass" : "Fail";
+
+    await context.CompleteActivityWithOutcomesAsync(outcome);
+}
 ```
 
 ---
@@ -197,6 +190,40 @@ var workflow = new Workflow
 Notice that we assigned the `If` activity to the `Root` property of the workflow. This works because the `If` activity implements the `IActivity` interface.
 If you need to run multiple activities, simply install a container activity such as `Sequence` or `Flowchart` as the root activity.
 {% /callout %}
+
+---
+
+## Dependency Injection  
+
+Elsa 3.0 currently does not support direct Dependency injection.
+
+Therefore, calling a Dependency in the Traditional manner,as follows will not be possible. 
+
+```
+public IApiService _apiService { get; set; }
+
+    public simpleActivity(IApiService apiService)
+    {
+        _apiService = apiService;
+    }
+
+```
+
+Should a dependency be needed it can be retrived from the Elsa Activity Execution Context, using `context.GetRequiredService` as Follows:
+
+```
+ public IApiService _apiService { get; set; }
+
+        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+        {
+            
+           _apiService =  context.GetRequiredService<IApiService>();
+
+            await context.CompleteActivityAsync(new Outcomes(outcome));
+        }
+
+```
+Be sure to add the Dependency into the application context in the `Program.cs` file.
 
 ---
 

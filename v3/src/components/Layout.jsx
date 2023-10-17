@@ -14,14 +14,20 @@ import {HeroAndroid} from "@/components/HeroAndroid";
 
 const navigation = [
     {
+        title: 'Getting Started',
+        links: [
+            { title: 'Initial setup and prerequisites', href: '/docs/getting-started/initial-setup-and-prerequisites' }
+        ]
+    },
+    {
         title: 'Installation',
         links: [
             { title: 'Packages', href: '/docs/installation/packages' },
-            { title: 'Console apps', href: '/docs/installation/console-apps' },
-            { title: 'ASP.NET apps', href: '/docs/installation/aspnet-apps' },
-            { title: 'ASP.NET workflow server', href: '/docs/installation/aspnet-apps-workflow-server' },
-            { title: 'ASP.NET workflow designer', href: '/docs/installation/aspnet-apps-workflow-designer' },
-            { title: 'ASP.NET server + designer', href: '/docs/installation/aspnet-apps-workflow-server-and-designer' },
+            { title: 'Elsa Console', href: '/docs/installation/elsa-console' },
+            { title: 'Elsa Server', href: '/docs/installation/elsa-server' },
+            { title: 'Elsa Studio (Blazor Wasm)', href: '/docs/installation/elsa-studio-blazorwasm' },
+            { title: 'Elsa Studio (Blazor Server)', href: '/docs/installation/elsa-studio-blazorserver' },
+            { title: 'Elsa Studio (Stencil)', href: '/docs/installation/elsa-studio-stencil' },
             { title: 'Docker', href: '/docs/installation/docker' }
         ],
     },
@@ -35,14 +41,25 @@ const navigation = [
         ],
     },
     {
+      title: 'Workflow Samples',
+        links: [
+            { title: 'HTTP - Hello World', href: '/docs/samples/http/hello-world' },
+            { title: 'HTTP - Backend API', href: '/docs/samples/http/backend-api' },
+            { title: 'HTTP - Post Users API', href: '/docs/samples/http/post-users-api' },
+        ]
+    },
+    {
         title: 'Core concepts',
         links: [
             { title: 'Programmatic vs designer', href: '/docs/core-concepts/programmatic-vs-designer' },
             { title: 'Workflow', href: '/docs/core-concepts/workflow' },
             { title: 'Activity', href: '/docs/core-concepts/activity' },
+            { title: 'Variables', href: '/docs/core-concepts/variables' },
             { title: 'Input / output', href: '/docs/core-concepts/input-output' },
             { title: 'Trigger', href: '/docs/core-concepts/trigger' },
             { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
+            { title: 'Incident', href: '/docs/core-concepts/incident' },
+            { title: 'Alteration', href: '/docs/core-concepts/alteration' },
         ],
     },
     {
@@ -70,6 +87,25 @@ const navigation = [
         links: [
             { title: 'JavaScript', href: '/docs/expressions/javascript' },
             { title: 'Liquid', href: '/docs/expressions/liquid' }
+        ]
+    },
+    {
+        title: 'Incidents',
+        links: [
+            { title: 'Introduction', href: '/docs/incidents/introduction' },
+            { title: 'Strategies', href: '/docs/incidents/strategies' },
+            { title: 'Configuration', href: '/docs/incidents/configuration' }
+        ]
+    },
+    {
+        title: 'Alterations',
+        links: [
+            { title: 'Introduction', href: '/docs/alterations/introduction' },
+            { title: 'Alteration Plans', href: '/docs/alterations/alteration-plans' },
+            { title: 'Alteration Plans API', href: '/docs/alterations/alteration-plans-api' },
+            { title: 'Run Alterations', href: '/docs/alterations/run-alterations' },
+            { title: 'Run Alterations API', href: '/docs/alterations/run-alterations-api' },
+            { title: 'Extensibility', href: '/docs/alterations/extensibility' },
         ]
     }
 ]
