@@ -1,0 +1,180 @@
+{
+  "id": "72560c4ab0e54d17ba10147ce7f029f9",
+  "definitionId": "3f62b4c8de654ce6adc846cacda9a556",
+  "name": "HTTP Hello World",
+  "createdAt": "2023-09-20T21:20:37.793376+00:00",
+  "version": 3,
+  "toolVersion": "3.0.0.0",
+  "variables": [],
+  "inputs": [],
+  "outputs": [],
+  "outcomes": [],
+  "customProperties": {},
+  "isReadonly": false,
+  "isLatest": true,
+  "isPublished": false,
+  "options": {
+    "autoUpdateConsumingWorkflows": false
+  },
+  "root": {
+    "type": "Elsa.Flowchart",
+    "version": 1,
+    "id": "IfJWpDGgX0ShlK3lKs9djQ",
+    "metadata": {},
+    "customProperties": {
+      "source": "FlowchartJsonConverter.cs:46",
+      "notFoundConnections": [],
+      "canStartWorkflow": false,
+      "runAsynchronously": false
+    },
+    "activities": [
+      {
+        "path": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "/hello-world"
+          },
+          "memoryReference": {
+            "id": "b8TOZbijJkmTb9CCbNEGKw:input-0"
+          }
+        },
+        "supportedMethods": {
+          "typeName": "String[]",
+          "expression": {
+            "type": "Object",
+            "value": "[\u0022GET\u0022]"
+          },
+          "memoryReference": {
+            "id": "b8TOZbijJkmTb9CCbNEGKw:input-1"
+          }
+        },
+        "authorize": {
+          "typeName": "Boolean",
+          "expression": {
+            "type": "Literal",
+            "value": "False"
+          },
+          "memoryReference": {
+            "id": "b8TOZbijJkmTb9CCbNEGKw:input-2"
+          }
+        },
+        "policy": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal"
+          },
+          "memoryReference": {
+            "id": "b8TOZbijJkmTb9CCbNEGKw:input-3"
+          }
+        },
+        "requestTimeout": null,
+        "requestSizeLimit": null,
+        "fileSizeLimit": null,
+        "allowedFileExtensions": null,
+        "blockedFileExtensions": null,
+        "allowedMimeTypes": null,
+        "parsedContent": null,
+        "files": null,
+        "routeData": null,
+        "queryStringData": null,
+        "headers": null,
+        "result": null,
+        "id": "b8TOZbijJkmTb9CCbNEGKw",
+        "name": "HttpEndpoint1",
+        "type": "Elsa.HttpEndpoint",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": true,
+          "runAsynchronously": false
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": -200,
+              "y": -240
+            },
+            "size": {
+              "width": 176.390625,
+              "height": 50
+            }
+          }
+        }
+      },
+      {
+        "statusCode": {
+          "typeName": "System.Net.HttpStatusCode, System.Net.Primitives",
+          "expression": {
+            "type": "Literal",
+            "value": "OK"
+          },
+          "memoryReference": {
+            "id": "j7VqtInecUGdK55rZ12ZWw:input-0"
+          }
+        },
+        "content": {
+          "typeName": "Object",
+          "expression": {
+            "type": "Liquid",
+            "value": "{\n    \u0022message\u0022: \u0022Hello World!\u0022\n}"
+          },
+          "memoryReference": {
+            "id": "j7VqtInecUGdK55rZ12ZWw:input-1"
+          }
+        },
+        "contentType": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "application/json"
+          },
+          "memoryReference": {
+            "id": "j7VqtInecUGdK55rZ12ZWw:input-2"
+          }
+        },
+        "responseHeaders": {
+          "typeName": "Elsa.Http.Models.HttpResponseHeaders, Elsa.Http",
+          "expression": {
+            "type": "Literal",
+            "value": "{}"
+          },
+          "memoryReference": {
+            "id": "j7VqtInecUGdK55rZ12ZWw:input-3"
+          }
+        },
+        "id": "j7VqtInecUGdK55rZ12ZWw",
+        "name": "WriteHttpResponse1",
+        "type": "Elsa.WriteHttpResponse",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": false
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 140,
+              "y": -240
+            },
+            "size": {
+              "width": 183.640625,
+              "height": 50
+            }
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "source": {
+          "activity": "b8TOZbijJkmTb9CCbNEGKw",
+          "port": "Done"
+        },
+        "target": {
+          "activity": "j7VqtInecUGdK55rZ12ZWw",
+          "port": "In"
+        }
+      }
+    ]
+  }
+}

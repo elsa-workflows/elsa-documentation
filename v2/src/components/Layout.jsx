@@ -17,10 +17,10 @@ const navigation = [
         links: [
             { title: 'Hello World Console', href: '/docs/quickstarts/hello-world-console' },
             { title: 'Hello World HTTP', href: '/docs/quickstarts/hello-world-http' },
-            { title: 'Elsa server', href: '/docs/quickstarts/elsa-server' },
-            { title: 'Elsa dashboard', href: '/docs/quickstarts/elsa-dashboard' },
-            { title: 'Elsa dashboard + server', href: '/docs/quickstarts/elsa-dashboard-and-server' },
-            { title: 'Elsa + Docker', href: '/docs/quickstarts/elsa-docker' },
+            { title: 'Server', href: '/docs/quickstarts/elsa-server' },
+            { title: 'Dashboard', href: '/docs/quickstarts/elsa-dashboard' },
+            { title: 'Dashboard + Server', href: '/docs/quickstarts/elsa-dashboard-and-server' },
+            { title: 'Docker', href: '/docs/quickstarts/elsa-docker' },
         ],
     },
     {

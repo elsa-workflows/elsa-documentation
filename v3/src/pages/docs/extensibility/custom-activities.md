@@ -179,7 +179,7 @@ The greeting is: Hello, World!
 Custom activities can be used in the workflow designer.
 
 ### Create the application
-To try it out, create a new ASP.NET application by following the [Installation - ASP.NET apps](../installation/aspnet-apps-workflow-server-and-designer) guide.
+To try it out, create a new ASP.NET application by following the [Installation - Elsa Studio](../installation/elsa-studio) guide.
 
 ### Create the activity
 

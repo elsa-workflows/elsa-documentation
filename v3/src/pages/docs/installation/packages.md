@@ -1,10 +1,13 @@
 ---
-title: Packages
-description: NuGet packages
+title: Elsa NuGet Packages
+description: Understand the Elsa package ecosystem and how to integrate them into your projects.
 ---
 
-The Elsa library consists of many packages, all starting with the name `Elsa`.
-To get started, you only need the `Elsa` package, which is a bundle of the following packages:
+Elsa Workflows is modular and distributed via several NuGet packages. This allows you to pick and choose the components you need, ensuring a lightweight integration into your projects.
+
+## **Core Elsa Package**
+
+The primary package you'll need to get started with Elsa is the `Elsa` package. It's a bundle that includes the following essential packages:
 
 - Elsa.Api.Common
 - Elsa.Mediator
@@ -12,46 +15,37 @@ To get started, you only need the `Elsa` package, which is a bundle of the follo
 - Elsa.Workflows.Management
 - Elsa.Workflows.Runtime
 
-To install the `Elsa` bundle package, you can use the `dotnet` CLI from the directory of your project:
+To install the core `Elsa` package, use the `dotnet` CLI:
 
 ```shell
 dotnet add package Elsa
 ```
 
-Additional packages are there to cater to different scenarios.
+While the core package provides a solid foundation, Elsa offers additional packages for specialized scenarios.
 
-## Feeds
+## **Elsa Package Feeds**
 
-Elsa Workflows is distributed via NuGet packages from the following feeds:
+Elsa Workflows packages are distributed through various feeds based on their stability and release phase:
 
 | Type               | Feed  | URL                                                       |
 |--------------------|-------|-----------------------------------------------------------|
 | Releases           | NuGet | https://api.nuget.org/v3/index.json                       |
 | Release candidates | NuGet | https://api.nuget.org/v3/index.json                       |
-| CI/CD              | Feedz | https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json |
+| Previews           | Feedz | https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json |
 
----
+### **Releases**
 
-## Releases
+Stable versions of Elsa are distributed via NuGet.org.
 
-Releases are distributed via NuGet.org.
+### **Release Candidates (RC)**
 
-## Release Candidates
+RC packages are also available on NuGet.org. They offer a sneak peek into upcoming features, allowing users to test and provide feedback before the final release. While RC packages are generally stable, they might still undergo changes before the final release.
 
-Releases candidates, too, are distributed via NuGet.org.
-The goal of RC packages is to give users a chance to try the upcoming bits and identity potential blocking issue before the final release.
+### **Previews**
 
-RC packages are usually more stable than preview packages.
+Preview versions represent the cutting-edge developments in Elsa. They are automatically built and deployed to a public feed on Feedz whenever changes are pushed to the `v3` branch. While they provide the latest features and fixes, they might introduce breaking changes.
 
-## Previews
-
-The latest preview versions are automatically build and deployed to a public feed hosted on Azure DevOps as soon as commits get pushed to the `v3` branch.
-
-Preview packages are useful if you want to take advantage of the most recent additions and fixes, but they are also volatile and can cause additional work due to compile-time breaking changes happening from time to time.
-
-To access packages from this feed, you can include the feed URL when adding a package using the dotnet CLI or add the feed to your NuGet.config role (recommended).
-
-Sample NuGet.Config:
+To access preview packages, include the feed URL when using the dotnet CLI or add it to your `NuGet.config`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -65,15 +59,15 @@ Sample NuGet.Config:
 ```
 
 {% callout title="Preview packages" type="warning" %}
-When looking for preview packages using your NuGet explorer, make sure to tick the "Preview" checkbox. Otherwise, you will not see the preview packages.
+Ensure the "Preview" checkbox is ticked in your NuGet explorer to view the preview packages.
 {% /callout %}
 
-## Versioning
+## **Versioning Strategy**
 
-All **released** packages consist of a major, minor and revision. For example: `3.0.1`.
-All **release candidate** packages, in addition, are suffixed with the label `-rc`, followed by the release candidate number. For example: `3.0.2-rc1`
-All **preview** packages consist of a major, minor and revision and a suffix with the label `-preview.`, followed by a build number. For example: `3.0.2-preview.128` 
+Elsa adheres to a clear versioning strategy:
 
-Unless a major overhaul takes place, like what was done between Elsa 2 and 3, the major version number will stay at `3`.
-When new features are introduced, the minor version number will be incremented.
-For fixes, non-visible changes and/or other small improvements, usually only the revision number will be incremented.
+- **Released** packages: Major.Minor.Revision (e.g., `3.0.1`)
+- **Release Candidate** packages: Major.Minor.Revision-preview.X (e.g., `3.0.2-preview.64`)
+- **Preview** packages: Major.Minor.Revision-preview.X (e.g., `3.0.2-preview.128`)
+
+The major version remains consistent unless significant changes occur. New features increment the minor version, while fixes or minor improvements bump the revision number.
