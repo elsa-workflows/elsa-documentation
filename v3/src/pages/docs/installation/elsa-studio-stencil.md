@@ -5,7 +5,7 @@ description: Installing the workflow designer in an ASP.NET application.
 
 {% callout title="Deprecation Notice" type="warning" %}
 This chapter is about the legacy version of the workflow designer. It is still available for use, but it is no longer being actively developed. 
-Instead, we recommend using the [Blazor version](./elsa-studio) of the workflow designer.
+Instead, we recommend using the [Blazor version](./elsa-studio-blazorwasm.md) of the workflow designer.
 {% /callout %}
 
 ## Introduction
