@@ -99,9 +99,6 @@ var workflow = new Workflow
 ```
 
 ---
-
-
-
 ## Metadata
 
 Activities can be annotated with metadata using the `ActivityAttribute` attribute.
@@ -116,25 +113,6 @@ The following is an example of annotating an activity with metadata:
     Description = "A simple activity that writes \"Hello World!\" to the console."
 )]
 ```
-Activity inputs can be annotated using the InputAttribute attribute.
-Similar to above, this allows the designer to display "friendly names" and descriptions of an input.
-
-
- ```clike
-[InputAttribute(
-            AutoEvaluate = false, 
-            DisplayName = "Name of recipient",
-            Description = "This is a description of the Name Input")]
-
-        public Input<string> Name { get; set; }
-
- [InputAttribute(
-            AutoEvaluate = false,
-            DisplayName = "Message to Send",
-            Description = "Write your message to send")]
-
-        public Input<string> Message { get; set; }
-```
 ---
 
 ## Outcomes
@@ -144,17 +122,18 @@ Custom activity outcomes can be defined by annotating the class with the `FlowNo
 [Activity("Demo", "Demo", "Simple activity ")]
 [FlowNode("Pass", "Fail")]
 ```
-This produces two outcomes of the activity. In this case, a "Pass" or "Fail". To produce an outcome, use the `CompleteActivityAsync` method, as follows
+This produces two outcomes of the activity. In this case, a "Pass" or "Fail". To produce an outcome, use the `CompleteActivityWithOutcomesAsync` method, as follows
 
 ```clike
 
  protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
-        {
-            var outcome = 2 > 1 ? "Pass" : "Fail";
+{
+    var outcome = 2 > 1 ? "Pass" : "Fail";
 
-            await context.CompleteActivityAsync(new Outcomes(outcome));
-        }
+    await context.CompleteActivityWithOutcomesAsync(outcome);
+}
 ```
+
 ---
 
 ## Composite activities
