@@ -129,9 +129,9 @@ Update the `appsettings.json` file with the following content:
 
 ### 6. Updating _Host.cshtml
 
-To conclude the setup, open the `wwwroot/index.html` file and replace its content with the code showcased below:
+To conclude the setup, open the `Pages/_Host.cshtml` file and replace its content with the code showcased below:
 
-**index.html**
+**_Host.cshtml**
 
 ```html
 @page "/"
