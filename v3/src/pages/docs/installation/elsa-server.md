@@ -284,4 +284,4 @@ With that in place, we can now connect [Elsa Studio](./elsa-studio-blazorwasm) t
 In this chapter, we learned how to setup an Elsa Server.
 We saw how to run workflows programmatically, how to expose workflows as HTTP endpoints, and how to expose the REST API so that we can manage workflows using the designer.
 
-The final result of this chapter can be found [here](
+The final result of this chapter can be found [here](https://github.com/elsa-workflows/elsa-guides/tree/v3/src/installation/elsa-server/ElsaServer).
