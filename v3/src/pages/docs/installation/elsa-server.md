@@ -1,21 +1,25 @@
 ---
-title: ASP.NET apps
+title: Elsa Server
 description: Installing Elsa in ASP.NET apps.
 ---
+
+In this chapter, we'll learn how to setup an Elsa Server.
+An Elsa Server is essentially an ASP.NET Core application that hosts the workflow runtime and optionally provides a REST API for managing workflows.
+Workflows can be stored to and retrieved from persistence stores such as databases, file systems, and cloud storage, but they can also be hardcoded into the application, as we will see in this chapter. 
 
 ## Setup
 
 Create a new empty ASP.NET app using the following command:
 
 ```shell
-dotnet new web -n "MyBackend.Api" -f net7.0
+dotnet new web -n "ElsaServer" -f net7.0
 ```
 
 CD into the project's root directory and add the Elsa package:
 
 ```shell
-cd MyBackend.Api
-dotnet add package Elsa
+cd ElsaServer
+dotnet add package Elsa --prerelease
 ```
 
 Next, open `Program.cs` file and replace its contents with the following code:
@@ -24,8 +28,6 @@ Next, open `Program.cs` file and replace its contents with the following code:
 
 ```clike
 using Elsa.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,12 +55,11 @@ Add a new controller called `RunWorkflowController` with the following code:
 **RunWorkflowController.cs**
 
 ```clike
-using System.Threading.Tasks;
-using Elsa.Workflows.Core.Models;
-using Elsa.Workflows.Core.Services;
+using Elsa.Workflows.Core.Activities;
+using Elsa.Workflows.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyBackend.Api.Controllers;
+namespace ElsaServer.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
@@ -79,7 +80,7 @@ public class RunWorkflowController : ControllerBase
 }
 ```
 
-Then start the program and navigate to https://localhost:7242/run-workflow using your web browser.
+Then start the program and navigate to https://localhost:5001/run-workflow using your web browser.
 When you look at the application console output, you should see the following message:
 
 ```shell
@@ -100,14 +101,12 @@ Let's take a look at each step.
 First, run the following command:
 
 ```shell
-dotnet add package Elsa.Http
+dotnet add package Elsa.Http --prerelease
 ```
 
-Update `Program.cs` by replacing the Elsa setup code with the following (and adding a new `using` statement at the top):
+Update `Program.cs` by replacing the Elsa setup code with the following:
 
 ```clike
-using Elsa.Http.Extensions;
-
 builder.Services.AddElsa(elsa => elsa.UseHttp());
 ```
 
@@ -116,13 +115,11 @@ Finally, replace the controller implementation with the following code:
 **RunWorkflowController.cs**
 
 ```clike
-using System.Threading.Tasks;
 using Elsa.Http;
-using Elsa.Workflows.Core.Models;
-using Elsa.Workflows.Core.Services;
+using Elsa.Workflows.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyBackend.Api.Controllers;
+namespace ElsaServer.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
@@ -148,7 +145,7 @@ public class RunWorkflowController : ControllerBase
 
 Notice that we replaced the `WriteLine` activity with the `WriteHttpResponse` activity which comes from the `Elsa.Http` package.
 
-Restart your application and navigate to https://localhost:7242/run-workflow
+Restart your application and navigate to https://localhost:5001/run-workflow
 This time around, you should see the following response:
 
 ![Response](/installation/response.png)
@@ -171,10 +168,11 @@ First, create a new workflow class using the **workflow builder API** that start
 
 ```clike
 using Elsa.Http;
+using Elsa.Workflows.Core;
 using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Services;
+using Elsa.Workflows.Core.Contracts;
 
-namespace MyBackend.Api.Workflows;
+namespace ElsaServer.Workflows;
 
 public class HelloWorldHttpWorkflow : WorkflowBase
 {
@@ -213,11 +211,9 @@ In order for the workflow runtime to be able to trigger workflows automatically,
 This is easy to forget, so whenever you are wondering why a workflow isn't running even though you are sure you triggered it, the first thing to check is to see if this property is set correctly.
 {% /callout %}
 
-Finally, we need to register the workflow with the runtime. To do this, update `Program.cs` by replacing the call to `builder.Services.AddElsa` with the following (and adding another `using` statement at the top):
+Finally, we need to register the workflow with the runtime. To do this, update `Program.cs` by replacing the call to `builder.Services.AddElsa` with the following:
 
 ```clike
-using Elsa.Workflows.Runtime.Extensions;
-
 builder.Services.AddElsa(elsa =>
 {
     elsa.UseWorkflowRuntime(runtime => runtime.AddWorkflow<HelloWorldHttpWorkflow>());
@@ -227,8 +223,65 @@ builder.Services.AddElsa(elsa =>
 
 That will effectively register our workflow definition with the workflow runtime.
 
-To try it out, restart the application and navigate to `https://localhost:7242/workflows/hello-world`.
+To try it out, restart the application and navigate to `https://localhost:5001/workflows/hello-world`.
 
 The response should look like this:
 
 ![Response](/installation/response-2.png)
+
+## Exposing the REST API
+
+In the previous section, we saw how to create a workflow that exposes itself as an HTTP endpoint.
+In this section, we'll look at how to expose the REST API so that we can manage workflows using the designer, which consumes this API.
+
+To enable the REST API, we need to perform the following steps:
+
+1. Add the `Elsa.Workflows.Api` package.
+2. Add the `Elsa.Identity` package.
+3. Update `Program.cs` to install the API and identity feature.
+4. Add a middleware that serves the Elsa API.
+
+Let's take a look at each step.
+
+First, run the following commands:
+
+```shell
+dotnet add package Elsa.Workflows.Api --prerelease
+dotnet add package Elsa.Identity --prerelease
+```
+
+Next, update `Program.cs` by replacing the Elsa setup code with the following:
+
+```clike
+builder.Services.AddElsa(elsa =>
+{
+    elsa.UseWorkflowRuntime(runtime => runtime.AddWorkflow<HelloWorldHttpWorkflow>());
+    elsa.UseHttp();
+    elsa.UseIdentity(identity =>
+    {
+        identity.TokenOptions = options => options.SigningKey = "secret signing key for tokens";
+        identity.UseAdminUserProvider();
+    });
+    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
+    elsa.UseWorkflowsApi();
+});
+```
+
+Notice that we added the `UseIdentity` and `UseDefaultAuthentication` methods to the Elsa setup.
+This will enable the Elsa identity feature and configure it to use the admin user provider and the admin API key authentication provider.
+
+Next, we need to add a middleware that serves the Elsa API.
+To do this, add the following line right after `app.MapControlers();`:
+
+```clike
+app.UseWorkflowsApi();
+```
+
+With that in place, we can now connect [Elsa Studio](./elsa-studio-blazorwasm) to the Elsa Server and start creating and executing workflows.
+
+## Summary
+
+In this chapter, we learned how to setup an Elsa Server.
+We saw how to run workflows programmatically, how to expose workflows as HTTP endpoints, and how to expose the REST API so that we can manage workflows using the designer.
+
+The final result of this chapter can be found [here](

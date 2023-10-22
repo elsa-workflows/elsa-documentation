@@ -51,7 +51,7 @@ For developers and businesses aiming to leverage the full power of Elsa, setting
    dotnet add package Elsa.Workflows.Api
    ```
 
-[Continue Setting up an Elsa Server Application](/docs/installation/aspnet-apps-workflow-server#update-program-cs)
+[Continue Setting up an Elsa Server Application](/docs/installation/elsa-server#update-program-cs)
 
 ## **3. Elsa Studio Application**
 
