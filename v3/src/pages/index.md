@@ -5,7 +5,7 @@ description: Discover the potential of your .NET applications with Elsa Workflow
 ---
 
 Elsa Workflows is a powerful and flexible **execution** engine, encapsulated as a set of open-source .NET libraries designed to infuse .NET applications with workflow capabilities.
-With Elsa, developers can weave **logic** directly into their **systems**, enhancing functionality and **automation** for a seamless user experience.
+With Elsa, developers can weave **logic** directly into their **systems**, enhancing functionality and **automation** and align seamlessly with the application’s core functionality.
 
 Workflows in Elsa can be defined in two ways:
 
