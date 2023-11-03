@@ -3,7 +3,7 @@ title: JavaScript expressions
 description: A glossary of JavaScript expressions.
 ---
 
-When working with Elsa, you'll often need to write JavaScript expressions. This page provides a glossary of JavaScript expressions that you can use.
+When working with Elsa, you'll often need to write dynamic expressions. This page provides a glossary of JavaScript expressions that you can use.
 
 Elsa uses the [Jint library](https://github.com/sebastienros/jint) to implement JavaScript. More functions can be found there, as well as details on providing your own functions.
 
@@ -21,11 +21,11 @@ These are built-in JS functions that are common to most JavaScript implementatio
 
 The following functions are specific to handling activity output.
 
-| Function                                 | Description                                     | Example                               |
-|------------------------------------------|-------------------------------------------------|---------------------------------------|
-| `getOutputFrom(string, string?): any`    | Gets the output of the activity by activity ID. | `getOutputFrom('HttpEndpoint1')`      |
-| `get{OutputName}From{ActivityId}(): any` | Gets the output of the activity by activity ID. | `getParsedContentFromHttpEndpoint1()` |
-| `getLastResult(): any`                   | Gets the last result.                           | `getLastResult()`                     |
+| Function                                 | Description                                       | Example                               |
+|------------------------------------------|---------------------------------------------------|---------------------------------------|
+| `getOutputFrom(string, string?): any`    | Gets the output of the activity by activity name. | `getOutputFrom('HttpEndpoint1')`      |
+| `get{OutputName}From{ActivityId}(): any` | Gets the output of the activity by activity name. | `getParsedContentFromHttpEndpoint1()` |
+| `getLastResult(): any`                   | Gets the last result.                             | `getLastResult()`                     |
 
 ## Workflow variables and input
 
@@ -33,25 +33,25 @@ The following functions are specific to handling workflow variables and input.
 
 | Function                   | Description                        | Example                                |
 |----------------------------|------------------------------------|----------------------------------------|
-| `getVariable(string): any` | Gets a variable from the workflow. | `getVariable('myVariable')`            |
-| `setVariable(string, any)` | Sets a variable in the workflow.   | `setVariable('myVariable', 'myValue')` |
+| `getVariable(string): any` | Gets a variable from the workflow. | `getVariable('MyVariable')`            |
+| `setVariable(string, any)` | Sets a variable in the workflow.   | `setVariable('MyVariable', 'myValue')` |
 | `get{VariableName}(): any` | Gets a variable from the workflow. | `getMyVariable()`                      |
-| `set{VariableName}(any)`   | Sets a variable in the workflow.   | `setMyVariable('myValue')`             |
+| `set{VariableName}(any)`   | Sets a variable in the workflow.   | `setMyVariable('MyValue')`             |
 | `getInput(string): any`    | Gets the input of the workflow.    | `getInput('name')`                     |
 
 ### Workflow variables
 
 There are two ways to get variables from the workflow:
 
-- `getVariable('myVariable')`
+- `getVariable('MyVariable')`
 - `getMyVariable()`
 
-The first method is useful when you want to get a variable whose name is not known at compile time.
-The second method is useful when you know the name of the variable at compile time, which has the added benefit of providing intellisense.
+The first method is useful when you want to get a variable whose name is not known at build-time.
+The second method is useful when you know the name of the variable at build-time, which has the added benefit of providing intellisense.
 
 Similarly, there are two ways to set variables in the workflow:
 
-- `setVariable('myVariable', 'myValue')`
+- `setVariable('MyVariable', 'myValue')`
 - `setMyVariable('myValue')`
 
 ### Workflow input

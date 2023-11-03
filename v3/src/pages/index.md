@@ -59,6 +59,8 @@ Elsa Workflows is not just another workflow engine; it's a robust and flexible s
   
 - **Extensibility**: Need something unique? Elsa is designed to be extensible, allowing you to add custom activities or integrate with other systems seamlessly.
 
+- **Dynamic Expressions**: Evaluate values dynamically during runtime using C#, JavaScript or Liquid expressions.
+
 #### **Potential Use Cases**
 - **Business Process Automation**: Streamline business processes like order processing, HR onboarding, or content approval.
   
@@ -231,6 +233,10 @@ Elsa 3 represents a monumental leap from its predecessor, Elsa 2. This version i
 
 - **Middleware Pipeline**: A middleware pipeline architecture has been implemented for both workflow and activity execution.
 
+### **C# Expressions**
+
+- **C# Expressions**: Elsa 3 introduces support for C# expressions, allowing you to evaluate values dynamically during runtime.
+
 ### **Persistence & Security**
 
 - **Flexible Persistence**: The simplified persistence abstraction in Elsa 3 allows you to choose from a range of persistence technologies. Whether it's SQL Server, MongoDB, or Elasticsearch, Elsa 3 has got you covered.
@@ -274,6 +280,11 @@ Elsa Workflows is a robust platform designed to simplify the creation and manage
 ### **Dynamic Expressions**
 
 - **Expressions**: Dynamically evaluate values during runtime. Elsa natively supports JavaScript and Liquid expressions, but it's designed to accommodate custom expression evaluators.
+
+    - **C# Example**:
+      ```clike
+      $"The current date and time is: {DateTime.Now}"
+      ```
 
     - **JavaScript Example**:
       ```javascript
