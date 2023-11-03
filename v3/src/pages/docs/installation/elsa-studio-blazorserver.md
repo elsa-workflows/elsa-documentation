@@ -18,7 +18,7 @@ To setup Elsa Studio, we'll go through the following steps:
 3. Modify the Program.cs. file.
 4. Remove any superfluous files.
 5. Update the `appsettings.json` file.
-6. Update the `Pages/_Hosts.cshtml` file.
+6. Update the `Pages/_Host.cshtml` file.
 
 Let's delve into each step in detail:
 
@@ -129,7 +129,7 @@ Update the `appsettings.json` file with the following content:
 
 ### 6. Updating _Host.cshtml
 
-To conclude the setup, open the `wwwroot/index.html` file and replace its content with the code showcased below:
+To conclude the setup, open the `Pages/_Host.cshtml` file and replace its content with the code showcased below:
 
 **index.html**
 
