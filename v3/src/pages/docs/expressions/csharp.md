@@ -24,12 +24,12 @@ The following functions are specific to handling activity output.
 
 The following functions are specific to handling workflow variables and input.
 
-| Function                           | Description                                | Example                                   |
-|------------------------------------|--------------------------------------------|-------------------------------------------|
-| `Variable.Get(string): object?`    | Gets a variable from the workflow.         | `Variable.Get("MyVariable")`              |
-| `Variable.Set(string, object?)`    | Sets a variable in the workflow.           | `Variable.Set("MyVariable", "myValue")`   |
-| `Variable.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `Variable.MyVariable`                     |
-| `Input.Get(string): object?`       | Gets the input of the workflow.            | `GetInput('name')`                        |
+| Function                           | Description                                | Example                                 |
+|------------------------------------|--------------------------------------------|-----------------------------------------|
+| `Variable.Get(string): object?`    | Gets a variable from the workflow.         | `Variable.Get("MyVariable")`            |
+| `Variable.Set(string, object?)`    | Sets a variable in the workflow.           | `Variable.Set("MyVariable", "myValue")` |
+| `Variable.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `Variable.MyVariable`                   |
+| `Input.Get(string): object?`       | Gets the input of the workflow.            | `Input.Get('name')`                     |
 
 ### Workflow variables
 
@@ -43,7 +43,7 @@ The second method is useful when you know the name of the variable at build-time
 
 Similarly, there are two ways to set variables in the workflow:
 
-- `Variable.Set('MyVariable', "myValue";`
+- `Variable.Set('MyVariable', "myValue");`
 - `Variable.MyVariable = "myValue";`
 
 ### Workflow input

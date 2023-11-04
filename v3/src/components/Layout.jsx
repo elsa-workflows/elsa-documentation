@@ -87,6 +87,7 @@ const navigation = [
         links: [
             { title: 'C#', href: '/docs/expressions/csharp' },
             { title: 'JavaScript', href: '/docs/expressions/javascript' },
+            { title: 'Python', href: '/docs/expressions/python' },
             { title: 'Liquid', href: '/docs/expressions/liquid' }
         ]
     },
