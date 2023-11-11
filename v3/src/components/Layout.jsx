@@ -56,6 +56,7 @@ const navigation = [
             { title: 'Activity', href: '/docs/core-concepts/activity' },
             { title: 'Variables', href: '/docs/core-concepts/variables' },
             { title: 'Input / output', href: '/docs/core-concepts/input-output' },
+            { title: 'Outcome', href: '/docs/core-concepts/outcome' },
             { title: 'Trigger', href: '/docs/core-concepts/trigger' },
             { title: 'Bookmark', href: '/docs/core-concepts/bookmark' },
             { title: 'Incident', href: '/docs/core-concepts/incident' },
