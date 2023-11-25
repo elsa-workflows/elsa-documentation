@@ -279,6 +279,20 @@ app.UseWorkflowsApi();
 
 With that in place, we can now connect [Elsa Studio](./elsa-studio-blazorwasm) to the Elsa Server and start creating and executing workflows.
 
+Note: When using Elsa Studio (Blazor Wasm) and hosting it on a separate port/domain/etc. (e.g. during development),
+it is important to adjust CORS configuration.
+
+```clike
+app.UseCors(c =>
+    c.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithExposedHeaders("x-elsa-workflow-instance-id") // this is especially important! Otherwise errors WILL occur
+);
+```
+
+This is ideally placed right after `app.UseHttpsRedirection();`
+
 ## Summary
 
 In this chapter, we learned how to setup an Elsa Server.
