@@ -58,6 +58,8 @@ Models a looping construct that is similar to C#'s `for` statement where the loo
 | Iterate 	| Scheduled for each iteration of the loop. When an iteration ends, the activity will automatically determine if another iteration should be scheduled. 	|
 | Done    	| Scheduled when the loop has finished.                                                                                                                    	|
 
+The scoped variable `CurrentValue` is set by the activity in each iteration to stor the iteration index and can be referred by activities in the scope of the Iterate outcome.
+
 ## For Each
 
 Models a looping construct that is similar to C#'s `foreach` statement where the loop iterates over a collection of objects.
@@ -74,3 +76,7 @@ When providing an expression using `Json` or `JavaScript`, make sure that the ex
 |---------	|-------------------------------------------------------------------------------------------------------------------------------------------------------    |
 | Iterate 	| Scheduled for each iteration of the loop. When an iteration ends, the activity will automatically determine if another iteration should be scheduled. 	|
 | Done    	| Scheduled when the loop has finished.                                                                                                                     |
+
+The scoped variables `CurrentValue` and `CurrentIndex` are set by the activity in each iteration to store the value and iteration index (0 based) respectively. The variables can be referred by activities in the scope of the Iterate outcome.
+
+The current value is also set as an output of the Iterate Outcome and can be accessed by the following activity by referring to the `input` variable.
