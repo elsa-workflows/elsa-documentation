@@ -24,27 +24,27 @@ The following functions are specific to handling activity output.
 
 The following functions are specific to handling workflow variables and input.
 
-| Function                           | Description                                | Example                                 |
-|------------------------------------|--------------------------------------------|-----------------------------------------|
-| `Variable.Get(string): object?`    | Gets a variable from the workflow.         | `Variable.Get("MyVariable")`            |
-| `Variable.Set(string, object?)`    | Sets a variable in the workflow.           | `Variable.Set("MyVariable", "myValue")` |
-| `Variable.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `Variable.MyVariable`                   |
-| `Input.Get(string): object?`       | Gets the input of the workflow.            | `Input.Get('name')`                     |
+| Function                            | Description                                | Example                                 |
+|-------------------------------------|--------------------------------------------|-----------------------------------------|
+| `Variables.Get(string): object?`    | Gets a variable from the workflow.         | `Variable.Get("MyVariable")`            |
+| `Variables.Set(string, object?)`    | Sets a variable in the workflow.           | `Variable.Set("MyVariable", "myValue")` |
+| `Variables.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `Variable.MyVariable`                   |
+| `Input.Get(string): object?`        | Gets the input of the workflow.            | `Input.Get('name')`                     |
 
 ### Workflow variables
 
 There are two ways to get variables from the workflow:
 
-- `Variable.Get("MyVariable")`
-- `Variable.MyVariable`
+- `Variables.Get("MyVariable")`
+- `Variables.MyVariable`
 
 The first method is useful when you want to get a variable whose name is not known at build-time.
 The second method is useful when you know the name of the variable at build-time, which has the added benefit of providing intellisense.
 
 Similarly, there are two ways to set variables in the workflow:
 
-- `Variable.Set('MyVariable', "myValue");`
-- `Variable.MyVariable = "myValue";`
+- `Variables.Set('MyVariable', "myValue");`
+- `Variables.MyVariable = "myValue";`
 
 ### Workflow input
 
