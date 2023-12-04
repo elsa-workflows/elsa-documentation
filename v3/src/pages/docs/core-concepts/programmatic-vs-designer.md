@@ -90,10 +90,11 @@ When using the designer, you define workflows by dragging and dropping activitie
 The underlying data model is the same as the one used for programmatic workflows, and uses the Flowchart activity.
 In other words, when creating workflows using the designer, you are creating workflows whose `Root` property is set to a `Flowchart` activity.
 
-An important difference, however, is that workflows created using the designer do (currently) not support C# lambda expressions.
-Instead, we use JavaScript expressions. 
+When you create workflows using the designer, input values are defined using _script_ expressions rather than C# lambda statements.
+Although you *can* use C# script expressions in the designer, the difference is that C# script expressions are evaluated at runtime, whereas lambda expressions in programmatic workflows are compiled at build-time.
 
-Let's see an example.
+
+Let's see an example using a JavaScript expression.
 
 The following workflow is created using the designer:
 
