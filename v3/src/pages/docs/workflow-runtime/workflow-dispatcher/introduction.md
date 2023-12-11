@@ -26,7 +26,7 @@ This is the default implementation that is used when no other implementation is 
 
 This implementation uses MassTransit to dispatch the specified request to a queue for workflow execution.
 
-To use this implementation, you must first configure MassTransit. See [MassTransit Configuration](/docs/integrations/masstransit.md) for more information.
+To use this implementation, you must first configure MassTransit. See [MassTransit Configuration](/docs/integrations/masstransit/introduction) for more information.
 Next, you need to tell the Workflow Runtime to use the MassTransit Workflow Dispatcher:
 
 ```clike
