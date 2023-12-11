@@ -38,3 +38,13 @@ services.AddElsa(elsa =>
     });
 });
 ```
+
+The MassTransit implementation of the workflow dispatcher can be further configured using the `MassTransitWorkflowDispatcherOptions` class:
+
+```clike
+services.Configure<MassTransitWorkflowDispatcherOptions>(options =>
+{
+    // The number of concurrent messages to process.
+    options.ConcurrentMessageLimit = 32;
+});
+```
