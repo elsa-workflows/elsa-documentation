@@ -23,6 +23,10 @@ Embark on your Elsa Workflows journey! Whether you're new to workflows or an exp
 
 {% quick-links %}
 
+{% quick-link title="Docker" icon="docker" href="/docs/installation/docker" description="Get up and running with Elsa in no time using our Docker image." /%}
+
+{% quick-link title="Known Issues and Limitations" icon="warning" href="/docs/getting-started/limitations" description="Learn about the known issues and limitations of Elsa." /%}
+
 {% quick-link title="Installation" icon="installation" href="/docs/installation/packages" description="Begin with our step-by-step guides to set up your system and install the necessary libraries." /%}
 
 {% quick-link title="Activity Library" icon="presets" href="/docs/activity-library/branching" description="Dive into the diverse activity library and discover the building blocks of your workflows." /%}

@@ -16,19 +16,20 @@ const navigation = [
     {
         title: 'Getting Started',
         links: [
-            { title: 'Initial setup and prerequisites', href: '/docs/getting-started/initial-setup-and-prerequisites' }
+            { title: 'Initial setup and prerequisites', href: '/docs/getting-started/initial-setup-and-prerequisites' },
+            { title: 'Knon Issues and Limitations', href: '/docs/getting-started/limitations' }
         ]
     },
     {
         title: 'Installation',
         links: [
+            { title: 'Docker', href: '/docs/installation/docker' },
             { title: 'Packages', href: '/docs/installation/packages' },
             { title: 'Elsa Console', href: '/docs/installation/elsa-console' },
             { title: 'Elsa Server', href: '/docs/installation/elsa-server' },
             { title: 'Elsa Studio (Blazor Wasm)', href: '/docs/installation/elsa-studio-blazorwasm' },
             { title: 'Elsa Studio (Blazor Server)', href: '/docs/installation/elsa-studio-blazorserver' },
             { title: 'Elsa Studio (Stencil)', href: '/docs/installation/elsa-studio-stencil' },
-            { title: 'Docker', href: '/docs/installation/docker' }
         ],
     },
     {
