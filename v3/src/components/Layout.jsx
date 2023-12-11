@@ -42,7 +42,7 @@ const navigation = [
         ],
     },
     {
-      title: 'Workflow Samples',
+        title: 'Workflow Samples',
         links: [
             { title: 'HTTP - Hello World', href: '/docs/samples/http/hello-world' },
             { title: 'HTTP - Backend API', href: '/docs/samples/http/backend-api' },
@@ -91,6 +91,18 @@ const navigation = [
             { title: 'JavaScript', href: '/docs/expressions/javascript' },
             { title: 'Python', href: '/docs/expressions/python' },
             { title: 'Liquid', href: '/docs/expressions/liquid' }
+        ]
+    },
+    {
+        title: 'Workflow Runtime',
+        links: [
+            { title: 'Workflow Dispatcher', href: '/docs/workflow-runtime/workflow-dispatcher/introduction' },
+        ]
+    },
+    {
+        title: "Integrations",
+        links: [
+            { title: 'MassTransit', href: '/docs/integrations/masstransit/introduction' },
         ]
     },
     {
