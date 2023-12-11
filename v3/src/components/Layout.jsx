@@ -17,7 +17,7 @@ const navigation = [
         title: 'Getting Started',
         links: [
             { title: 'Initial setup and prerequisites', href: '/docs/getting-started/initial-setup-and-prerequisites' },
-            { title: 'Knon Issues and Limitations', href: '/docs/getting-started/limitations' }
+            { title: 'Known Issues and Limitations', href: '/docs/getting-started/limitations' }
         ]
     },
     {
