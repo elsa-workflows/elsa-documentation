@@ -6,8 +6,8 @@ description: Running the Elsa Docker container
 ## TLDR
 
 ```shell
-docker pull elsa-3:latest
-docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -p 13000:8080 elsa-3:latest
+docker pull elsaworkflows/elsa-v3:latest
+docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -p 13000:8080 elsaworkflows/elsa-v3:latest
 ```
 
 Navigate to: http://localhost:13000/
