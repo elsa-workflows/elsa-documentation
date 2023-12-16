@@ -48,14 +48,15 @@ Open the Program.cs file and replace its existing content with the code provided
 **Program.cs**
 
 ```clike
-using Elsa.Studio.Backend.Extensions;
 using Elsa.Studio.Dashboard.Extensions;
 using Elsa.Studio.Shell;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Contracts;
 using Elsa.Studio.Core.BlazorWasm.Extensions;
+using Elsa.Studio.Extensions;
 using Elsa.Studio.Login.BlazorWasm.Extensions;
+using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Workflows.Designer.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -72,7 +73,9 @@ builder.RootComponents.RegisterCustomElsaStudioElements();
 // Register shell services and modules.
 builder.Services.AddCore();
 builder.Services.AddShell();
-builder.Services.AddRemoteBackendModule(options => configuration.GetSection("Backend").Bind(options));
+builder.Services.AddRemoteBackend(
+    options => configuration.GetSection("Backend").Bind(options),
+    configureElsaClientBuilderOptions: elsaClient => { elsaClient.ConfigureHttpClientBuilder = httpClientBuilder => { httpClientBuilder.AddHttpMessageHandler<AuthenticatingApiHttpMessageHandler>(); }; });
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
@@ -90,9 +93,13 @@ await app.RunAsync();
 
 ### 4. Removing Unnecessary Files
 
-For a cleaner project structure, eliminate the following directories and files:
+For a cleaner project structure, delete the following directories and files:
 
 - `wwwroot/css`
+- `Pages`
+- `App.razor`
+- `MainLayout.razor`,
+- `_Imports.razor`
 
 ### 5. Generating wwwroot/appsettings.json
 
@@ -166,13 +173,13 @@ To conclude the setup, open the `wwwroot/index.html` file and replace its conten
 
 ## Launching the Application
 
-To witness your application in action, execute the following command:
+To see your application in action, execute the following command:
 
 ```shell
-dotnet run
+dotnet run --urls "https://localhost:6001"
 ```
 
-Your application should now be accessible at https://localhost:5001. The port number might vary based on your configuration. By default, you can log in using:
+Your application should now be accessible at https://localhost:6001. By default, you can log in using:
 
 ```html
 Username: admin

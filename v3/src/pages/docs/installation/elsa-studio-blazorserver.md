@@ -5,9 +5,14 @@ description: Setting up Elsa Studio Blazor Server.
 
 ## Introduction
 
-In the previous chapter, we looked at setting up Ela Studio in a Blazor Webassembly project.
+In the previous chapter, we looked at setting up Elsa Studio in a Blazor Webassembly project.
 
 In this chapter, we will create the same application, but this time using Blazor Server.
+
+## When to use Blazor Server?
+
+Although the Blazor Webassembly app is a great way to get started with Elsa Studio, it can be challenging when you are writing custom extensions that you need to debug.
+When running your app using Blazor Server, debugging becomes much easier.
 
 ## Setup
 
@@ -48,10 +53,11 @@ Open the Program.cs file and replace its existing content with the code provided
 **Program.cs**
 
 ```clike
-using Elsa.Studio.Backend.Extensions;
 using Elsa.Studio.Core.BlazorServer.Extensions;
 using Elsa.Studio.Dashboard.Extensions;
+using Elsa.Studio.Extensions;
 using Elsa.Studio.Login.BlazorServer.Extensions;
+using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
@@ -71,7 +77,9 @@ builder.Services.AddServerSideBlazor(options =>
 // Register shell services and modules.
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
-builder.Services.AddRemoteBackendModule(options => configuration.GetSection("Backend").Bind(options));
+builder.Services.AddRemoteBackend(
+    options => configuration.GetSection("Backend").Bind(options),
+    configureElsaClientBuilderOptions: elsaClient => { elsaClient.ConfigureHttpClientBuilder = httpClientBuilder => { httpClientBuilder.AddHttpMessageHandler<AuthenticatingApiHttpMessageHandler>(); }; });
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
@@ -79,7 +87,7 @@ builder.Services.AddWorkflowsModule();
 // Configure SignalR.
 builder.Services.AddSignalR(options =>
 {
-    // Set MaximumReceiveMessageSize:
+    // Set MaximumReceiveMessageSize to handle large workflows.
     options.MaximumReceiveMessageSize = 5 * 1024 * 1000; // 5MB
 });
 
@@ -90,7 +98,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseResponseCompression();
-    
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -137,7 +145,7 @@ To conclude the setup, open the `Pages/_Host.cshtml` file and replace its conten
 @page "/"
 @using Elsa.Studio.Shell
 @using Microsoft.AspNetCore.Components.Web
-@namespace Elsa.Studio.Host.Server.Pages
+@namespace ElsaStudioBlazorServer.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
@@ -189,13 +197,13 @@ To conclude the setup, open the `Pages/_Host.cshtml` file and replace its conten
 
 ## Launching the Application
 
-To witness your application in action, execute the following command:
+To see your application in action, execute the following command:
 
 ```shell
-dotnet run
+dotnet run --urls "https://localhost:7001"
 ```
 
-Your application should now be accessible at https://localhost:5001. The port number might vary based on your configuration. By default, you can log in using:
+Your application should now be accessible at https://localhost:7001. By default, you can log in using:
 
 ```html
 Username: admin
