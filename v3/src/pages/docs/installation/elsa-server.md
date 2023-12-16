@@ -4,12 +4,17 @@ description: Setting up an Elsa Server.
 ---
 
 In this chapter, we'll learn how to setup an Elsa Server.
-An Elsa Server is an ASP.NET Core application that hosts the workflow runtime and provides a REST API for managing workflows. This REST API is consumed by the [Elsa Studio](./elsa-studio-blazorwasm.md).
-Workflows can be stored to and retrieved from persistence stores such as databases, file systems, and cloud storage, but they can also be hardcoded into the application, as we will see in this chapter. 
+
+## What is an Elsa Server?
+
+An Elsa Server is an ASP.NET Core web application that lets you manage workflows using a REST API. 
+You can store your workflows in various places like databases, file systems, or even cloud storage. In this guide, we're going to learn how to set one up! 
 
 ## Setup
 
-Create a new empty ASP.NET app using the following commands:
+### 1. Create Your Elsa Server Project
+
+First, we need to create a new ASP.NET project. Open your command line tool and run these commands:
 
 ```shell
 dotnet new web -n "ElsaServer" -f net8.0
@@ -23,9 +28,17 @@ dotnet add package Elsa.Workflows.Api --prerelease
 dotnet add package Elsa.CSharp --prerelease
 ```
 
-Next, open Program.cs file and replace its contents with the following code:
+These commands will set up a new web project and add necessary Elsa packages to it.
 
-```csharp
+### 2. Update Program.cs
+
+Now, we need to add some code to make our server work.
+Open the Program.cs file in your project and replace its contents with the code provided below.
+This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
+
+**Program.cs:**
+
+```clike
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
@@ -42,7 +55,7 @@ builder.Services.AddElsa(elsa =>
     // Default Identity features for authentication/authorization.
     elsa.UseIdentity(identity =>
     {
-        identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; //This key needs to be at least 256 bits long.
+        identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
         identity.UseAdminUserProvider();
     });
     
@@ -97,36 +110,31 @@ app.UseWorkflowsSignalRHubs(); // Optional SignalR integration. Elsa Studio uses
 app.Run();
 ```
 
+### 3. Launch the Server
+
 To run the application on port 5001, execute the following command:
 
 ```shell
 dotnet run --urls "https://localhost:5001"
 ```
 
-The above example demonstrates how to:
+## What did we just do?
 
-- Configure Elsa to use Entity Framework Core for persistence.
-- Configure Elsa to use ASP.NET Core Identity for authentication/authorization.
-- Configure Elsa to use ASP.NET Core authentication/authorization.
-- Expose Elsa API endpoints.
-- Setup a SignalR hub for real-time updates from the server.
-- Enable C# workflow expressions.
-- Enable HTTP activities.
-- Enable timer activities.
-- Register custom activities from the application, if any.
-- Register custom workflows from the application, if any.
-- Configure CORS to allow designer app hosted on a different origin to invoke the APIs.
-- Add Health Checks.
-- Configure ASP.NET's middleware pipeline.
-- Use Elsa API endpoints.
-- Use Elsa middleware to handle HTTP requests mapped to HTTP Endpoint activities.
-- Use SignalR integration. Elsa Studio uses SignalR to receive real-time updates from the server.
-- Run the application on port 5001.
+Here's a quick rundown of what we've set up:
 
-Now that we have an Elsa Server running, let's create an Elsa Studio application.
+- We made Elsa use Entity Framework Core for storing data.
+- We configured user authentication and authorization.
+- We made sure our server can communicate with the Elsa Studio app.
+- We added capabilities for real-time updates and handling HTTP requests.
+- We added health checks to keep an eye on our server's status.
+- Finally, we made our server ready to run.
+
+Now that we have an Elsa Server running, let's [create an Elsa Studio application](./elsa-studio-blazorwasm).
+
+## Next Steps
+
+With your Elsa Server up and running, you can now proceed to [create an Elsa Studio application](./elsa-studio-blazorwasm)
 
 ## Summary
 
-In this chapter, we learned how to setup an Elsa Server.
-
-The final result of this chapter can be found [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-server/ElsaServer).
+In this guide, we walked through the steps to set up an Elsa Server. You can see the final result and more details [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-server/ElsaServer).
