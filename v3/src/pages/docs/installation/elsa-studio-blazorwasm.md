@@ -180,7 +180,7 @@ Password: password
 ```
 
 {% callout title="Source code" %}
-The source code for this chapter can be found [here](https://github.com/elsa-workflows/elsa-guides/tree/v3/src/installation/elsa-studio/ElsaStudioWasm)
+The source code for this chapter can be found [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-studio/ElsaStudioWasm)
 {% /callout %}
 
 ## What's Next?
