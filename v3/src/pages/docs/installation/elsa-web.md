@@ -3,10 +3,10 @@ title: Elsa Web
 description: Installing Elsa in ASP.NET apps.
 ---
 
-In this chapter, we'll learn how to setup an ASP.NET Core application that can run workflows.
-Hosting workflows in an ASP.NET app is useful when you want to run long-running workflows in the background and support activities such as Timer, Cron, Event, and other activities that require a background worker.
+In this guide, we'll demonstrate how to integrate Elsa Workflows into an ASP.NET Core application. 
+This setup is ideal for executing long-running workflows in the background, supporting various activities like Timer, Cron, Event, and others that necessitate a background service.
 
-## Setup
+## Initial Setup
 
 Create a new empty ASP.NET app using the following command:
 
@@ -14,16 +14,16 @@ Create a new empty ASP.NET app using the following command:
 dotnet new web -n "ElsaWeb" -f net8.0
 ```
 
-CD into the project's root directory and add the Elsa package:
+Navigate to your project's root directory and install the Elsa package:
 
 ```shell
 cd ElsaWeb
 dotnet add package Elsa --prerelease
 ```
 
-Next, open `Program.cs` file and replace its contents with the following code:
+Open the `Program.cs` file and replace its contents with:
 
-**Program.cs**
+**Program.cs:**
 
 ```clike
 using Elsa.Extensions;
@@ -43,15 +43,15 @@ app.MapControllers();
 app.Run();
 ```
 
-With that in place, you can now resolve Elsa services to run workflows. For example, if your app has a controller, you could inject the `IWorkflowRunner` service and run some workflow.
+This configuration allows your application to use Elsa services for running workflows.
 
 ## Trying it out
 
-### Writing to the console
+### Example 1: Console Output
 
-Add a new controller called `RunWorkflowController` with the following code:
+Add a new controller named `RunWorkflowController`:
 
-**RunWorkflowController.cs**
+**RunWorkflowController.cs:**
 
 ```clike
 using Elsa.Workflows.Core.Activities;
@@ -62,56 +62,36 @@ namespace ElsaWeb.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
-public class RunWorkflowController : ControllerBase
+public class RunWorkflowController(IWorkflowRunner workflowRunner) : ControllerBase
 {
-    private readonly IWorkflowRunner _workflowRunner;
-
-    public RunWorkflowController(IWorkflowRunner workflowRunner)
-    {
-        _workflowRunner = workflowRunner;
-    }
-
     [HttpGet]
-    public async Task Post()
+    public async Task Get()
     {
-        await _workflowRunner.RunAsync(new WriteLine("Hello ASP.NET world!"));
+        await workflowRunner.RunAsync(new WriteLine("Hello ASP.NET world!"));
     }
 }
 ```
 
-Then start the program and navigate to https://localhost:5001/run-workflow using your web browser.
-When you look at the application console output, you should see the following message:
+Start the application and visit https://localhost:5001/run-workflow in your browser.
+The console should display "Hello ASP.NET world!"
 
-```shell
-Hello ASP.NET world!
-```
+### Example 2: HTTP Response
 
-### Writing to the HTTP Response
-
-To make this a little bit more interesting, let's update the controller so that instead of writing to the console, the workflow writes directly to the HTTP response.
-To do this, we need to make a few small changes:
-
-1. Add the `Elsa.Http` package.
-2. Update `Program.cs` to install the Elsa HTTP feature.
-3. Update `RunWorkflowController.cs` to use the `WriteHttpResponse` activity instead of the `WriteLine` activity.
-
-Let's take a look at each step.
-
-First, run the following command:
+Install the `Elsa.Http` Package
 
 ```shell
 dotnet add package Elsa.Http --prerelease
 ```
 
-Update `Program.cs` by replacing the Elsa setup code with the following:
+Modify the Elsa setup in `Program.cs`:
 
 ```clike
 builder.Services.AddElsa(elsa => elsa.UseHttp());
 ```
 
-Finally, replace the controller implementation with the following code:
+Adjust the controller to use the `WriteHttpResponse` activity:
 
-**RunWorkflowController.cs**
+**Controllers/RunWorkflowController.cs:**
 
 ```clike
 using Elsa.Http;
@@ -122,19 +102,12 @@ namespace ElsaWeb.Controllers;
 
 [ApiController]
 [Route("run-workflow")]
-public class RunWorkflowController : ControllerBase
+public class RunWorkflowController(IWorkflowRunner workflowRunner) : ControllerBase
 {
-    private readonly IWorkflowRunner _workflowRunner;
-
-    public RunWorkflowController(IWorkflowRunner workflowRunner)
-    {
-        _workflowRunner = workflowRunner;
-    }
-
     [HttpGet]
-    public async Task Post()
+    public async Task Get()
     {
-        await _workflowRunner.RunAsync(new WriteHttpResponse
+        await workflowRunner.RunAsync(new WriteHttpResponse
         {
             Content = new("Hello ASP.NET world!")
         });
@@ -142,28 +115,24 @@ public class RunWorkflowController : ControllerBase
 }
 ```
 
-Notice that we replaced the `WriteLine` activity with the `WriteHttpResponse` activity which comes from the `Elsa.Http` package.
-
-Restart your application and navigate to https://localhost:5001/run-workflow
-This time around, you should see the following response:
+Restart your app and navigate to https://localhost:5001/run-workflow. The browser should now display the message.
 
 ![Response](/installation/response.png)
 
-### Exposing workflows as endpoints
+### Example 3: Workflows as HTTP Endpoints
 
 In addition to programmatically invoking workflows, you can also create workflows that themselves are routable via HTTP.
-In other words, instead of creating a controller, you can create a workflow that itself acts like a controller in the sense that it can handle HTTP requests and provide an HTTP response.
+To enable this, we need to add the `WorkflowsMiddleware` ASP.NET middleware component to the request pipeline.
 
-To enable this, we need to add the `WorkflowsMiddleware` ASP.NET middleware component to the request pipeline. To do so, add the following line right before `app.Run();`:
+In `Program.cs`, add the following line before app.Run();:
 
 ```clike
 app.UseWorkflows();
 ```
 
-Now we can create workflows that expose themselves as endpoints so that we can trigger them directly over HTTP.
-Let's look at an example.
+Create a new workflow class with HTTP capabilities:
 
-First, create a new workflow class using the **workflow builder API** that starts with the `HttpEndpoint` activity (which acts as a workflow trigger) and ends with the `WriteHttpResponse` activity:
+**Workflows/HttpHelloWorld.cs:**
 
 ```clike
 using Elsa.Http;
@@ -173,7 +142,7 @@ using Elsa.Workflows.Core.Contracts;
 
 namespace ElsaWeb.Workflows;
 
-public class HelloWorldHttpWorkflow : WorkflowBase
+public class HttpHelloWorld : WorkflowBase
 {
     protected override void Build(IWorkflowBuilder builder)
     {
@@ -196,43 +165,34 @@ public class HelloWorldHttpWorkflow : WorkflowBase
 }
 ```
 
-{% callout title="Workflow Builder API" type="note" %}
-Notice that this workflow definition is different from what we have seen so far. Up to this point, we instantiated an activity such as `WriteLine` directly and sent it to the workflow runner to run the activity.
-When we want to add workflows to the system, however, we need to define and register them with the *workflow runtime* so that components like the `WorkflowsMiddleware` can find and execute them.
-
-There are different ways to define workflows, and one of them is to use the *workflow builder API*.
-
-To use the workflow builder API, create a class that implements `IWorkflow`, or the abstract base class `WorkflowBase`, which in turn implements `IWorkflow`. 
-{% /callout %}
-
 {% callout title="Workflow Triggers" type="warning" %}
 In order for the workflow runtime to be able to trigger workflows automatically, you need to set the activity's `CanStartWorkflow` property to `true`.
 This is easy to forget, so whenever you are wondering why a workflow isn't running even though you are sure you triggered it, the first thing to check is to see if this property is set correctly.
 {% /callout %}
 
-Finally, we need to register the workflow with the runtime. To do this, update `Program.cs` by replacing the call to `builder.Services.AddElsa` with the following:
+Update `Program.cs` to register this workflow:
 
 ```clike
 builder.Services.AddElsa(elsa =>
 {
-    elsa.UseWorkflowRuntime(runtime => runtime.AddWorkflow<HelloWorldHttpWorkflow>());
+    elsa.AddWorkflow<HttpHelloWorld>();
     elsa.UseHttp();
 });
 ```
 
-That will effectively register our workflow definition with the workflow runtime.
-
-To try it out, restart the application and navigate to `https://localhost:5001/workflows/hello-world`.
-
-The response should look like this:
+Restart the app and visit https://localhost:5001/workflows/hello-world. You should see the corresponding message.
 
 ![Response](/installation/response-2.png)
 
+{% callout title="HTTP Endpoint Prefix Path" type="note" %}
+Notice that the URL path is `/workflows/hello-world` and not `/hello-world` as we defined in the workflow definition.
+This is because the `WorkflowsMiddleware` component is configured to use `/workflows` as the prefix path by default.
+You can change this by passing a different prefix path to the `UseHttp` method. For example, if you want to use `/api`, you can do so by calling `elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/api");`.
+
+{% /callout %}
+
 ## Summary
 
-In this chapter, we learned how to setup an ASP.NET app that can run workflows.
-We saw how to run workflows programmatically, how to expose workflows as HTTP endpoints.
+We've covered how to set up Elsa Workflows in an ASP.NET Core application, demonstrating various methods of workflow execution and integration. This approach allows for versatile and efficient handling of background processes and activities within your ASP.NET applications.
 
-The result of this chapter can be found [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-web/ElsaWeb).
-
-In the next chapter, we'll look at how to setup the REST API so that the Elsa Designer can communicate with the workflow server.
+The complete code and additional resources are available [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-web/ElsaWeb).
