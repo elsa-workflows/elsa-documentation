@@ -8,6 +8,7 @@ import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
 import elsaAndroid from '@/images/elsa-android.png';
+import elsaLogo from '@/images/elsa-logo-art.png';
 
 export function HeroAndroid() {
   return (
@@ -19,8 +20,8 @@ export function HeroAndroid() {
               className="absolute bottom-full right-full -mr-72 -mb-56 opacity-50"
               src={blurCyanImage}
               alt=""
-              width={530}
-              height={530}
+              width={230}
+              height={230}
               unoptimized
               priority
             />
@@ -48,8 +49,8 @@ export function HeroAndroid() {
                 className="absolute -top-64 -right-64"
                 src={blurCyanImage}
                 alt=""
-                width={530}
-                height={530}
+                width={230}
+                height={230}
                 unoptimized
                 priority
               />
@@ -57,8 +58,8 @@ export function HeroAndroid() {
                 className="absolute -bottom-40 -right-44"
                 src={blurIndigoImage}
                 alt=""
-                width={567}
-                height={567}
+                width={267}
+                height={267}
                 unoptimized
                 priority
               />
@@ -70,7 +71,7 @@ export function HeroAndroid() {
                 <div className="p-0">
                   <Image
                       className="rounded"
-                      src={elsaAndroid}
+                      src={elsaLogo}
                       alt="Elsa"
                       unoptimized
                       priority
