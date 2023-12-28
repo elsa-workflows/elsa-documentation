@@ -20,27 +20,27 @@ The following functions are specific to handling activity output.
 
 The following functions are specific to handling workflow variables and input.
 
-| Function                           | Description                                | Example                                 |
-|------------------------------------|--------------------------------------------|-----------------------------------------|
-| `variable.get(string): object?`    | Gets a variable from the workflow.         | `variable.get('MyVariable')`            |
-| `variable.set(string, object?)`    | Sets a variable in the workflow.           | `variable.Set('MyVariable', 'myValue')` |
-| `variable.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `variable.MyVariable`                   |
-| `input.get(string): object?`       | Gets the input of the workflow.            | `input.get('name')`                     |
+| Function                            | Description                                | Example                                  |
+|-------------------------------------|--------------------------------------------|------------------------------------------|
+| `variables.get(string): object?`    | Gets a variable from the workflow.         | `variables.get('MyVariable')`            |
+| `variables.set(string, object?)`    | Sets a variable in the workflow.           | `variables.Set('MyVariable', 'myValue')` |
+| `variables.{VariableName}: object?` | Gets or sets a variable on the workflow.   | `variables.MyVariable`                   |
+| `input.get(string): object?`        | Gets the input of the workflow.            | `input.get('name')`                      |
 
 ### Workflow variables
 
 There are two ways to get variables from the workflow:
 
-- `variable.get('MyVariable')`
-- `variable.MyVariable`
+- `variables.get('MyVariable')`
+- `variables.MyVariable`
 
 The first method is useful when you want to get a variable whose name is not known at build-time.
 The second method is useful when you know the name of the variable at build-time, which has the added benefit of providing intellisense.
 
 Similarly, there are two ways to set variables in the workflow:
 
-- `variable.set('MyVariable', "myValue");`
-- `variable.MyVariable = "myValue";`
+- `variables.set('MyVariable', "myValue");`
+- `variables.MyVariable = "myValue";`
 
 ### Workflow input
 
