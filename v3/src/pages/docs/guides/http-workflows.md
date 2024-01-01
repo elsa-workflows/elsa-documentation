@@ -22,7 +22,7 @@ As a result, we will learn how to use the following HTTP activities:
 To create the project, run the following command:
 
 ```shell
-dotnet new webapi -n WorkflowApp.Web --no-openapi -f net7.0
+dotnet new webapi -n WorkflowApp.Web --no-openapi -f net8.0
 ```
 
 ### Run project
@@ -31,11 +31,10 @@ Run the following commands to go into the created project directory and run the 
 
 ```shell
 cd WorkflowApp.Web
-dotnet run
+dotnet run --urls=https://localhost:5001
 ```
 
-When the app is running, take note of the URL it is listening on. For example: `http://localhost:5085`.
-To invoke the weather forecast controller, navigate to `http://localhost:5085/weatherforecast`, which should produce output similar to the following (simplified for clarity):
+To invoke the weather forecast controller, navigate to `https://localhost:5001/weatherforecast`, which should produce output similar to the following (simplified for clarity):
 
 ```json
 [
@@ -63,12 +62,12 @@ Next, let's install and configure Elsa.
 Install the following packages:
 
 ```shell
-dotnet add package Elsa --prerelease
-dotnet add package Elsa.EntityFrameworkCore.Sqlite --prerelease
-dotnet add package Elsa.Http --prerelease
-dotnet add package Elsa.Identity --prerelease
-dotnet add package Elsa.Liquid --prerelease
-dotnet add package Elsa.Workflows.Api --prerelease
+dotnet add package Elsa
+dotnet add package Elsa.EntityFrameworkCore.Sqlite
+dotnet add package Elsa.Http
+dotnet add package Elsa.Identity
+dotnet add package Elsa.Liquid
+dotnet add package Elsa.Workflows.Api
 ```
 
 ### Program
@@ -79,6 +78,7 @@ Update `Program.cs` with the following code:
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
+using WorkflowApp.Web.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,7 +92,7 @@ builder.Services.AddElsa(elsa =>
     elsa.UseIdentity(identity =>
     {
         identity.UseAdminUserProvider();
-        identity.TokenOptions = tokenOptions => tokenOptions.SigningKey = "my-secret-signing-key";
+        identity.TokenOptions = tokenOptions => tokenOptions.SigningKey = "my-long-256-bit-secret-token-signing-key";
     });
     elsa.UseDefaultAuthentication();
     elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore());
@@ -100,7 +100,12 @@ builder.Services.AddElsa(elsa =>
     elsa.UseJavaScript();
     elsa.UseLiquid();
     elsa.UseWorkflowsApi();
-    elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/workflows");
+    elsa.UseHttp(http => http.ConfigureHttpOptions = options =>
+    {
+        options.BaseUrl = new Uri("https://localhost:5001");
+        options.BasePath = "/workflows";
+    });
+    elsa.AddWorkflow<WeatherForecastWorkflow>();
 });
 
 var app = builder.Build();
@@ -114,7 +119,33 @@ app.UseWorkflowsApi();
 app.UseWorkflows();
 app.MapControllers();
 app.MapRazorPages();
+
+// Create a sample weather forecast API.
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
+
+app.MapGet("/weatherforecast", () =>
+{
+    var forecast =  Enumerable.Range(1, 5).Select(index =>
+            new WeatherForecast
+            (
+                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                Random.Shared.Next(-20, 55),
+                summaries[Random.Shared.Next(summaries.Length)]
+            ))
+        .ToArray();
+    return forecast;
+});
+
+// Run the application.
 app.Run();
+
+record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
 ```
 
 {% callout title="Path prefix" type="note" %}
@@ -142,6 +173,8 @@ The workflow we'll be creating will be able to do the following:
 Let's see how to create the workflow in code.
 
 Create a new folder called `Workflows` and add the following class:
+
+**Workflows/WeatherForecastWorkflow.cs**
 
 ```clike
 using System.Net;
@@ -259,7 +292,7 @@ To register the workflow with the workflow runtime, go back to `Program.cs` and 
 elsa.AddWorkflow<WeatherForecastWorkflow>();
 ```
 
-Restart the application, and this time navigate to `http://localhost:5085/workflows/weatherforecast`.
+Restart the application, and this time navigate to `https://localhost:5001/workflows/weatherforecast`.
 
 The result should look similar to this:
 
@@ -268,10 +301,10 @@ The result should look similar to this:
 ## Workflow from Designer
 
 An alternative to creating workflows in code is to use Elsa Studio, which is a web application that allows you to create and manage workflows.
-To setup an ASP.NET application that hosts Elsa Studio, follow the instructions [here](../installation/elsa-studio-blazorwasm.md).
+To setup an ASP.NET application that hosts Elsa Studio, follow the instructions [here](../installation/elsa-studio-blazorwasm.md), or run the designer directly from a Docker container as described [here](../installation/docker#elsa-studio).
 
 {% callout title="Connecting Elsa Studio to Elsa Server" %}
-Make sure to have your Elsa Studio application configured to point to the Elsa Server URL we created in this guide. For example: http://localhost:5085/elsa/api.
+Make sure to have your Elsa Studio application configured to point to the Elsa Server URL we created in this guide. For example: https://localhost:5001/elsa/api.
 {% /callout %}
 
 ### Liquid
@@ -287,11 +320,11 @@ To do so, update the workflow management setup in **Program.cs** by adding the f
 management.AddVariableType<WeatherForecast>(category: "Weather");
 ```
 
-When Elsa Studio is setup, start the app, create a new workflow and import the following JSON file:
+When Elsa Studio is running, create a new workflow and import the following JSON file:
 
 [weatherforecast-workflow.json](/guides/http-workflows/weatherforecast-workflow.json)
 
-Publish the workflow and navigate to `http://localhost:5085/workflows/weatherforecast-from-designer`.
+Publish the workflow and navigate to `https://localhost:5001/workflows/weatherforecast-from-designer`.
 
 You should be seeing the same result as before.
 
