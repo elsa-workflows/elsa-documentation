@@ -9,10 +9,10 @@ Elsa Workflows can be seamlessly integrated into console applications, offering 
 
 ### **1. Create a New Console Application**
 
-Start by creating a new console application targeting .NET 7.0:
+Start by creating a new console application targeting .NET 8.0:
 
 ```shell
-dotnet new console -n "ElsaConsole" -f net7.0
+dotnet new console -n "ElsaConsole" -f net8.0
 ```
 
 Navigate to your newly created project's root directory:
@@ -37,8 +37,8 @@ Open `Program.cs` and replace its contents with the following code to set up Els
 
 ```clike
 using Elsa.Extensions;
-using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Services;
+using Elsa.Workflows.Activities;
+using Elsa.Workflows.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
 // Setup service container.
