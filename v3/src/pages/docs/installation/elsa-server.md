@@ -129,8 +129,6 @@ Here's a quick rundown of what we've set up:
 - We added health checks to keep an eye on our server's status.
 - Finally, we made our server ready to run.
 
-Now that we have an Elsa Server running, let's [create an Elsa Studio application](./elsa-studio-blazorwasm).
-
 ## Next Steps
 
 With your Elsa Server up and running, you can now proceed to [create an Elsa Studio application](./elsa-studio-blazorwasm)
