@@ -18,7 +18,7 @@ Navigate to your project's root directory and install the Elsa package:
 
 ```shell
 cd ElsaWeb
-dotnet add package Elsa --prerelease
+dotnet add package Elsa
 ```
 
 Open the `Program.cs` file and replace its contents with:
@@ -51,11 +51,11 @@ This configuration allows your application to use Elsa services for running work
 
 Add a new controller named `RunWorkflowController`:
 
-**RunWorkflowController.cs:**
+**Controllers/RunWorkflowController.cs:**
 
 ```clike
-using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Contracts;
+using Elsa.Workflows.Activities;
+using Elsa.Workflows.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElsaWeb.Controllers;
@@ -72,7 +72,13 @@ public class RunWorkflowController(IWorkflowRunner workflowRunner) : ControllerB
 }
 ```
 
-Start the application and visit https://localhost:5001/run-workflow in your browser.
+Start the application using the following command:
+
+```bash
+dotnet run --urls=https://localhost:5001
+```
+
+Then visit https://localhost:5001/run-workflow in your browser.
 The console should display "Hello ASP.NET world!"
 
 ### Example 2: HTTP Response
@@ -80,7 +86,7 @@ The console should display "Hello ASP.NET world!"
 Install the `Elsa.Http` Package
 
 ```shell
-dotnet add package Elsa.Http --prerelease
+dotnet add package Elsa.Http
 ```
 
 Modify the Elsa setup in `Program.cs`:
@@ -95,7 +101,7 @@ Adjust the controller to use the `WriteHttpResponse` activity:
 
 ```clike
 using Elsa.Http;
-using Elsa.Workflows.Core.Contracts;
+using Elsa.Workflows.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElsaWeb.Controllers;
@@ -136,9 +142,9 @@ Create a new workflow class with HTTP capabilities:
 
 ```clike
 using Elsa.Http;
-using Elsa.Workflows.Core;
-using Elsa.Workflows.Core.Activities;
-using Elsa.Workflows.Core.Contracts;
+using Elsa.Workflows;
+using Elsa.Workflows.Activities;
+using Elsa.Workflows.Contracts;
 
 namespace ElsaWeb.Workflows;
 
@@ -173,6 +179,8 @@ This is easy to forget, so whenever you are wondering why a workflow isn't runni
 Update `Program.cs` to register this workflow:
 
 ```clike
+using ElsaWeb.Workflows; // Add this line.
+
 builder.Services.AddElsa(elsa =>
 {
     elsa.AddWorkflow<HttpHelloWorld>();
