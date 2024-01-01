@@ -328,7 +328,7 @@ Publish the workflow and navigate to `https://localhost:5001/workflows/weatherfo
 
 You should be seeing the same result as before.
 
-You can find the final source code for this guide [here](https://github.com/elsa-workflows/elsa-guides/tree/v3/src/guides/http-workflows/WorkflowApp.Web).
+You can find the final source code for this guide [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/http-workflows/WorkflowApp.Web).
 
 ## Conclusion
 

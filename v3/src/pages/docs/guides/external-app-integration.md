@@ -55,16 +55,94 @@ We will have the workflow run the first task, and once it completes, the remaini
 The workflow server application is a simple ASP.NET Core application that hosts the workflow engine.
 It uses the `Elsa.Webhooks` package to handle the `RunTaskRequest` domain event.
 
-To setup this application, please follow the steps in the [ASP.NET Core application](../installation/elsa-studio) guide, and update the Program.cs file as follows:
+To setup this application, please follow the steps in the [Elsa Server](../installation/elsa-server) guide and add the following packages:
+
+```bash
+dotnet add package Elsa.Webhooks
+dotnet add package Elsa.JavaScript
+dotnet add package Elsa.Email
+dotnet add package Elsa.Identity
+dotnet add package Elsa.EntityFrameworkCore
+dotnet add package Elsa.EntityFrameworkCore.Sqlite
+dotnet add package Elsa.Workflows.Api
+```
+
+Next, update the `Program.cs` file as follows:
+
+**Program.cs**
 
 ```clike
-services
-    .AddElsa(elsa => elsa
-        // ...
-        // Left out for brevity.
-        // ...
-        .UseWebhooks(webhooks => webhooks.WebhookOptions = options => builder.Configuration.GetSection("Webhooks").Bind(options))
-    );
+using Elsa.EntityFrameworkCore.Modules.Management;
+using Elsa.EntityFrameworkCore.Modules.Runtime;
+using Elsa.Extensions;
+using Elsa.Webhooks.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddElsa(elsa =>
+{
+    // Configure Management layer to use EF Core.
+    elsa.UseWorkflowManagement(management => management.UseEntityFrameworkCore());
+
+    // Configure Runtime layer to use EF Core.
+    elsa.UseWorkflowRuntime(runtime => runtime.UseEntityFrameworkCore());
+
+    // Default Identity features for authentication/authorization.
+    elsa.UseIdentity(identity =>
+    {
+        identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
+        identity.UseAdminUserProvider();
+    });
+
+    // Configure ASP.NET authentication/authorization.
+    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
+
+    // Expose Elsa API endpoints.
+    elsa.UseWorkflowsApi();
+
+    // Setup a SignalR hub for real-time updates from the server.
+    elsa.UseRealTimeWorkflows();
+
+    // Enable JavaScript workflow expressions
+    elsa.UseJavaScript(options => options.AllowClrAccess = true);
+
+    // Use email activities.
+    elsa.UseEmail(email =>
+    {
+        email.ConfigureOptions = options =>
+        {
+            options.Host = "localhost";
+            options.Port = 2525;
+        };
+    });
+
+    // Register custom webhook definitions from the application, if any.
+    elsa.UseWebhooks(webhooks => webhooks.WebhookOptions = options => builder.Configuration.GetSection("Webhooks").Bind(options));
+});
+
+// Configure CORS to allow designer app hosted on a different origin to invoke the APIs.
+builder.Services.AddCors(cors => cors
+    .AddDefaultPolicy(policy => policy
+        .AllowAnyOrigin() // For demo purposes only. Use a specific origin instead.
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithExposedHeaders("x-elsa-workflow-instance-id"))); // Required for Elsa Studio in order to support running workflows from the designer. Alternatively, you can use the `*` wildcard to expose all headers.
+
+// Add Health Checks.
+builder.Services.AddHealthChecks();
+
+// Build the web application.
+var app = builder.Build();
+
+// Configure web application's middleware pipeline.
+app.UseCors();
+app.UseRouting(); // Required for SignalR.
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseWorkflowsApi(); // Use Elsa API endpoints.
+app.UseWorkflows(); // Use Elsa middleware to handle HTTP requests mapped to HTTP Endpoint activities.
+app.UseWorkflowsSignalRHubs(); // Optional SignalR integration. Elsa Studio uses SignalR to receive real-time updates from the server. 
+
+app.Run();
 ```
 
 Update `appsettings.json` and add the following sections:
@@ -86,7 +164,7 @@ Update `appsettings.json` and add the following sections:
 
 This configuration tells the workflow server to send a webhook request to the task executor application whenever a `RunTaskRequest` domain event is published.
 
-Run the workflow server application and create the following workflow:
+Run the workflow server application and create [the following workflow](/guides/external-app-integration/employee-onboarding.json):
 
 ![](/guides/external-app-integration/employee-onboarding.png)
 
@@ -106,7 +184,11 @@ Let's go over each activity in the workflow:
 
 #### Set Employee from input
 
-This is the `SetVariable` activity that sets the `Employee` variable to the value of the `Employee` input:
+This is the `SetVariable` activity that sets the `Employee` variable to the value of the `Employee` input using the following JavaScript expression:
+
+```javascript
+getInput("Employee")
+```
 
 ![](/guides/external-app-integration/employee-onboarding-set-variable-1.png)
 
@@ -152,17 +234,6 @@ return {
 }
 ```
 
-#### Add to Payroll System
-
-This is the same as the previous activity, but for the **Add to HR System** task, and uses the following expression to set the `Payload` input:
-
-```javascript
-return {
-    employee: getEmployee(),
-    description: "Add the new employee to the Payroll system."
-}
-```
-
 #### Send Welcome Email
 
 This is the `SendEmail` activity that sends a welcome email to the new employee and contains the following settings:
@@ -182,13 +253,13 @@ getEmployee().Email
 ##### Subject
 
 ```javascript
-`Welcome aboard, ${getEmployee().Name}!`
+`Welcome onboard, ${getEmployee().Name}!`
 ```
 
 ##### Body
 
 ```javascript
-`Hi ${getEmployee().Name},<br><br>All of your accounts have been setup. Welcome aboard!`
+`Hi ${getEmployee().Name},<br><br>All of your accounts have been setup. Welcome onboard!`
 ```
 
 ---
@@ -203,12 +274,13 @@ The application contains a single view to display the list of tasks the user sho
 Run the following CLI command to scaffold the new project:
 
 ```bash
-dotnet new mvc -o EmployeeOnboarding.Web
+dotnet new mvc -o EmployeeOnboarding.Web -f net8.0
 ```
 
 Add the following NuGet packages:
 
 ```bash
+cd EmployeeOnboarding.Web
 dotnet add package Microsoft.EntityFrameworkCore
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -218,6 +290,8 @@ dotnet add package Elsa.EntityFrameworkCore
 
 For this application, we'll use Entity Framework Core to store the onboarding tasks in a SQLite database.
 First, let's model the onboarding task entity like this:
+
+**Entities/OnboardingTask.cs**
 
 ```clike
 namespace EmployeeOnboarding.Web.Entities;
@@ -281,23 +355,25 @@ public class OnboardingTask
 
 Next, let's create the database context:
 
+**Data/OnboardingDbContext.cs**
+
 ```clike
+using EmployeeOnboarding.Web.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace EmployeeOnboarding.Web.Data;
 
-public class OnboardingDbContext : DbContext
+public class OnboardingDbContext(DbContextOptions<OnboardingDbContext> options) : DbContext(options)
 {
-    public OnboardingDbContext(DbContextOptions<OnboardingDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<OnboardingTask> Tasks { get; set; } = default!;
 }
 ```
 
-Finally, let's configure the database context in `Startup.cs`:
+Finally, let's configure the database context in `Program.cs`:
+
+**Program.cs**
 
 ```clike
-builder.Services.AddControllersWithViews();
 builder.Services.AddDbContextFactory<OnboardingDbContext>(options => options.UseSqlite("Data Source=onboarding.db"));
 ```
 
@@ -305,25 +381,29 @@ Notice that we are using a `DbContextFactory` to create the database context. Th
 
 #### Migrations
 
+Run the following CLI command to generate the initial migration:
+
+```bash
+dotnet ef migrations add Initial
+```
+
 Let's create a hosted service that will run migrations automatically when the application starts:
 
+**HostedServices/MigrationsHostedService.cs**
+
 ```clike
+using EmployeeOnboarding.Web.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace EmployeeOnboarding.Web.HostedServices;
 
-public class MigrationsHostedService : IHostedService
+public class MigrationsHostedService(IServiceProvider serviceProvider) : IHostedService
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public MigrationsHostedService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<OnboardingDbContext>>();
-        await using var dbContext = dbContextFactory.CreateDbContext();
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
         await dbContext.Database.MigrateAsync(cancellationToken);
     }
 
@@ -333,14 +413,10 @@ public class MigrationsHostedService : IHostedService
 
 Register the hosted service in `Program.cs`:
 
+**Program.cs**
+
 ```clike
 builder.Services.AddHostedService<MigrationsHostedService>();
-```
-
-Run the following CLI command to generate the initial migration:
-
-```bash
-dotnet ef migrations add Initial
 ```
 
 #### Task List
@@ -348,23 +424,22 @@ dotnet ef migrations add Initial
 Now that we have our database access layer setup, let's update the Home controller to display the list of tasks that need to be completed.
 For that, we will introduce a view model called `IndexViewModel` for the `Index` action of the `HomeController`:
 
+**Views/Home/IndexViewModel.cs**
+
 ```clike
 using EmployeeOnboarding.Web.Entities;
 
 namespace EmployeeOnboarding.Web.Views.Home;
 
-public class IndexViewModel
+public class IndexViewModel(ICollection<OnboardingTask> tasks)
 {
-    public IndexViewModel(ICollection<OnboardingTask> tasks)
-    {
-        Tasks = tasks;
-    }
-
-    public ICollection<OnboardingTask> Tasks { get; set; }
+    public ICollection<OnboardingTask> Tasks { get; set; } = tasks;
 }
 ```
 
 Then update the `Index` action of the `HomeController` to use the view model:
+
+**Controllers/HomeController.cs**
 
 ```csharp
 using EmployeeOnboarding.Web.Data;
@@ -374,18 +449,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeOnboarding.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(OnboardingDbContext dbContext) : Controller
 {
-    private readonly OnboardingDbContext _dbContext;
-
-    public HomeController(OnboardingDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-    
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var tasks = await _dbContext.Tasks.Where(x => !x.IsCompleted).ToListAsync(cancellationToken: cancellationToken);
+        var tasks = await dbContext.Tasks.Where(x => !x.IsCompleted).ToListAsync(cancellationToken: cancellationToken);
         var model = new IndexViewModel(tasks);
         return View(model);
     }
@@ -394,7 +462,9 @@ public class HomeController : Controller
 
 Finally, let's update the `Index.cshtml` view to display the list of tasks:
 
-```razor
+**Views/Home/Index.cshtml**
+
+```html
 @model EmployeeOnboarding.Web.Views.Home.IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -444,6 +514,8 @@ Now that we have a way to display the list of task, let's setup a webhook contro
 
 First, let's create a new controller called `WebhookController`:
 
+**Controllers/WebhookController.cs**
+
 ```clike
 using EmployeeOnboarding.Web.Data;
 using EmployeeOnboarding.Web.Entities;
@@ -454,15 +526,8 @@ namespace EmployeeOnboarding.Web.Controllers;
 
 [ApiController]
 [Route("api/webhooks")]
-public class WebhookController : Controller
+public class WebhookController(OnboardingDbContext dbContext) : Controller
 {
-    private readonly OnboardingDbContext _dbContext;
-
-    public WebhookController(OnboardingDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-    
     [HttpPost("run-task")]
     public async Task<IActionResult> RunTask(WebhookEvent webhookEvent)
     {
@@ -481,63 +546,95 @@ public class WebhookController : Controller
             CreatedAt = DateTimeOffset.Now
         };
 
-        await _dbContext.Tasks.AddAsync(task);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Tasks.AddAsync(task);
+        await dbContext.SaveChangesAsync();
 
         return Ok();
     }
 }
 ```
 
-The above listing uses the `WebhookEvent` model to deserialize the webhook payload. The `WebhookEvent` model is defined as follows:
+The above listing uses the `WebhookEvent` model to deserialize the webhook payload. The `WebhookEvent` and related models are defined as follows:
+
+**Models/WebhookEvent.cs**
 
 ```clike
+namespace EmployeeOnboarding.Web.Models;
+
 public record WebhookEvent(string EventType, RunTaskWebhook Payload, DateTimeOffset Timestamp);
 ```
 
-The `RunTaskWebhook` model is defined as follows:
+**Models/RunTaskWebhook.cs**
 
 ```clike
+namespace EmployeeOnboarding.Web.Models;
+
 public record RunTaskWebhook(string WorkflowInstanceId, string TaskId, string TaskName, TaskPayload TaskPayload);
 ```
 
-The `TaskPayload` model is defined as follows:
+**Models/TaskPayload.cs**
 
 ```clike
+namespace EmployeeOnboarding.Web.Models;
+
 public record TaskPayload(Employee Employee, string Description);
 ```
 
-The `Employee` model is defined as follows:
+**Models/Employee.cs**
 
 ```clike
+namespace EmployeeOnboarding.Web.Models;
+
 public record Employee(string Name, string Email);
 ```
 
 #### Completing Tasks
 
-Let's add the `CompleteTask` action to the `HomeController`:
+Let's add the `CompleteTask` action to the `HomeController`. The following shows the complete `HomeController`:
+
+**Controllers/HomeController.cs**
 
 ```clike
-public async Task<IActionResult> CompleteTask(int taskId, CancellationToken cancellationToken)
+using EmployeeOnboarding.Web.Data;
+using EmployeeOnboarding.Web.Services;
+using EmployeeOnboarding.Web.Views.Home;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace EmployeeOnboarding.Web.Controllers;
+
+public class HomeController(OnboardingDbContext dbContext, ElsaClient elsaClient) : Controller
 {
-    var task = _dbContext.Tasks.FirstOrDefault(x => x.Id == taskId);
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    {
+        var tasks = await dbContext.Tasks.Where(x => !x.IsCompleted).ToListAsync(cancellationToken: cancellationToken);
+        var model = new IndexViewModel(tasks);
+        return View(model);
+    }
     
-    if (task == null)
-        return NotFound();
+    public async Task<IActionResult> CompleteTask(int taskId, CancellationToken cancellationToken)
+    {
+        var task = dbContext.Tasks.FirstOrDefault(x => x.Id == taskId);
     
-    await _elsaClient.ReportTaskCompletedAsync(task.ExternalId, cancellationToken: cancellationToken);
+        if (task == null)
+            return NotFound();
     
-    task.IsCompleted = true;
-    task.CompletedAt = DateTimeOffset.Now;
+        await elsaClient.ReportTaskCompletedAsync(task.ExternalId, cancellationToken: cancellationToken);
     
-    _dbContext.Tasks.Update(task);
-    await _dbContext.SaveChangesAsync(cancellationToken);
+        task.IsCompleted = true;
+        task.CompletedAt = DateTimeOffset.Now;
     
-    return RedirectToAction("Index");
+        dbContext.Tasks.Update(task);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    
+        return RedirectToAction("Index");
+    }
 }
 ```
 
 The above listing uses the `ElsaClient` to report the task as completed, which is defined as follows:
+
+**Services/ElsaClient.cs**
 
 ```clike
 namespace EmployeeOnboarding.Web.Services;
@@ -545,15 +642,8 @@ namespace EmployeeOnboarding.Web.Services;
 /// <summary>
 /// A client for the Elsa API.
 /// </summary>
-public class ElsaClient
+public class ElsaClient(HttpClient httpClient)
 {
-    private readonly HttpClient _httpClient;
-
-    public ElsaClient(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
-
     /// <summary>
     /// Reports a task as completed.
     /// </summary>
@@ -564,16 +654,20 @@ public class ElsaClient
     {
         var url = new Uri($"tasks/{taskId}/complete", UriKind.Relative);
         var request = new { Result = result };
-        await _httpClient.PostAsJsonAsync(url, request, cancellationToken);
+        await httpClient.PostAsJsonAsync(url, request, cancellationToken);
     }
 }
 ```
 
 The HttpClient is configured from `Program.cs` as follows:
 
+**Program.cs**
+
 ```clike
 // Configure Elsa API client.
-services.AddHttpClient<ElsaClient>(httpClient =>
+var configuration = builder.Configuration;
+
+builder.Services.AddHttpClient<ElsaClient>(httpClient =>
 {
     var url = configuration["Elsa:ServerUrl"]!.TrimEnd('/') + '/';
     var apiKey = configuration["Elsa:ApiKey"]!;
@@ -584,6 +678,8 @@ services.AddHttpClient<ElsaClient>(httpClient =>
 
 The `Elsa` section in `appsettings.json` is defined as follows:
 
+**appsettings.json**
+
 ```json
 {
   "Elsa": {
@@ -591,6 +687,12 @@ The `Elsa` section in `appsettings.json` is defined as follows:
     "ApiKey": "00000000-0000-0000-0000-000000000000"
   }
 }
+```
+
+Run the following CLI command to run the application:
+
+```bash
+dotnet run --urls=https://localhost:5002
 ```
 
 #### Running the Workflow
@@ -627,6 +729,8 @@ when you refresh the Task list page, the task will be gone, but 4 new tasks will
 Once you complete all tasks, the workflow will send the Welcome email to the employee and the workflow will be completed.
 
 ![](/guides/external-app-integration/employee-onboarding-email.png)
+
+You can find the final source code for this guide [here](https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/external-app-integration/EmployeeOnboarding.Web).
 
 ## Conclusion
 
