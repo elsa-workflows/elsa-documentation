@@ -7,7 +7,7 @@ In this chapter, we'll learn how to setup an Elsa Server.
 
 ## What is an Elsa Server?
 
-An Elsa Server is an ASP.NET Core web application that lets you manage workflows using a REST API. 
+An Elsa Server is an ASP.NET Core web application that lets you manage workflows using a REST API ad execute them. 
 You can store your workflows in various places like databases, file systems, or even cloud storage. In this guide, we're going to learn how to set one up! 
 
 ## Setup
@@ -19,13 +19,13 @@ First, we need to create a new ASP.NET project. Open your command line tool and 
 ```shell
 dotnet new web -n "ElsaServer" -f net8.0
 cd ElsaServer
-dotnet add package Elsa --prerelease
-dotnet add package Elsa.EntityFrameworkCore --prerelease
-dotnet add package Elsa.EntityFrameworkCore.Sqlite --prerelease
-dotnet add package Elsa.Identity --prerelease
-dotnet add package Elsa.Scheduling --prerelease
-dotnet add package Elsa.Workflows.Api --prerelease
-dotnet add package Elsa.CSharp --prerelease
+dotnet add package Elsa
+dotnet add package Elsa.EntityFrameworkCore
+dotnet add package Elsa.EntityFrameworkCore.Sqlite
+dotnet add package Elsa.Identity
+dotnet add package Elsa.Scheduling
+dotnet add package Elsa.Workflows.Api
+dotnet add package Elsa.CSharp
 ```
 
 These commands will set up a new web project and add necessary Elsa packages to it.
