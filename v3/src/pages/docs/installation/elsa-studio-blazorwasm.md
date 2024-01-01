@@ -36,9 +36,9 @@ Navigate to the root directory of your project and integrate the following Elsa 
 
 ```shell
 cd ElsaStudioBlazorWasm
-dotnet add package Elsa.Studio --prerelease
-dotnet add package Elsa.Studio.Core.BlazorWasm --prerelease
-dotnet add package Elsa.Studio.Login.BlazorWasm --prerelease
+dotnet add package Elsa.Studio
+dotnet add package Elsa.Studio.Core.BlazorWasm
+dotnet add package Elsa.Studio.Login.BlazorWasm
 ```
 
 ### 3. Modifying Program.cs
@@ -74,8 +74,8 @@ builder.RootComponents.RegisterCustomElsaStudioElements();
 builder.Services.AddCore();
 builder.Services.AddShell();
 builder.Services.AddRemoteBackend(
-    options => configuration.GetSection("Backend").Bind(options),
-    configureElsaClientBuilderOptions: elsaClient => { elsaClient.ConfigureHttpClientBuilder = httpClientBuilder => { httpClientBuilder.AddHttpMessageHandler<AuthenticatingApiHttpMessageHandler>(); }; });
+    elsaClient => elsaClient.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler),
+    options => configuration.GetSection("Backend").Bind(options));
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
@@ -103,7 +103,7 @@ For a cleaner project structure, delete the following directories and files:
 
 ### 5. Generating wwwroot/appsettings.json
 
-Within the `wwwroot` directory, craft a new `appsettings.json` file and populate it with the subsequent content:
+Within the `wwwroot` directory, create a new `appsettings.json` file and populate it with the subsequent content:
 
 **appsettings.json**
 
