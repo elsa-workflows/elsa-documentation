@@ -44,6 +44,7 @@ cd ElsaStudioBlazorServer
 dotnet add package Elsa.Studio
 dotnet add package Elsa.Studio.Core.BlazorServer
 dotnet add package Elsa.Studio.Login.BlazorServer
+dotnet add package Elsa.Api.Client
 ```
 
 ### 3. Modifying Program.cs
