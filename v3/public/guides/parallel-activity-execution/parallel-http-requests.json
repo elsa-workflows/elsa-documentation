@@ -1,0 +1,381 @@
+{
+  "id": "b0e5a7318ee909b1",
+  "definitionId": "48528c1dfb17c1d2",
+  "name": "Parallel HTTP Requests",
+  "createdAt": "2024-01-06T19:55:47.0155285+00:00",
+  "version": 1,
+  "toolVersion": "3.0.0.0",
+  "variables": [
+    {
+      "id": "5188c57e32ed64e9",
+      "name": "Response1",
+      "typeName": "String",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    },
+    {
+      "id": "d31126b96afb5f74",
+      "name": "Response2",
+      "typeName": "String",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    },
+    {
+      "id": "6f7daadcb3a7076a",
+      "name": "Response3",
+      "typeName": "String",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    },
+    {
+      "id": "c99828c5897573a9",
+      "name": "StatusCode1",
+      "typeName": "Long",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    },
+    {
+      "id": "aea77fdaf8d12b02",
+      "name": "StatusCode2",
+      "typeName": "Long",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    },
+    {
+      "id": "bb0f9a7af0308336",
+      "name": "StatusCode3",
+      "typeName": "Long",
+      "isArray": false,
+      "storageDriverTypeName": "Elsa.Workflows.Services.WorkflowStorageDriver, Elsa.Workflows.Core"
+    }
+  ],
+  "inputs": [],
+  "outputs": [],
+  "outcomes": [],
+  "customProperties": {},
+  "isReadonly": false,
+  "isLatest": true,
+  "isPublished": true,
+  "options": {
+    "autoUpdateConsumingWorkflows": false
+  },
+  "root": {
+    "type": "Elsa.Flowchart",
+    "version": 1,
+    "id": "2df3439938bbedc2",
+    "nodeId": "Workflow1:2df3439938bbedc2",
+    "metadata": {},
+    "customProperties": {
+      "source": "FlowchartJsonConverter.cs:45",
+      "notFoundConnections": [],
+      "canStartWorkflow": false,
+      "runAsynchronously": false
+    },
+    "activities": [
+      {
+        "id": "1943af5334ae7733",
+        "nodeId": "Workflow1:2df3439938bbedc2:1943af5334ae7733",
+        "name": "Start1",
+        "type": "Elsa.Start",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": false
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": -475.5,
+              "y": 295
+            },
+            "size": {
+              "width": 102.21875,
+              "height": 50
+            }
+          }
+        }
+      },
+      {
+        "text": {
+          "typeName": "String",
+          "expression": {
+            "type": "CSharp",
+            "value": "return\n$\u0022\u0022\u0022\n{Variables.StatusCode1}\n{Variables.StatusCode2}\n{Variables.StatusCode1}\n\u0022\u0022\u0022;"
+          }
+        },
+        "id": "ec92ea1593ca7098",
+        "nodeId": "Workflow1:2df3439938bbedc2:ec92ea1593ca7098",
+        "name": "WriteLine1",
+        "type": "Elsa.WriteLine",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": false
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": 200,
+              "y": 295
+            },
+            "size": {
+              "width": 139.296875,
+              "height": 50
+            }
+          }
+        }
+      },
+      {
+        "expectedStatusCodes": null,
+        "url": {
+          "typeName": "System.Uri, System.Private.Uri",
+          "expression": {
+            "type": "Literal",
+            "value": "https://reqres.in/api/users/1"
+          }
+        },
+        "method": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "GET"
+          }
+        },
+        "content": null,
+        "contentType": null,
+        "authorization": null,
+        "disableAuthorizationHeaderValidation": null,
+        "requestHeaders": {
+          "typeName": "Elsa.Http.Models.HttpHeaders, Elsa.Http",
+          "expression": {
+            "type": "Literal",
+            "value": {}
+          }
+        },
+        "statusCode": {
+          "typeName": "Int32",
+          "memoryReference": {
+            "id": "c99828c5897573a9"
+          }
+        },
+        "parsedContent": {
+          "typeName": "Object",
+          "memoryReference": {
+            "id": "5188c57e32ed64e9"
+          }
+        },
+        "responseHeaders": null,
+        "result": null,
+        "id": "882b29442d9d108d",
+        "nodeId": "Workflow1:2df3439938bbedc2:882b29442d9d108d",
+        "name": "FlowSendHttpRequest1",
+        "type": "Elsa.FlowSendHttpRequest",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": true
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": -260,
+              "y": 200
+            },
+            "size": {
+              "width": 218.078125,
+              "height": 50
+            }
+          }
+        }
+      },
+      {
+        "expectedStatusCodes": null,
+        "url": {
+          "typeName": "System.Uri, System.Private.Uri",
+          "expression": {
+            "type": "Literal",
+            "value": "https://reqres.in/api/users/2"
+          }
+        },
+        "method": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "GET"
+          }
+        },
+        "content": null,
+        "contentType": null,
+        "authorization": null,
+        "disableAuthorizationHeaderValidation": null,
+        "requestHeaders": {
+          "typeName": "Elsa.Http.Models.HttpHeaders, Elsa.Http",
+          "expression": {
+            "type": "Literal",
+            "value": {}
+          }
+        },
+        "statusCode": {
+          "typeName": "Int32",
+          "memoryReference": {
+            "id": "aea77fdaf8d12b02"
+          }
+        },
+        "parsedContent": {
+          "typeName": "Object",
+          "memoryReference": {
+            "id": "d31126b96afb5f74"
+          }
+        },
+        "responseHeaders": null,
+        "result": null,
+        "id": "4db8e216bd3c9814",
+        "nodeId": "Workflow1:2df3439938bbedc2:4db8e216bd3c9814",
+        "name": "FlowSendHttpRequest2",
+        "type": "Elsa.FlowSendHttpRequest",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": true
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": -260,
+              "y": 295
+            },
+            "size": {
+              "width": 218.078125,
+              "height": 50
+            }
+          }
+        }
+      },
+      {
+        "expectedStatusCodes": null,
+        "url": {
+          "typeName": "System.Uri, System.Private.Uri",
+          "expression": {
+            "type": "Literal",
+            "value": "https://reqres.in/api/users/3"
+          }
+        },
+        "method": {
+          "typeName": "String",
+          "expression": {
+            "type": "Literal",
+            "value": "GET"
+          }
+        },
+        "content": null,
+        "contentType": null,
+        "authorization": null,
+        "disableAuthorizationHeaderValidation": null,
+        "requestHeaders": {
+          "typeName": "Elsa.Http.Models.HttpHeaders, Elsa.Http",
+          "expression": {
+            "type": "Literal",
+            "value": {}
+          }
+        },
+        "statusCode": {
+          "typeName": "Int32",
+          "memoryReference": {
+            "id": "bb0f9a7af0308336"
+          }
+        },
+        "parsedContent": {
+          "typeName": "Object",
+          "memoryReference": {
+            "id": "bb0f9a7af0308336"
+          }
+        },
+        "responseHeaders": null,
+        "result": null,
+        "id": "bc58a1a2518a9a20",
+        "nodeId": "Workflow1:2df3439938bbedc2:bc58a1a2518a9a20",
+        "name": "FlowSendHttpRequest3",
+        "type": "Elsa.FlowSendHttpRequest",
+        "version": 1,
+        "customProperties": {
+          "canStartWorkflow": false,
+          "runAsynchronously": true
+        },
+        "metadata": {
+          "designer": {
+            "position": {
+              "x": -260,
+              "y": 385
+            },
+            "size": {
+              "width": 218.078125,
+              "height": 50
+            }
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "source": {
+          "activity": "1943af5334ae7733",
+          "port": "Done"
+        },
+        "target": {
+          "activity": "882b29442d9d108d",
+          "port": "In"
+        }
+      },
+      {
+        "source": {
+          "activity": "1943af5334ae7733",
+          "port": "Done"
+        },
+        "target": {
+          "activity": "4db8e216bd3c9814",
+          "port": "In"
+        }
+      },
+      {
+        "source": {
+          "activity": "1943af5334ae7733",
+          "port": "Done"
+        },
+        "target": {
+          "activity": "bc58a1a2518a9a20",
+          "port": "In"
+        }
+      },
+      {
+        "source": {
+          "activity": "882b29442d9d108d",
+          "port": "200"
+        },
+        "target": {
+          "activity": "ec92ea1593ca7098",
+          "port": "In"
+        }
+      },
+      {
+        "source": {
+          "activity": "4db8e216bd3c9814",
+          "port": "200"
+        },
+        "target": {
+          "activity": "ec92ea1593ca7098",
+          "port": "In"
+        }
+      },
+      {
+        "source": {
+          "activity": "bc58a1a2518a9a20",
+          "port": "200"
+        },
+        "target": {
+          "activity": "ec92ea1593ca7098",
+          "port": "In"
+        }
+      }
+    ]
+  }
+}
