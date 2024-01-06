@@ -1,8 +1,8 @@
 {
-  "id": "b0e5a7318ee909b1",
+  "id": "c9a7236da69ab3cd",
   "definitionId": "48528c1dfb17c1d2",
   "name": "Parallel HTTP Requests",
-  "createdAt": "2024-01-06T19:55:47.0155285+00:00",
+  "createdAt": "2024-01-06T20:01:30.4179089+00:00",
   "version": 1,
   "toolVersion": "3.0.0.0",
   "variables": [
@@ -131,7 +131,7 @@
           "typeName": "System.Uri, System.Private.Uri",
           "expression": {
             "type": "Literal",
-            "value": "https://reqres.in/api/users/1"
+            "value": "https://reqres.in/api/users/1?delay=3"
           }
         },
         "method": {
@@ -194,7 +194,7 @@
           "typeName": "System.Uri, System.Private.Uri",
           "expression": {
             "type": "Literal",
-            "value": "https://reqres.in/api/users/2"
+            "value": "https://reqres.in/api/users/2?delay=3"
           }
         },
         "method": {
@@ -257,7 +257,7 @@
           "typeName": "System.Uri, System.Private.Uri",
           "expression": {
             "type": "Literal",
-            "value": "https://reqres.in/api/users/3"
+            "value": "https://reqres.in/api/users/3?delay=3"
           }
         },
         "method": {
