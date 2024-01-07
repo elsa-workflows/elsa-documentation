@@ -38,7 +38,8 @@ const navigation = [
             { title: 'HTTP workflows', href: '/docs/guides/http-workflows' },
             { title: 'External app integration', href: '/docs/guides/external-app-integration' },
             { title: 'Loading workflows from JSON', href: '/docs/guides/loading-workflows-from-json' },
-            { title: 'Invoking workflows', href: '/docs/guides/invoking-workflows' }
+            { title: 'Invoking workflows', href: '/docs/guides/invoking-workflows' },
+            { title: 'Dispatching Child Workflows', href: '/docs/guides/dispatching-child-workflows' },
         ],
     },
     {
