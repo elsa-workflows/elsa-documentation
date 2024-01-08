@@ -10,4 +10,20 @@
         <description>Created after removal of "Introduction" from Elsa</description>
         <accepts>Starter.html</accepts>
     </rule>
+    <rule id="603889f0">
+        <description>Created after removal of "Overview" from Elsa</description>
+        <accepts>Overview.html</accepts>
+    </rule>
+    <rule id="660b4fdb">
+        <description>Created after removal of "Use Cases" from Elsa</description>
+        <accepts>Use-Cases.html</accepts>
+    </rule>
+    <rule id="553d2411">
+        <description>Created after removal of "Key Features" from Elsa</description>
+        <accepts>Key-Features.html</accepts>
+    </rule>
+    <rule id="1f9718d4">
+        <description>Created after removal of "Elsa Console" from Elsa</description>
+        <accepts>Elsa-Console.html</accepts>
+    </rule>
 </rules>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Application Types" id="Project-Types">
+
+    <section-starting-page>
+        <title>Application Types</title>
+        <description>
+            There are several types of applications that we can infuse with Elsa capabilities.
+            In the next topics, we will explore the most common ones.
+        </description>
+        <spotlight>
+            <a href="Elsa-Server.topic" type="container">Elsa Server</a>
+            <a href="Elsa-Studio.topic" type="computer">Elsa Studio</a>
+        </spotlight>
+        <primary>
+            <title>ASP.NET Core</title>
+            <a href="Elsa-Server-Studio.topic">Elsa Studio + Server</a>
+            <a href="Elsa-Web.topic">Elsa Web</a>
+        </primary>
+        <secondary>
+            <title>.NET</title>
+            <a href="Elsa-Console.topic">Elsa Console</a>
+        </secondary>
+        <misc>
+            <cards>
+                <title>Embedding Elsa Studio</title>
+                <a href="Reusing-in-Blazor.topic">Blazor</a>
+                <a href="Reusing-in-React.topic">React</a>
+                <a href="Reusing-in-Angular.topic">Angular</a>
+            </cards>
+        </misc>
+    </section-starting-page>
+</topic>

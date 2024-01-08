@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Docker" id="Docker">
+
+    <p>
+        The Elsa project currently offers three different Docker images:
+    </p>
+
+    <list>
+        <li><a href="https://hub.docker.com/repository/docker/elsaworkflows/elsa-server-and-studio-v3/general">Elsa Server + Studio</a></li>
+        <li><a href="https://hub.docker.com/repository/docker/elsaworkflows/elsa-server-v3/general">Elsa Server</a></li>
+        <li><a href="https://hub.docker.com/repository/docker/elsaworkflows/elsa-studio-v3/general">Elsa Studio</a></li>
+    </list>
+
+    <p>
+        These images make it easy to give Elsa a quick spin without first creating an ASP.NET application and setting up Elsa.
+        Before trying to run an image, <a href="Prerequisites.topic#docker">make sure you have Docker installed</a> on your machine.
+    </p>
+
+    <chapter title="Elsa Server + Studio" id="elsa-server-and-studio">
+        <p>
+            This image hosts an ASP.NET Core application that runs both as an Elsa Server as well as an Elsa Studio application.
+            To run the container, simply run the following commands from your terminal:
+        </p>
+        <code-block lang="bash">
+            docker pull elsaworkflows/elsa-server-and-studio-v3:latest
+            docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:8080 elsaworkflows/elsa-server-and-studio-v3:latest
+        </code-block>
+        <p>
+            When the container has started, open a web browser and navigate to <a href="http://localhost:13000">http://localhost:13000</a>.
+            On the login screen, enter the following credentials:
+        </p>
+        <code-block lang="bash">
+            Username: admin
+            Password: password
+        </code-block>
+        <p>
+            That's it!
+        </p>
+    </chapter>
+
+    <chapter title="Elsa Server" id="elsa-server">
+        <p>
+            This image hosts an ASP.NET Core application that runs as an Elsa Server.
+            To run the container, simply run the following commands from your terminal:
+        </p>
+        <code-block lang="bash">
+            docker pull elsaworkflows/elsa-server-v3:latest
+            docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:80 elsaworkflows/elsa-server-v3:latest
+        </code-block>
+        <p>
+            When the container has started, open a web browser and navigate to <a href="http://localhost:13000">http://localhost:13000</a>.
+        </p>
+        <p>
+            To view the API endpoints, navigate to <a href="http://localhost:13000/swagger">http://localhost:13000/swagger</a>.
+        </p>
+        <p>
+            That's it!
+        </p>
+    </chapter>
+
+    <chapter title="Elsa Studio" id="elsa-studio">
+        <p>
+            This image hosts an ASP.NET Core application that runs Elsa Studio.
+            To run the container, simply run the following commands from your terminal:
+        </p>
+        <code-block lang="bash">
+            docker pull elsaworkflows/elsa-studio-v3:latest
+            docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=http://localhost:13000/elsa/api -p 14000:8080 elsaworkflows/elsa-studio-v3:latest
+        </code-block>
+        <note title="Requires Elsa Server">
+            Note that Elsa Studio needs to connect to an existing Elsa Server instance, which URL is configured via the `ELSASERVER__URL` environment variable passed to the container (on port `13000` in this example).
+            To quickly start an Elsa Server instance, you can run the Elsa Server Docker image as outlined in the <a href="#elsa-server">previous chapter</a>.
+        </note>
+        <p>
+            When the container has started, open a web browser and navigate to <a href="http://localhost:14000">http://localhost:14000</a>.
+            On the login screen, enter the following credentials:
+        </p>
+        <code-block lang="bash">
+            Username: admin
+            Password: password
+        </code-block>
+        <p>
+            That's it!
+        </p>
+    </chapter>
+</topic>

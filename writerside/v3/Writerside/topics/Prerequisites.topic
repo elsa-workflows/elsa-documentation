@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Prerequisites" id="Prerequisites">
+
+    <p>
+        Before you can start creating your own workflow server using Elsa,there are a few prerequisites to consider.
+    </p>
+
+    <chapter title=".NET" id="dotnet" >
+        <list>
+            <li>.NET SDK (Version 6 or higher)</li>
+            <li>A code editor (e.g., Visual Studio, Visual Studio Code, Rider)</li>
+            <li>Basic knowledge of C# and ASP.NET Core and optionally Blazor for extending Elsa Studio</li>
+        </list>
+    </chapter>
+
+    <chapter title="Docker" id="docker" >
+        <p>In order to be able to run the various prebuilt Docker images hosting Elsa Server, Elsa Studio and Ela Server + Studio, you will need to have <a href="https://www.docker.com/products/docker-desktop/">Docker for Desktop</a> (or a similar tool) installed.</p>
+    </chapter>
+</topic>

@@ -7,7 +7,23 @@
                  start-page="Default-topic.md">
 
     <toc-element topic="Introduction.topic">
-        <toc-element topic="Getting-Started.topic"/>
+        <toc-element topic="Overview.topic"/>
+        <toc-element topic="Known-Limitations.topic"/>
+    </toc-element>
+    <toc-element topic="Getting-Started.topic">
+        <toc-element topic="Prerequisites.topic"/>
+        <toc-element topic="Docker.topic"/>
+        <toc-element topic="Packages.topic"/>
+        <toc-element topic="Project-Types.topic">
+            <toc-element topic="Elsa-Server.topic"/>
+            <toc-element topic="Elsa-Studio.topic"/>
+            <toc-element topic="Elsa-Server-Studio.topic"/>
+            <toc-element topic="Elsa-Web.topic"/>
+            <toc-element topic="Elsa-Console.topic"/>
+            <toc-element topic="Reusing-in-Blazor.topic"/>
+            <toc-element topic="Reusing-in-React.topic"/>
+            <toc-element topic="Reusing-in-Angular.topic"/>
+        </toc-element>
     </toc-element>
     <toc-element topic="Default-topic.md"/>
 </instance-profile>

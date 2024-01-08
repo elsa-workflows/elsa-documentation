@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Overview" id="Overview">
+
+    <p>
+        Elsa Workflows is not just another workflow engine; it's a robust and flexible solution designed to breathe life into your .NET applications.
+        With Elsa, you can model both simple and complex business processes, ensuring that your applications are not only functional but also efficient and user-friendly.
+    </p>
+
+    <chapter title="Build Custom Workflow Servers" id="build-custom-workflow-servers">
+        <p>
+            The Elsa NuGet packages are designed to be integrated into your own .NET applications for deep integration into your own domain services.
+            For example, you might be building a custom dashboard application for your customer's users. Domain events could be sent as triggers to kick off workflows that users can design visually.
+        </p>
+    </chapter>
+
+    <chapter title="Prebuilt Docker Image" id="docker-image">
+        <p>
+            Instead of creating your own custom workflow server, you can take advantage of a prebuilt Elsa Server application that can be hosted as an ASP.NET Core web application Docker container.
+        </p>
+        <note title="Work in Progress">
+            The Docker image is a continuous work in progress, and will receive more capabilities in the future, such as better configurability and even sending NuGet packages to it.
+        </note>
+    </chapter>
+
+    <chapter title="Key Features" id="key-features" >
+        <list>
+            <li><b>Long &amp; Short Running Workflows:</b> Whether you need a workflow that runs over days, waiting for user input, or one that completes in milliseconds, Elsa can handle it.</li>
+            <li><b>Activity Library:</b> A rich set of out-of-the-box activities that serve as the building blocks for your workflows.</li>
+            <li><b>Triggers:</b> Kick off workflows automatically based on specific events or conditions.</li>
+            <li><b>Dynamic Expressions:</b> Evaluate values dynamically during runtime using C#, JavaScript or Liquid expressions.</li>
+            <li><b>Extensibility:</b> Need something unique? Elsa is designed to be extensible, allowing you to add custom activities or integrate with other systems seamlessly.</li>
+            <li><b>Web based designer:</b> Create workflows visually using a web-based drag &amp; drop designer hosted in Elsa Studio, a modular, extensible web-based application built with Blazor.</li>
+        </list>
+    </chapter>
+    <chapter title="Potential Use Cases" id="potential-use-cases">
+        <list>
+            <li><b>Business Process Automation:</b> Streamline business processes like order processing, HR onboarding, or content approval.</li>
+            <li><b>Task Automation:</b> Automate repetitive tasks, from data entry to report generation.</li>
+            <li><b>Integration Workflows:</b> Connect disparate systems and ensure smooth data flow between them.</li>
+            <li><b>Alerts &amp; Monitoring:</b> Set up workflows to monitor systems and send alerts or take corrective actions automatically.</li>
+        </list>
+
+        <p>Dive deeper into the documentation to discover all that Elsa Workflows has to offer and start your journey towards creating dynamic, workflow-driven applications!</p>
+    </chapter>
+    <chapter title="Glossary" id="glossary">
+        <p>A glossary of commonly used terms in Elsa:</p>
+        <deflist>
+            <def title="Workflow">
+                A workflow is a sequence of one or more activities that can be executed.
+                In Elsa, a workflow is represented by an instance of the `Workflow` class, and is itself an activity.
+                The Workflow class has a single `Root` property of type `IActivity` that will be scheduled for execution when the workflow executes.
+            </def>
+            <def title="Workflow Instance">
+                A workflow instance represents a DB-persistable instance of a workflow that is being executed. It is represented by the `WorkflowInstance` class.
+            </def>
+            <def title="Activity">
+                An activity is a unit of work that can be executed by the workflow engine.
+                Activities can be chained together to form a workflow.
+                In Elsa, activities are represented by classes that implement the `IActivity` interface.
+            </def>
+            <def title="Bookmark">
+                A bookmark represents a point in a workflow where the workflow can be paused and resumed later.
+                Bookmarks are created by blocking activities, such as the `Event` activity or the Delay activity.
+            </def>
+        </deflist>
+    </chapter>
+</topic>

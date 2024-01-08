@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Known Limitations" id="Known-Limitations">
+
+    <p>
+        Elsa is continually evolving, and while it offers powerful capabilities, there are some known limitations and ongoing work:
+    </p>
+
+    <list>
+        <li>Documentation is still a work in progress.</li>
+        <li>The designer is not yet fully embeddable in other applications; this feature is planned for a future release.</li>
+        <li>C# and Python expressions are not yet fully tested.</li>
+        <li>Input/Output is not yet implemented in the Workflow Instance Viewer.</li>
+        <li>Starting workflows from the designer is currently supported only for workflows that do not require input and do not start with a trigger; this is planned for a future release.</li>
+        <li>The designer currently only supports Flowchart activities. Support for Sequence and StateMachine activities is planned for a future release.</li>
+        <li>UI input validation is not yet implemented.</li>
+    </list>
+</topic>

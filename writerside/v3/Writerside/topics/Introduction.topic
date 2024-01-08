@@ -5,7 +5,7 @@
        title="Introduction"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd">
 
-    <img src="elsa-logo-art.png" alt="Elsa Workflows" border-effect="line" />
+    <img src="elsa-logo-art.png" alt="Elsa Workflows" border-effect="rounded" />
 
     <p>
         Elsa Workflows is a powerful and flexible <b>execution</b> engine, encapsulated as a set of open-source .NET libraries
@@ -17,7 +17,6 @@
         Workflows in Elsa can be defined in two ways:
     </p>
     <list>
-
         <li>
             Programmatically: By writing .NET code, developers can define complex workflows tailored to specific
             business needs.
@@ -27,7 +26,28 @@
         </li>
     </list>
 
-    <p>Elsa's versatility makes it suitable for a wide range of applications, from simple task automation to complex
-        business process management. Its modular architecture allows for easy integration with existing systems, making
-        it a top choice for developers looking to add workflow functionality to their projects.</p>
+    <table>
+        <tr>
+            <td>Programmatic (C#)</td>
+            <td>Designer (Elsa Studio)</td>
+        </tr>
+        <tr>
+            <td>
+                <code-block lang="c#">
+                    var workflow = new Sequence
+                    {
+                        Activities =
+                        {
+                            new WriteLine("Hello World!"),
+                            new Delay(TimeSpan.FromSeconds(1)),
+                            new WriteLine("It is nice to meet you!")
+                        }
+                    };
+                </code-block>
+            </td>
+            <td>
+                <img src="hello-world-designer.png" alt="Hello World workflow created using the designer" border-effect="rounded" />
+            </td>
+        </tr>
+    </table>
 </topic>
