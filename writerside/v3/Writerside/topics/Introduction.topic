@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic id="Introduction"
+       title="Introduction"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd">
+
+    <img src="elsa-logo-art.png" alt="Elsa Workflows" border-effect="line" />
+
+    <p>
+        Elsa Workflows is a powerful and flexible <b>execution</b> engine, encapsulated as a set of open-source .NET libraries
+        designed to infuse .NET applications with workflow capabilities. With Elsa, developers can weave <b>logic</b> directly
+        into their <b>systems</b>, enhancing functionality and <b>automation</b> and align seamlessly with the application’s core
+        functionality.
+    </p>
+    <p>
+        Workflows in Elsa can be defined in two ways:
+    </p>
+    <list>
+
+        <li>
+            Programmatically: By writing .NET code, developers can define complex workflows tailored to specific
+            business needs.
+        </li>
+        <li>Visually: Using the built-in designer, non-developers or those who prefer a visual approach can create and
+            modify workflows with ease.
+        </li>
+    </list>
+
+    <p>Elsa's versatility makes it suitable for a wide range of applications, from simple task automation to complex
+        business process management. Its modular architecture allows for easy integration with existing systems, making
+        it a top choice for developers looking to add workflow functionality to their projects.</p>
+</topic>
