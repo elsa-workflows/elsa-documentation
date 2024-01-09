@@ -23,17 +23,16 @@
 
         <!--    Add up to 2 topics that you want to promote. Use the "type" attribute to select an icon.    -->
         <spotlight>
-            <a href="" type="start" summary="Give Elsa a quick spin using prebuilt Docker images">Docker</a>
-            <a href="" type="development" summary="Learn about known issues and limitations of Elsa">Known Issues and Limitations</a>
+            <a href="Docker.topic" type="start" summary="Give Elsa a quick spin using prebuilt Docker images">Docker</a>
+            <a href="Known-Limitations.topic" type="development" summary="Learn about known issues and limitations of Elsa">Known Issues and Limitations</a>
         </spotlight>
 
         <!--    Add several topics that are most important for this section.    -->
         <primary>
             <title>Setup</title>
-            <a href=""/>
-            <a href="" summary="With a custom card summary"/>
-            <a href="">Custom card title</a>
-            <a href="" summary="With a custom card summary">Custom card title</a>
+            <a href="Prerequisites.topic" summary="Learn about the prerequisites to using Elsa"/>
+            <a href="Packages.topic" summary="Learn about which packages to install and what feeds are available"/>
+            <a href="Application-Types.topic" summary="Learn about the most common application types that can be integrated with Elsa"/>
         </primary>
 
         <!--    Add several topics that are less important or are relevant only for advanced/experienced users.    -->

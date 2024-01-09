@@ -6,64 +6,72 @@
        title="Elsa Server" id="Elsa-Server">
 
     <p>
-        A How-to article is an action-oriented type of document.
-        It explains how to perform a specific task or solve a problem, and usually contains a sequence of steps.
-        Start with a short introductory paragraph that explains what users will accomplish by following this procedure,
-        what they need to perform it for, or define the target audience of the doc.
+        An Elsa Server is an ASP.NET Core web application that lets you manage workflows using a REST API ad execute them.
+        You can store your workflows in various places like databases, file systems, or even cloud storage.
+        In this topic, we're going to learn how to set one up!
     </p>
 
-    <note>
-        <p><control>Highlight important information.</control></p>
+    <chapter title="Setup" id="setup">
         <p>
-            You can change this element to <code>&lt;tip&gt;</code> or <code>&lt;warning&gt;</code>.
-        </p>
-    </note>
-
-    <chapter title="Before you start" id="before">
-        <p>It is good practice to list the prerequisites that are required or recommended.</p>
-
-        <p>Make sure that:</p>
-
-        <list>
-            <li>First prerequisite</li>
-            <li>Second prerequisite.</li>
-        </list>
-    </chapter>
-
-    <chapter title="How to perform a task" id="how-to">
-        <p>
-            Avoid writing procedures that are longer than 5 steps to keep it simple.
-            If the title of a procedure repeats the chapter title,
-            consider dropping the 'title' attribute of the procedure.
+            The following is a step-by-step guide to setting up a new ASP.NET Core Web Application that serves as an Elsa Server.
         </p>
 
-        <procedure title="How to title" id="steps-sequence">
+        <procedure>
             <step>
-                <p>Step with a code block.</p>
+                <control>Create a new ASP.NET project</control>
+                <p>
+                    Open your command line tool and run these commands:
+                </p>
 
-                <code-block lang="plain text">
-                    Hello, world!
+                <code-block lang="console">
+                    dotnet new web -n "ElsaServer" -f net8.0
                 </code-block>
             </step>
 
             <step>
-                Step with a <a href="https://www.jetbrains.com">link</a>.
+                <control>CD into the project's directory</control>
+                <p>
+                    Run the following command to go into the project's directory.
+                </p>
+
+                <code-block lang="console">
+                    cd ElsaServer
+                </code-block>
             </step>
 
             <step>
-                <p>Step with a list.</p>
+                <control>Add Packages</control>
+                <p>Add some commonly used Elsa packages.</p>
 
-                <list>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                </list>
+                <code-block lang="console">
+                    dotnet add package Elsa
+                    dotnet add package Elsa.EntityFrameworkCore
+                    dotnet add package Elsa.EntityFrameworkCore.Sqlite
+                    dotnet add package Elsa.Identity
+                    dotnet add package Elsa.Scheduling
+                    dotnet add package Elsa.Workflows.Api
+                    dotnet add package Elsa.CSharp
+                </code-block>
+            </step>
+
+            <step>
+                <p>
+                    we need to add some code to make our server work.
+                    Open the Program.cs file in your project and replace its contents with the code provided below.
+                    This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
+                </p>
+
+                <code-block lang="c#" src="elsa-server/Program.cs"/>
+            </step>
+
+            <step>
+                <control>Launch the server</control>
+                <p>
+                    To run the application on port 5001, execute the following command:
+                </p>
+                <code-block lang="console">
+                    dotnet run --urls "https://localhost:5001"
+                </code-block>
             </step>
         </procedure>
     </chapter>
