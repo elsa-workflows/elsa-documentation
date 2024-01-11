@@ -26,4 +26,12 @@
         <description>Created after removal of "Elsa Console" from Elsa</description>
         <accepts>Elsa-Console.html</accepts>
     </rule>
+    <rule id="33564273">
+        <description>Created after removal of "Modules" from Elsa</description>
+        <accepts>Modules.html</accepts>
+    </rule>
+    <rule id="5bfe5cdc">
+        <description>Created after removal of "This is the first topic" from Elsa</description>
+        <accepts>Default-topic.html</accepts>
+    </rule>
 </rules>

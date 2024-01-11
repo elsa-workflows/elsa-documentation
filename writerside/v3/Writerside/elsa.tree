@@ -4,7 +4,7 @@
 
 <instance-profile id="elsa"
                  name="Elsa"
-                 start-page="Default-topic.md">
+                 start-page="Introduction.topic">
 
     <toc-element topic="Introduction.topic">
         <toc-element topic="Overview.topic"/>
@@ -12,8 +12,8 @@
     </toc-element>
     <toc-element topic="Getting-Started.topic">
         <toc-element topic="Prerequisites.topic"/>
-        <toc-element topic="Docker.topic"/>
         <toc-element topic="Packages.topic"/>
+        <toc-element topic="Docker.topic"/>
         <toc-element topic="Application-Types.topic">
             <toc-element topic="Elsa-Server.topic"/>
             <toc-element topic="Elsa-Studio.topic"/>
@@ -25,5 +25,10 @@
             <toc-element topic="Reusing-in-Angular.topic"/>
         </toc-element>
     </toc-element>
-    <toc-element topic="Default-topic.md"/>
+    <toc-element topic="Activities.topic">
+        <toc-element topic="Library.topic">
+            <toc-element topic="MassTransit.topic"/>
+        </toc-element>
+        <toc-element topic="Writing-Custom-Activities.md"/>
+    </toc-element>
 </instance-profile>

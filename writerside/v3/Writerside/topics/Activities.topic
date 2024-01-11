@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Activities" id="Activities">
+
+    <section-starting-page>
+        <title>Activities</title>
+        <description>
+            Elsa ships with many activities.
+            In this section, we will explore many of them in detail and see how they can be used.
+        </description>
+        <spotlight>
+            <a href="Elsa-Server.topic" type="development">Primitives</a>
+            <a href="Elsa-Studio.topic" type="settings">Looping</a>
+        </spotlight>
+        <primary>
+            <title>Commonly Used</title>
+            <a href="Elsa-Server-Studio.topic">Branching</a>
+            <a href="Elsa-Web.topic">Scripting</a>
+            <a href="Elsa-Web.topic">Composition</a>
+            <a href="Elsa-Web.topic">Flow</a>
+            <a href="Elsa-Web.topic">Scheduling</a>
+
+        </primary>
+        <secondary>
+            <title>Communications</title>
+            <a href="Elsa-Web.topic">HTTP</a>
+            <a href="Elsa-Web.topic">Email</a>
+            <a href="Elsa-Web.topic">MassTransit</a>
+            <a href="Elsa-Web.topic">Console</a>
+        </secondary>
+        <misc>
+            <cards>
+                <title>Miscellaneous</title>
+                <a href="Reusing-in-Blazor.topic">Storage</a>
+            </cards>
+        </misc>
+    </section-starting-page>
+</topic>
