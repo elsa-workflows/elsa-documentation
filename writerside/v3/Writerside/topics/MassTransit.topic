@@ -108,16 +108,21 @@
     </chapter>
 
     <chapter title="Tutorial" id="tutorial">
-        <p>In this tutorial, we will setup an <a href="Elsa-Server.topic">Elsa Server</a> and configure it to use the MassTransit module and see it in action.</p>
+        <p>In this tutorial, we will set up an <a href="Elsa-Server.topic">Elsa Server</a> and configure it to use the MassTransit module and see it in action.</p>
         <chapter title="Prerequisites" id="prerequisites">
             <p>For this tutorial, you will need:</p>
             <list>
-                <li>To create a new ASP.NET project by following the <a href="Elsa-Server.topic">Elsa Server</a> setup guide.</li>
+                <li>To create a new ASP.NET project by following the <a href="Elsa-Server.topic">Elsa Server</a> setup guide, or the <a href="Elsa-Server-Studio.topic">Elsa Server and Studio</a> setup guide.</li>
+                <li>In case you only set up an Elsa Server, you will also need to run an Elsa Studio application. For this tutorial, it suffices to run an <a href="Docker.topic##elsa-studio">existing Elsa Studio image</a>. For this tutorial</li>
                 <li switcher-key="RabbitMQ">A connection string to a running RabbitMQ instance.</li>
                 <li switcher-key="Azure Service Bus">A connection string to an Azure Service Bus resource.</li>
             </list>
             <p>Then return here.</p>
-            <tip title="RabbitMQ Server" switcher-key="RabbitMQ">
+            <tip title="Elsa Studio and Docker">
+                For this tutorial, we will assume that you only set up an Elsa Server and that you run the Elsa Studio container connected to your Elsa Server.
+                However, if you prefer to set up an Elsa Server + Studio application, or even a separate Elsa Studio application, that is perfectly fine. In this case, simply run the application anytime the tutorial asks you to start Elsa Studio.
+            </tip>
+            <note title="RabbitMQ Server" switcher-key="RabbitMQ">
                 <p>Setting up a local RabbitMQ server is easy!</p>
                 <p>Just run the following Docker command to spin up a Docker container:</p>
                 <code-block lang="console">
@@ -127,7 +132,7 @@
                 <code-block lang="text">
                     amqp://guest:guest@localhost:5672
                 </code-block>
-            </tip>
+            </note>
         </chapter>
 
         <chapter title="Project Setup" id="project-setup">
@@ -178,6 +183,21 @@
                         massTransit.AddMessageType<OrderCreated>();
                     });
                 ]]></code-block>
+                </step>
+                <step>
+                    Run your brand new Elsa Server application on port `5001`:
+
+                    <code-block lang="console">
+                        dotnet run --urls "https://localhost:5001"
+                    </code-block>
+                </step>
+                <step>
+                    Run Elsa Studio on port 6001 and connect it to Elsa Server:
+
+                    <code-block lang="console">
+                        docker pull elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 6001:80 elsaworkflows/elsa-studio-v3:latest
+                    </code-block>
                 </step>
             </procedure>
         </chapter>
