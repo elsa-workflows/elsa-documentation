@@ -185,6 +185,49 @@
                 ]]></code-block>
                 </step>
                 <step>
+                    Create a new folder called <control>Messages</control> and add a new record type called `OrderCreated`:
+
+                    <emphasis>Messages/OrderCreated.cs</emphasis>
+                    <code-block lang="c#">
+                        namespace ElsaServer.Messages;
+                        public record OrderCreated(string Id, string CustomerId, string Product, int Quantity, decimal Total);
+                    </code-block>
+                </step>
+                <step>
+                    In order to be able to instantiate objects of our `OrderCreated` message type using JavaScript and C# expressions, we need to update the following lines in `Program.cs`:
+                    <compare>
+                        <code-block lang="c#">
+                            // Enable JavaScript workflow expressions.
+                            elsa.UseJavaScript();
+
+                            // Enable C# workflow expressions.
+                            elsa.UseCSharp();
+                        </code-block>
+                        <code-block lang="c#"><![CDATA[
+                            // Enable JavaScript workflow expressions.
+                            elsa.UseJavaScript(javaScript =>
+                            {
+                                javaScript.AllowClrAccess = true;
+                                javaScript.ConfigureEngine(options =>
+                                {
+                                    options.RegisterType<OrderCreated>();
+                                });
+                            });
+
+                            // Enable C# workflow expressions.
+                            elsa.UseCSharp(csharp =>
+                            {
+                                csharp.Assemblies.Add(typeof(OrderCreated).Assembly);
+                                csharp.Namespaces.Add(typeof(OrderCreated).Namespace!);
+                            });
+                        ]]></code-block>
+                    </compare>
+                </step>
+            </procedure>
+            </chapter>
+        <chapter title="Run Project" id="run-project">
+            <procedure>
+                <step>
                     Run your brand new Elsa Server application on port `5001`:
 
                     <code-block lang="console">
@@ -196,8 +239,57 @@
 
                     <code-block lang="console">
                         docker pull elsaworkflows/elsa-studio-v3:latest
-                        docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 6001:80 elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 6001:8080 elsaworkflows/elsa-studio-v3:latest
                     </code-block>
+                </step>
+                <step>
+                    Navigate to http://localhost:6001 and login with the default credentials:
+                    
+                    <include from="Snippets.topic" element-id="default-admin-credentials"/>
+                </step>
+            </procedure>
+        </chapter>
+        <chapter title="Create Workflows" id="create-workflows">
+            <procedure>
+                <step>
+                    Create a new workflow called <emphasis>Publisher</emphasis> and add the <control>Publish Order Created</control> activity to the canvas.
+                </step>
+                <step>
+                    Configure the activity's <control>Message</control> input with the following C# expression:
+
+                    <code-block lang="c#">
+                        return new OrderCreated("order-1", "Bob", "Apple", 15, 7.5m);
+                    </code-block>
+                </step>
+                <step>
+                    Publish the workflow.
+                </step>
+                <step>
+                    Create another workflow called <emphasis>Receiver</emphasis> and add the <control>Order Created</control> activity to the canvas.
+                </step>
+                <step>
+                    Create a variable called `OrderCreatedMessage` and set its Type to `OrderCreated`.
+                </step>
+                <step>
+                    Select the <control>Order Created</control> activity and select it <control>Outputs</control> tab. Update the <control>Results</control> field by selecting the variable we just created.
+                </step>
+                <step>
+                    Add the <control>WriteLine</control> activity to the canvas and connect the <control>Order Created</control> activity to it. For the <control>Text</control> input, supply the following C# expression:
+                    <code-block lang="c#">
+                        return $"Order created with ID {Variables.OrderCreatedMessage.Id}";
+                    </code-block>
+                </step>
+                <step>
+                    Publish the workflow.
+                </step>
+            </procedure>
+        </chapter>
+        <chapter title="Run Workflows" id="run-workflows">
+            <procedure>
+                <step>Go back to the <emphasis>Publisher</emphasis> workflow and select the Play button to run the workflow.</step>
+                <step>
+                    Navigate to the <control>Workflow Instances</control> page and notice that two new instances have been created: one for the <emphasis>Publisher</emphasis> workflow and another one for the <emphasis>Receiver</emphasis> workflow.
+                    The Receiver workflow instance exists because it was triggered by the <control>Order Created</control> activity.
                 </step>
             </procedure>
         </chapter>

@@ -48,6 +48,8 @@
                     dotnet add package Elsa.EntityFrameworkCore
                     dotnet add package Elsa.EntityFrameworkCore.Sqlite
                     dotnet add package Elsa.Identity
+                    dotnet add package Elsa.JavaScript
+                    dotnet add package Elsa.Liquid
                     dotnet add package Elsa.Scheduling
                     dotnet add package Elsa.Workflows.Api
                     dotnet add package Elsa.CSharp

@@ -27,8 +27,14 @@ builder.Services.AddElsa(elsa =>
     // Setup a SignalR hub for real-time updates from the server.
     elsa.UseRealTimeWorkflows();
 
-    // Enable C# workflow expressions
+    // Enable JavaScript workflow expressions.
+    elsa.UseJavaScript();
+
+    // Enable C# workflow expressions.
     elsa.UseCSharp();
+
+    // Enable Liquid workflow expressions.
+    elsa.UseLiquid();
 
     // Enable HTTP activities.
     elsa.UseHttp();

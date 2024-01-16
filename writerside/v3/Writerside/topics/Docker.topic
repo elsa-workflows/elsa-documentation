@@ -33,10 +33,7 @@
             When the container has started, open a web browser and navigate to <a href="http://localhost:13000">http://localhost:13000</a>.
             On the login screen, enter the following credentials:
         </p>
-        <code-block lang="bash">
-            Username: admin
-            Password: password
-        </code-block>
+        <include from="Snippets.topic" element-id="default-admin-credentials"/>
         <p>
             That's it!
         </p>
@@ -49,7 +46,7 @@
         </p>
         <code-block lang="bash">
             docker pull elsaworkflows/elsa-server-v3:latest
-            docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:80 elsaworkflows/elsa-server-v3:latest
+            docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:8080 elsaworkflows/elsa-server-v3:latest
         </code-block>
         <p>
             When the container has started, open a web browser and navigate to <a href="http://localhost:13000">http://localhost:13000</a>.
@@ -79,10 +76,7 @@
             When the container has started, open a web browser and navigate to <a href="http://localhost:14000">http://localhost:14000</a>.
             On the login screen, enter the following credentials:
         </p>
-        <code-block lang="bash">
-            Username: admin
-            Password: password
-        </code-block>
+        <include from="Snippets.topic" element-id="default-admin-credentials"/>
         <p>
             That's it!
         </p>
