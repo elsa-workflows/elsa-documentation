@@ -3,79 +3,223 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Elsa Studio" id="Elsa-Studio">
+       title="Elsa Studio" id="Elsa-Studio" switcher-label="Hosting Model">
 
     <p>
-        Tutorials are learning-oriented articles that help users to go through a process and achieve a deliverable.
-        Start with an introduction: for whom is this tutorial and what the reader will achieve by reading it.
-        Answer the question: "Why should I follow this?"
+        In this topic, we will create a separate
+        <control switcher-key="Blazor WebAssembly">ASP.NET Blazor Webassembly</control>
+        <control switcher-key="Blazor Server">ASP.NET Blazor Server</control>
+        app and turn it into an Elsa Studio that connects to the workflow server.
     </p>
 
-    <p>
-        Provide a short outline for the tutorial.
-        In this tutorial, you will learn how to:
-    </p>
-
-    <list>
-        <li>Do this</li>
-        <li>Deal with that</li>
-    </list>
-
-    <chapter title="Before you start" id="before-you-start">
+    <note title="When to use Blazor Server?" switcher-key="Blazor Server">
         <p>
-            List the prerequisites that are required or recommended.
-            Make sure that:
+            Although the Blazor Webassembly app is a great way to get started with Elsa Studio, it can be challenging when you are writing custom extensions that you need to debug. When running your app using Blazor Server, debugging becomes much easier.
+        </p>
+        <p>
+            For this reason, we recommend creating both a Blazor Server a Blazor WebAssembly project as part of the same solution.
+        </p>
+    </note>
+
+    <chapter title="Setup" id="setup">
+        <p>
+            To setup Elsa Studio, we'll go through the following steps:
         </p>
 
-        <list>
-            <li>Prerequisite one</li>
-            <li>Prerequisite two</li>
-        </list>
-    </chapter>
-
-    <chapter title="Part 1" id="part-one">
-        <p>
-            Describe what the user will learn and accomplish in the first part,
-            then write a step-by-step procedure but on a real-world example.
-        </p>
-
-        <procedure>
+        <procedure switcher-key="Blazor WebAssembly">
             <step>
+                <control>Create a New Blazor Webassembly App</control>
                 <p>Execute the following command in the terminal:</p>
 
-                <code-block lang="bash">
-                    run this --that
+                <code-block lang="console">
+                    dotnet new blazorwasm-empty -n "ElsaStudioBlazorWasm" -f net7.0
                 </code-block>
             </step>
-
             <step>
-                Step with a <a href="https://www.jetbrains.com">link</a>.
+                <control>Add Elsa Studio Packages</control>
+                <p>Navigate to the root directory of your project and integrate the following Elsa Studio packages:</p>
+                <code-block lang="console">
+                    cd ElsaStudioBlazorWasm
+                    dotnet add package Elsa.Studio
+                    dotnet add package Elsa.Studio.Core.BlazorWasm
+                    dotnet add package Elsa.Studio.Login.BlazorWasm
+                    dotnet add package Elsa.Api.Client
+                </code-block>
             </step>
-
             <step>
-                Final step in part 1.
+                <control>Modify Program.cs</control>
+                <p>Open the Program.cs file and replace its existing content with the code provided below:</p>
+                <emphasis>Program.cs:</emphasis>
+                <code-block lang="c#" src="elsa-studio/wasm/Program.cs"/>
+            </step>
+            <step>
+                <control>Remove Unnecessary Files</control>
+                <p>For a cleaner project structure, delete the following directories and files:</p>
+                <list>
+                    <li>wwwroot/css</li>
+                    <li>Pages</li>
+                    <li>App.razor</li>
+                    <li>MainLayout.razor</li>
+                    <li>_Imports.razor</li>
+                </list>
+            </step>
+            <step>
+                <control>Generate appsettings.json</control>
+                <p>Within the <code>wwwroot</code> directory, create a new <code>appsettings.json</code> file and populate it with the following content:</p>
+                <emphasis>wwwroot/appsettings.json:</emphasis>
+                <code-block lang="json">
+                    {
+                        "Backend": {
+                            "Url": "https://localhost:5001/elsa/api"
+                        }
+                    }
+                </code-block>
+            </step>
+            <step>
+                <control>Update index.html</control>
+                <p>To conclude the setup, open the <code>index.html</code> file and replace its content with the code showcased below:</p>
+                <emphasis>wwwroot/index.html:</emphasis>
+                <code-block lang="c#" src="elsa-studio/wasm/index.html"/>
+            </step>
+        </procedure>
+        <procedure switcher-key="Blazor Server">
+            <step>
+                <control>Create a New Blazor Server App</control>
+                <p>Kickstart your project by generating a new Blazor Server application using the following command:</p>
+                <code-block lang="console">
+                    dotnet new blazorserver-empty -n "ElsaStudioBlazorServer" -f net7.0
+                </code-block>
+            </step>
+            <step>
+                <control>Add Elsa Studio Packages</control>
+                <p>Navigate to the root directory of your project and integrate the following Elsa Studio packages:</p>
+                <code-block lang="console">
+                    cd ElsaStudioBlazorServer
+                    dotnet add package Elsa.Studio
+                    dotnet add package Elsa.Studio.Core.BlazorServer
+                    dotnet add package Elsa.Studio.Login.BlazorServer
+                    dotnet add package Elsa.Api.Client
+                </code-block>
+            </step>
+            <step>
+                <control>Modify Program.cs</control>
+                <p>Open the Program.cs file and replace its existing content with the code provided below:</p>
+                <emphasis>Program.cs:</emphasis>
+                <code-block lang="c#" src="elsa-studio/server/Program.cs"/>
+            </step>
+            <step>
+                <control>Remove Unnecessary Files</control>
+                <p>For a cleaner project structure, eliminate the following directories and files:</p>
+                <list>
+                    <li>wwwroot/css</li>
+                    <li>Pages/Index.razor</li>
+                    <li>App.razor</li>
+                    <li>MainLayout.razor</li>
+                </list>
+            </step>
+            <step>
+                <control>Update appsettings.json</control>
+                <p>Update the <code>appsettings.json</code> file with the following content:</p>
+                <emphasis>appsettings.json:</emphasis>
+                <code-block lang="json">
+                    {
+                        "Backend": {
+                            "Url": "https://localhost:5001/elsa/api"
+                        }
+                    }
+                </code-block>
+            </step>
+            <step>
+                <control>Update _Host.cshtml</control>
+                <p>To conclude the setup, open the <code>_Host.cshtml</code> file and replace its content with the code showcased below:</p>
+                <emphasis>Pages/_Host.cshtml:</emphasis>
+                <code-block lang="razor"><![CDATA[
+                    @page "/"
+                    @using Elsa.Studio.Shell
+                    @using Microsoft.AspNetCore.Components.Web
+                    @namespace ElsaStudioBlazorServer.Pages
+                    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="utf-8"/>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                        <base href="~/"/>
+                        <link rel="apple-touch-icon" sizes="180x180" href="_content/Elsa.Studio.Shell/apple-touch-icon.png">
+                        <link rel="icon" type="image/png" sizes="32x32" href="_content/Elsa.Studio.Shell/favicon-32x32.png">
+                        <link rel="icon" type="image/png" sizes="16x16" href="_content/Elsa.Studio.Shell/favicon-16x16.png">
+                        <link rel="manifest" href="_content/Elsa.Studio.Shell/site.webmanifest">
+                        <link rel="preconnect" href="https://fonts.googleapis.com">
+                        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+                        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@100&display=swap" rel="stylesheet">
+                        <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+                        <link href="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.css" rel="stylesheet"/>
+                        <link href="_content/Radzen.Blazor/css/material-base.css" rel="stylesheet">
+                        <link href="_content/Elsa.Studio.Shell/css/shell.css" rel="stylesheet">
+                        <link href="Elsa.Studio.Host.Server.styles.css" rel="stylesheet">
+                        <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
+                    </head>
+                    <body>
+                    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+                    <div id="blazor-error-ui">
+                        <environment include="Staging,Production">
+                            An error has occurred. This application may no longer respond until reloaded.
+                        </environment>
+                        <environment include="Development">
+                            An unhandled exception has occurred. See browser dev tools for details.
+                        </environment>
+                        <a href="" class="reload">Reload</a>
+                        <a class="dismiss">🗙</a>
+                    </div>
+                    <script src="_content/BlazorMonaco/jsInterop.js"></script>
+                    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+                    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+                    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+                    <script src="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.js"></script>
+                    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+                    <script src="_framework/blazor.server.js"></script>
+                    </body>
+                    </html>
+                ]]></code-block>
             </step>
         </procedure>
     </chapter>
 
-    <chapter title="Part 2" id="part-two">
-        <p>This is the second part of the tutorial:</p>
+    <chapter title="Launch the Application" id="run-application">
+        <p>To see your application in action, execute the following command:</p>
 
-        <procedure>
-            <step>
-                From the menu, select <ui-path>Foo | Bar</ui-path>.
-            </step>
-            <step>
-                Enter <code>this text</code> in the <control>Text</control> field.
-            </step>
-            <step>
-                Click <control>OK</control> to...
-            </step>
-        </procedure>
+        <code-block lang="console" switcher-key="Blazor WebAssembly">
+            dotnet run --urls https://locahost:6001
+        </code-block>
+
+        <p switcher-key="Blazor WebAssembly">
+            Your application is now be accessible at <a href="https://localhost:6001">https://localhost:6001</a>.
+        </p>
+
+        <code-block lang="console" switcher-key="Blazor Server">
+            dotnet run --urls https://locahost:7001
+        </code-block>
+
+        <p switcher-key="Blazor Server">
+            Your application is now be accessible at <a href="https://localhost:7001">https://localhost:7001</a>.
+        </p>
+
+        <p>By default, you can log in using:</p>
+        <include from="Snippets.topic" element-id="default-admin-credentials"/>
     </chapter>
 
-    <chapter title="What you've learned" id="what-learned">
-        <p>Summarize what the reader achieved by completing this tutorial.</p>
+    <chapter title="Source Code" id="source-code">
+        <p switcher-key="Blazor WebAssembly">
+            The source code for this chapter can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-studio/ElsaStudioBlazorWasm">here</a>
+        </p>
+        <p switcher-key="Blazor Server">
+            The source code for this chapter can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-studio/ElsaStudioBlazorServer">here</a>
+        </p>
     </chapter>
 
     <seealso>

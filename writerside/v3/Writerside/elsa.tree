@@ -14,7 +14,6 @@
         <toc-element topic="Prerequisites.topic"/>
         <toc-element topic="Packages.topic"/>
         <toc-element topic="Docker.topic">
-            <toc-element topic="MassTransit.topic"/>
         </toc-element>
         <toc-element topic="Application-Types.topic">
             <toc-element topic="Elsa-Server.topic"/>
@@ -29,6 +28,7 @@
     </toc-element>
     <toc-element topic="Activities.topic">
         <toc-element topic="Library.topic">
+            <toc-element topic="MassTransit.topic"/>
         </toc-element>
         <toc-element topic="Writing-Custom-Activities.md"/>
     </toc-element>
