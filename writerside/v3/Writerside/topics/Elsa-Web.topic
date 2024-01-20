@@ -6,65 +6,129 @@
        title="Elsa Web" id="Elsa-Web">
 
     <p>
-        A How-to article is an action-oriented type of document.
-        It explains how to perform a specific task or solve a problem, and usually contains a sequence of steps.
-        Start with a short introductory paragraph that explains what users will accomplish by following this procedure,
-        what they need to perform it for, or define the target audience of the doc.
+        In this topic, we'll demonstrate how to integrate Elsa Workflows into an ASP.NET Core application.
+        This setup is ideal for executing long-running workflows in the background, supporting various activities like Timer, Cron, Event, and others that necessitate a background service.
     </p>
+    <p>This application type does not expose the necessary API endpoints for Elsa Studio to connect to. For that, please refer to <a href="Elsa-Server.topic"/>.</p>
 
-    <note>
-        <p><control>Highlight important information.</control></p>
-        <p>
-            You can change this element to <code>&lt;tip&gt;</code> or <code>&lt;warning&gt;</code>.
-        </p>
-    </note>
-
-    <chapter title="Before you start" id="before">
-        <p>It is good practice to list the prerequisites that are required or recommended.</p>
-
-        <p>Make sure that:</p>
-
-        <list>
-            <li>First prerequisite</li>
-            <li>Second prerequisite.</li>
-        </list>
-    </chapter>
-
-    <chapter title="How to perform a task" id="how-to">
-        <p>
-            Avoid writing procedures that are longer than 5 steps to keep it simple.
-            If the title of a procedure repeats the chapter title,
-            consider dropping the 'title' attribute of the procedure.
-        </p>
-
-        <procedure title="How to title" id="steps-sequence">
+    <chapter title="Setup" id="setup">
+        <procedure>
             <step>
-                <p>Step with a code block.</p>
+                <control>Create the Project</control>
+                <p>Create a new empty ASP.NET app using the following command:</p>
 
-                <code-block lang="plain text">
-                    Hello, world!
+                <code-block lang="console">
+                    dotnet new web -n "ElsaWeb" -f net8.0
                 </code-block>
             </step>
 
             <step>
-                Step with a <a href="https://www.jetbrains.com">link</a>.
+                <control>Add Packages</control>
+                <p>Navigate to your project's root directory and install the Elsa package:</p>
+                <code-block lang="console">
+                    cd ElsaWeb
+                    dotnet add package Elsa
+                </code-block>
             </step>
-
             <step>
-                <p>Step with a list.</p>
-
-                <list>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                    <li>
-                        <p>List item.</p>
-                    </li>
-                </list>
+                <control>Modify Program.cs</control>
+                <p>Open <code>Program.cs</code> in your project and replace its contents with the code provided below.</p>
+                <emphasis>Program.cs</emphasis>
+                <code-block lang="c#" src="elsa-web/Program1.cs"/>
+                <p>This configuration allows your application to use Elsa services for running workflows.</p>
             </step>
         </procedure>
+        <p>Our application is now ready to execute workflows. Let's look at a few examples to see how we might integrate with the engine</p>
+    </chapter>
+
+    <chapter title="Demo 1" id="demo-1">
+        <p>In this demo, we will add a custom controller that, when invoked, will execute a workflow that we create on the fly.</p>
+        <procedure>
+            <step>
+                <control>Add Controller</control>
+                <p>Add a new controller named HelloWorldController:</p>
+                <emphasis>Controllers/HelloWorldController.cs</emphasis>
+                <code-block lang="c#" src="elsa-web/HelloWorldController.cs"/>
+            </step>
+            <step>
+                <p>Restart the application and navigate to <a href="https://localhost:5001/hello-world">https://localhost:5001/hello-world</a></p>
+                <p>The response should read: <code>Hello ASP.NET world!</code></p>
+            </step>
+        </procedure>
+    </chapter>
+
+    <chapter title="Demo 2" id="demo-2">
+        <p>
+            In addition to programmatically invoking workflows, you can also create workflows that themselves are routable via HTTP requests.
+            To enable this, we need to add the <code>WorkflowsMiddleware</code> ASP.NET middleware component to the request pipeline.
+        </p>
+        <p>Let's see how this works.</p>
+        <procedure>
+            <step>
+                <p>In <code>Program.cs</code>, add the following line before <code>app.Run();</code>:</p>
+                <code-block lang="c#">
+                    app.UseWorkflows();
+                </code-block>
+                <p>The complete file should look like this:</p>
+                <code-block lang="c#" src="elsa-web/Program2.cs"/>
+            </step>
+            <step>
+                <p>Create a new directory called <code>Workflows</code> and add a new file to it called <code>HttpHelloWorld.cs</code> with the following.</p>
+                <emphasis>Workflows/HttpHelloWorld.cs</emphasis>
+                <code-block lang="c#" src="elsa-web/HttpHelloWorld1.cs"/>
+                <tip title="Workflow Triggers">
+                    In order for the workflow runtime to be able to trigger workflows automatically, you need to set the activity's <code>CanStartWorkflow</code> property to <code>true</code>.
+                    This is easy to forget, so whenever you are wondering why a workflow isn't running even though you are sure you triggered it, the first thing to check is to see if this property is set correctly.
+                </tip>
+            </step>
+            <step>
+                <p>Update <code>Program.cs</code> to register this workflow:</p>
+                <code-block lang="c#"><![CDATA[
+                    using ElsaWeb.Workflows; // Add this line.
+
+                    builder.Services.AddElsa(elsa =>
+                    {
+                        elsa.AddWorkflow<HttpHelloWorld>();
+                    });
+                ]]></code-block>
+                <p>The complete file should look like this:</p>
+                <code-block lang="c#" src="elsa-web/Program3.cs"/>
+            </step>
+            <step>
+                <p>
+                    Restart the app and visit <a href="https://localhost:5001/workflows/hello-world">https://localhost:5001/workflows/hello-world</a>.
+                    You should see the following message: <code>Hello world of HTTP workflows!</code>
+                </p>
+                <tip title="HTTP Endpoint Prefix Path">
+                    Notice that the URL path is <code>/workflows/hello-world</code> and not <code>/hello-world</code> as we defined in the workflow definition.
+                    This is because the <code>WorkflowsMiddleware</code> component is configured to use <code>/workflows</code> as the prefix path by default.
+                    You can change this by passing a different prefix path to the <code>UseHttp</code> method.
+                    For example, if you want to use <code>/api</code>, you can do so as follows:
+                    <code-block lang="c#">
+                        elsa.UseHttp(http => http.ConfigureHttpOptions = options => options.BasePath = "/api");
+                    </code-block>
+                </tip>
+            </step>
+            <step>
+                <p>Let's update the workflow to support a <code>message</code> variable that is received from the query string, just like we did in the controller demo.</p>
+                <p>Update <code>HttpHelloWorld.cs</code> with the following code:</p>
+                <emphasis>HttpHelloWorld.cs:</emphasis>
+                <code-block lang="c#" src="elsa-web/HttpHelloWorld2.cs"/>
+            </step>
+            <step>
+                <p>
+                    Restart the app and visit <a href="https://localhost:5001/workflows/hello-world?message=Hello">https://localhost:5001/workflows/hello-world?message=Hello</a>.
+                    You should now see the following message: <code>Hello</code>
+                </p>
+            </step>
+        </procedure>
+    </chapter>
+    <chapter title="Summary" id="summary">
+        <p>
+            We've covered how to set up Elsa Workflows in an ASP.NET Core application, demonstrating various methods of workflow execution and integration.
+            This approach allows for versatile and efficient handling of background processes and activities within your ASP.NET applications.
+        </p>
+
+        <p>The complete code and additional resources are available <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-web">here</a>.</p>
     </chapter>
 </topic>

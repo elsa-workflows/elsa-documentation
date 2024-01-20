@@ -60,24 +60,23 @@
 
             <step>
                 <p>
-                    we need to add some code to make our server work.
+                    We need to add some code to make our server work.
                     Open the Program.cs file in your project and replace its contents with the code provided below.
                     This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
                 </p>
 
                 <code-block lang="c#" src="elsa-server/Program.cs"/>
             </step>
-
-            <step>
-                <control>Launch the server</control>
-                <p>
-                    To run the application on port 5001, execute the following command:
-                </p>
-                <code-block lang="console">
-                    dotnet run --urls "https://localhost:5001"
-                </code-block>
-            </step>
         </procedure>
+    </chapter>
+
+    <chapter title="Launch the Application" id="run-application">
+        <p>
+            To see the application in action, execute the following command:
+        </p>
+        <code-block lang="console">
+            dotnet run --urls "https://localhost:5001"
+        </code-block>
     </chapter>
 
     <chapter title="Source Code" id="source-code">
