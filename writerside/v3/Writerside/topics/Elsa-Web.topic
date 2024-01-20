@@ -33,8 +33,8 @@
             <step>
                 <control>Modify Program.cs</control>
                 <p>Open <code>Program.cs</code> in your project and replace its contents with the code provided below.</p>
-                <emphasis>Program.cs</emphasis>
-                <code-block lang="c#" src="elsa-web/Program1.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-web/Program1.cs"/>
                 <p>This configuration allows your application to use Elsa services for running workflows.</p>
             </step>
         </procedure>
@@ -47,8 +47,8 @@
             <step>
                 <control>Add Controller</control>
                 <p>Add a new controller named HelloWorldController:</p>
-                <emphasis>Controllers/HelloWorldController.cs</emphasis>
-                <code-block lang="c#" src="elsa-web/HelloWorldController.cs"/>
+                <path>Controllers/HelloWorldController.cs</path>
+                <code-block lang="c#" src="installation/elsa-web/HelloWorldController.cs"/>
             </step>
             <step>
                 <p>Restart the application and navigate to <a href="https://localhost:5001/hello-world">https://localhost:5001/hello-world</a></p>
@@ -65,17 +65,17 @@
         <p>Let's see how this works.</p>
         <procedure>
             <step>
-                <p>In <code>Program.cs</code>, add the following line before <code>app.Run();</code>:</p>
+                <p>In <path>Program.cs</path>, add the following line before <code>app.Run();</code>:</p>
                 <code-block lang="c#">
                     app.UseWorkflows();
                 </code-block>
                 <p>The complete file should look like this:</p>
-                <code-block lang="c#" src="elsa-web/Program2.cs"/>
+                <code-block lang="c#" src="installation/elsa-web/Program2.cs"/>
             </step>
             <step>
                 <p>Create a new directory called <code>Workflows</code> and add a new file to it called <code>HttpHelloWorld.cs</code> with the following.</p>
-                <emphasis>Workflows/HttpHelloWorld.cs</emphasis>
-                <code-block lang="c#" src="elsa-web/HttpHelloWorld1.cs"/>
+                <path>Workflows/HttpHelloWorld.cs</path>
+                <code-block lang="c#" src="installation/elsa-web/HttpHelloWorld1.cs"/>
                 <tip title="Workflow Triggers">
                     In order for the workflow runtime to be able to trigger workflows automatically, you need to set the activity's <code>CanStartWorkflow</code> property to <code>true</code>.
                     This is easy to forget, so whenever you are wondering why a workflow isn't running even though you are sure you triggered it, the first thing to check is to see if this property is set correctly.
@@ -92,7 +92,8 @@
                     });
                 ]]></code-block>
                 <p>The complete file should look like this:</p>
-                <code-block lang="c#" src="elsa-web/Program3.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-web/Program3.cs"/>
             </step>
             <step>
                 <p>
@@ -112,8 +113,8 @@
             <step>
                 <p>Let's update the workflow to support a <code>message</code> variable that is received from the query string, just like we did in the controller demo.</p>
                 <p>Update <code>HttpHelloWorld.cs</code> with the following code:</p>
-                <emphasis>HttpHelloWorld.cs:</emphasis>
-                <code-block lang="c#" src="elsa-web/HttpHelloWorld2.cs"/>
+                <path>HttpHelloWorld.cs:</path>
+                <code-block lang="c#" src="installation/elsa-web/HttpHelloWorld2.cs"/>
             </step>
             <step>
                 <p>

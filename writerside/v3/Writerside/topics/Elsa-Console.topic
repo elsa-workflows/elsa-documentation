@@ -31,7 +31,7 @@
             <step>
                 <control>Modify Program.cs</control>
                 <p>Open <code>Program.cs</code> and replace its contents with the following:</p>
-                <code-block lang="c#" src="elsa-console/Program1.cs"/>
+                <code-block lang="c#" src="installation/elsa-console/Program1.cs"/>
                 <p>
                     This code sets up a service container and adds Elsa services to it.
                     The <code>serviceProvider</code> can be used to resolve Elsa services and run workflows.
@@ -47,8 +47,8 @@
 
         <procedure>
             <step>
-                <p>Add the following code to <code>Program.cs</code>:</p>
-                <code-block lang="c#" src="elsa-console/Program2.cs" include-lines="4,15-22" show-white-spaces="true"/>
+                <p>Add the following code to <path>Program.cs</path>:</p>
+                <code-block lang="c#" src="installation/elsa-console/Program2.cs" include-lines="4,15-22" show-white-spaces="true"/>
             </step>
 
             <step>
@@ -71,8 +71,8 @@
 
         <procedure>
             <step>
-                <p>Replace the previously added code to <code>Program.cs</code> with the following code:</p>
-                <code-block lang="c#" src="elsa-console/Program3.cs" include-lines="15-29" show-white-spaces="true"/>
+                <p>Replace the previously added code to <path>Program.cs</path> with the following code:</p>
+                <code-block lang="c#" src="installation/elsa-console/Program3.cs" include-lines="15-29" show-white-spaces="true"/>
             </step>
 
             <step>

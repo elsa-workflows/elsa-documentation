@@ -38,4 +38,8 @@
         <description>Created after removal of "default-elsa-studio-credentials" from toc-library</description>
         <accepts>toc-library.html</accepts>
     </rule>
+    <rule id="71cd9683">
+        <description>Created after removal of "Guides" from Elsa</description>
+        <accepts>Guides.html</accepts>
+    </rule>
 </rules>

@@ -23,6 +23,9 @@
         <toc-element topic="Elsa-Web.topic"/>
         <toc-element topic="Elsa-Console.topic"/>
     </toc-element>
+    <toc-element topic="Guides.topic">
+        <toc-element topic="HTTP-Workflows.topic"/>
+    </toc-element>
     <toc-element topic="Rehosting-the-Designer.md">
         <toc-element topic="Reusing-in-Angular.topic"/>
         <toc-element topic="Reusing-in-React.topic"/>

@@ -73,8 +73,8 @@
                     Open the Program.cs file in your project and replace its contents with the code provided below.
                     This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
                 </p>
-                <emphasis>Program.cs:</emphasis>
-                <code-block lang="c#" src="elsa-server-and-studio/server/Program.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-server-and-studio/server/Program.cs"/>
             </step>
             <step>
                 <control>Update appsettings.json</control>
@@ -91,8 +91,8 @@
             <step>
                 <control>Create _Host.cshtml</control>
                 <p>To conclude the setup, create new folder called <code>Pages</code> and add a new file called <code>_Host.cshtml</code> and copy in the code showcased below:</p>
-                <emphasis>Pages/_Host.cshtml</emphasis>
-                <code-block lang="razor" src="elsa-server-and-studio/server/_Host.cshtml" />
+                <path>Pages/_Host.cshtml</path>
+                <code-block lang="razor" src="installation/elsa-server-and-studio/server/_Host.cshtml" />
             </step>
         </procedure>
     </chapter>
@@ -117,14 +117,14 @@
             <step>
                 <control>Modify Program.cs</control>
                 <p>Open <code>Program.cs</code> and replace its existing content with the code provided below:</p>
-                <emphasis>Program.cs</emphasis>
-                <code-block lang="c#" src="elsa-server-and-studio/studio/Program.cs" />
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-server-and-studio/studio/Program.cs" />
             </step>
             <step>
                 <control>Modify MainLayout.razor</control>
                 <p>Update <code>MainLayout.razor</code> with the following code listing:</p>
-                <emphasis>MainLayout.razor</emphasis>
-                <code-block lang="razor" src="elsa-server-and-studio/studio/MainLayout.razor" />
+                <path>MainLayout.razor</path>
+                <code-block lang="razor" src="installation/elsa-server-and-studio/studio/MainLayout.razor" />
             </step>
         </procedure>
     </chapter>

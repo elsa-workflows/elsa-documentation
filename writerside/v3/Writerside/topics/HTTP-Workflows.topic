@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="HTTP Workflows" id="HTTP-Workflows" switcher-label="Mode">
+
+    <p>
+        In this guide, we'll take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
+        Our workflow will handle inbound HTTP requests, invoke a backend API using an HTTP call, and write back the response to the client.
+        As a result, we will learn how to use the following HTTP activities:
+    </p>
+    <list>
+        <li>HttpEndpoint</li>
+        <li>SendHttpRequest</li>
+        <li>WriteHttpResponse</li>
+        <li>SetVariable</li>
+    </list>
+
+    <chapter title="Before you start" id="before-you-start-programmatic" switcher-key="Programmatic">
+        <p>
+            This guide builds on top of <a href="Elsa-Web.topic"/>. Please follow that guide and then return here.
+        </p>
+        <tip title="Application Types">
+            In order to follow this guide, any ASP.NET Core application that is configured to execute Elsa workflows will do, including <a href="Elsa-Server.topic"/> and <a href="Elsa-Server-Studio.topic"/>.
+        </tip>
+    </chapter>
+
+    <chapter title="Before you start" id="before-you-start-designer" switcher-key="Designer">
+        <p>
+            To follow this guide, make sure you have an Elsa Server + Studio running. The easiest way to do that is to <a href="Docker.topic#elsa-server-and-studio">run the Elsa Server and Studio Docker image</a>.
+        </p>
+    </chapter>
+
+    <chapter title="Workflow Overview" id="workflow-overview">
+        <p>
+            We will define a new workflow called <code>GetUser</code>.
+            The purpose of the workflow is to handle inbound HTTP requests by fetching a user by a given user ID from a backend API and writing them back to the client in JSON format.
+        </p>
+        <p>For the backend API, we will use <a href="https://reqres.in/">reqres.in</a>, which returns fake data using real HTTP responses.</p>
+        <p>Our workflow will parse the inbound HTTP request by getting the desired user ID from a route parameter and use that value to make an API call to reqres.</p>
+        <p>
+            The following is an example of such an HTTP request that you can try right now from your browser:
+            <a href="https://reqres.in/api/users/2">https://reqres.in/api/users/2</a>
+        </p>
+        <p>The response should look similar to this:</p>
+        <code-block lang="json">
+            {
+                "data": {
+                    "id": 2,
+                    "email": "janet.weaver@reqres.in",
+                    "first_name": "Janet",
+                    "last_name": "Weaver",
+                    "avatar": "https://reqres.in/img/faces/2-image.jpg"
+                },
+                "support": {
+                    "url": "https://reqres.in/#support-heading",
+                    "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
+                }
+            }
+        </code-block>
+        <p>Our workflow will essentially be a proxy sitting in front of the reqres API and return a portion of the response.</p>
+    </chapter>
+
+    <chapter title="Create C# Workflow" id="create-workflow-using-csharp" switcher-key="Programmatic">
+        <p>Follow these steps to create the workflow from code</p>
+        <procedure>
+            <step>
+                <p>Create <path>GetUser.cs</path> and add the following code:</p>
+
+                <path>Workflows/GetUser.cs</path>
+                <code-block lang="c#" src="guides/http-workflows/GetUser.cs"/>
+            </step>
+        </procedure>
+        <p>
+            Let's go over this workflow section by section.
+        </p>
+        <chapter title="Workflow Variables" id="workflow-variables">
+            <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="15-17" />
+            <p>Here, we defined 3 workflow variables.</p>
+            <p>The <code>routeDataVariable</code> variable is used to capture route data output from the HTTP endpoint activity. This variable is a dictionary.</p>
+            <p>The <code>userIdVariable</code> variable is used to store the user ID value that we get from the <code>routeDataVariable</code> dictionary.</p>
+            <p>The <code>userVariable</code> variable is used to capture the parsed response from the reqres API call. Since reqres returns JSON content and the capturing variable is of type <code>ExpandoObject</code>, the <code>SendHttpRequest</code> activity will parse the received JSON response into an <code>ExpandoObject</code>.</p>
+        </chapter>
+        <chapter title="HttpEndpoint Activity" id="httpendpoint-activity">
+            <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="23-29" />
+            <p>Here we see the <code>HttpEndpoint</code> activity being defined and configured to be a <control>trigger</control> by setting <code>CanStartWorkflow</code> to <code>true</code>.</p>
+            <p>We set its <code>Path</code> property to respond to <code>users/{userid}</code>. Notice that we are using a route parameter using the name <code>userid</code>. This is the key we will use to grab the provided user ID from the inbound URL path.</p>
+            <p>To capture the route data, we assign the <code>routeDataVariable</code> variable to the <code>RouteData</code> output of the activity.</p>
+        </chapter>
+        <chapter title="SetVariable Activity" id="setvariable-activity">
+            <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="30-39" />
+            <p>Here we see the <code>SetVariable</code> activity being defined and configured to set the <code>userIdVariable</code> variable to the dictionary entry with key <code>"userid"</code>.</p>
+            <p>We set its <code>Path</code> property to respond to <code>users/{userid}</code>. Notice that we are using a route parameter using the name <code>userid</code>. This is the key we will use to grab the provided user ID from the inbound URL path.</p>
+            <p>To capture the route data, we assign the <code>routeDataVariable</code> variable to the <code>RouteData</code> output of the activity.</p>
+        </chapter>
+    </chapter>
+
+    <chapter title="Run Workflow" id="run-workflow">
+        <p>Since the workflow uses the <code>HttpEndpoint</code> activity, it will trigger when we send an HTTP request to the <code>/workflows/users/{userId}</code> path.</p>
+        <p>Try it out by navigating to <a href="https://localhost:5001/workflows/users/2">https://localhost:5001/workflows/users/2</a>.</p>
+        <p>The response should look similar to this:</p>
+        <code-block lang="json">
+            {
+                "id": 2,
+                "email": "janet.weaver@reqres.in",
+                "first_name": "Janet",
+                "last_name": "Weaver",
+                "avatar": "https://reqres.in/img/faces/2-image.jpg"
+            }
+        </code-block>
+    </chapter>
+
+    <chapter title="Summary" id="summary">
+        <if switcher-key="Programmatic">
+            <p>In this guide, we learned how to define a workflow from code.</p>
+        </if>
+        <if switcher-key="Designer">
+            <p>In this guide, we learned how to design a workflow using <a href="Docker.topic#elsa-studio"/>.</p>
+        </if>
+        <p>We leveraged the <code>HttpEndpoint</code> activity and used is as a trigger to start the workflow</p>.
+        <p>The workflow is able to read route parameters and store it in a variable, which we then used as an input to send an API call to the reqres API that in turn returns the requested user.</p>
+        <p>We have also seen how to handle various responses from reqres: 200 OK and 404 Not Found</p>
+        <p>
+            The source code for this guide can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/http-workflows">here</a>.
+        </p>
+    </chapter>
+
+    <seealso>
+        <!--Give some related links to how-to articles-->
+    </seealso>
+</topic>

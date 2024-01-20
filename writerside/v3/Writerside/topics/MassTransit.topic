@@ -103,16 +103,16 @@
             <li>Publish Order Created</li>
         </list>
 
-        The <i>Order Created</i> activity acts as a trigger, which means that it will automatically start the workflow it is a part of when a message is received of this type.
-        The <i>Publish Order Created</i> activity will publish a message of this type.
+        The <control>Order Created</control> activity acts as a trigger, which means that it will automatically start the workflow it is a part of when a message is received of this type.
+        The <control>Publish Order Created</control> activity will publish a message of this type.
     </chapter>
 
     <chapter title="Tutorial" id="tutorial">
-        <p>In this tutorial, we will set up an <a href="Elsa-Server.topic">Elsa Server</a> and configure it to use the MassTransit module and see it in action.</p>
+        <p>In this tutorial, we will set up an <a href="Elsa-Server.topic"/> and configure it to use the MassTransit module and see it in action.</p>
         <chapter title="Prerequisites" id="prerequisites">
             <p>For this tutorial, you will need:</p>
             <list>
-                <li>To create a new ASP.NET project by following the <a href="Elsa-Server.topic">Elsa Server</a> setup guide, or the <a href="Elsa-Server-Studio.topic">Elsa Server and Studio</a> setup guide.</li>
+                <li>To create a new ASP.NET project by following the <a href="Elsa-Server.topic"/> setup guide, or the <a href="Elsa-Server-Studio.topic">Elsa Server and Studio</a> setup guide.</li>
                 <li>In case you only set up an Elsa Server, you will also need to run an Elsa Studio application. For this tutorial, it suffices to run an <a href="Docker.topic##elsa-studio">existing Elsa Studio image</a>. For this tutorial</li>
                 <li switcher-key="RabbitMQ">A connection string to a running RabbitMQ instance.</li>
                 <li switcher-key="Azure Service Bus">A connection string to an Azure Service Bus resource.</li>
@@ -137,37 +137,37 @@
 
         <chapter title="Project Setup" id="project-setup">
             <procedure title="Using MassTransit">
-                <step>Create a new ASP.NET project by following the <a href="Elsa-Server.topic">Elsa Server</a> setup guide.</step>
+                <step>Create a new ASP.NET project by following the <a href="Elsa-Server.topic"/> setup guide.</step>
                 <step switcher-key="Memory">
                     <p>Install the following package:</p>
-                    <code-block lang="console">
+                    <code-block lang="bash">
                         dotnet add package Elsa.MassTransit
                     </code-block>
                 </step>
                 <step switcher-key="RabbitMQ">
                     <p>Install the following packages:</p>
-                    <code-block lang="console">
+                    <code-block lang="bash">
                         dotnet add package Elsa.MassTransit
                         dotnet add package Elsa.MassTransit.RabbitMQ
                     </code-block>
                 </step>
                 <step switcher-key="Azure Service Bus">
                     <p>Install the following packages:</p>
-                    <code-block lang="console">
+                    <code-block lang="bash">
                         dotnet add package Elsa.MassTransit
                         dotnet add package Elsa.MassTransit.AzureServiceBus
                     </code-block>
                 </step>
                 <step>
                     <p>Add the following code to <control>Program.cs</control>:</p>
-                    <code-block switcher-key="Memory"><![CDATA[
+                    <code-block lang="c#" switcher-key="Memory"><![CDATA[
                     elsa.UseMassTransit(massTransit =>
                     {
                         massTransit.AddMessageType<OrderCompleted>();
                         massTransit.AddMessageType<OrderCreated>();
                     });
                 ]]></code-block>
-                    <code-block switcher-key="Azure Service Bus"><![CDATA[
+                    <code-block lang="c#" switcher-key="Azure Service Bus"><![CDATA[
                     elsa.UseMassTransit(massTransit =>
                     {
                         massTransit.UseAzureServiceBus(azureServiceBusConnectionString);
@@ -175,7 +175,7 @@
                         massTransit.AddMessageType<OrderCreated>();
                     });
                 ]]></code-block>
-                    <code-block switcher-key="RabbitMQ"><![CDATA[
+                    <code-block lang="c#" switcher-key="RabbitMQ"><![CDATA[
                     elsa.UseMassTransit(massTransit =>
                     {
                         massTransit.UseRabbitMq(rabbitMqConnectionString);
@@ -187,7 +187,7 @@
                 <step>
                     Create a new folder called <control>Messages</control> and add a new record type called `OrderCreated`:
 
-                    <emphasis>Messages/OrderCreated.cs</emphasis>
+                    <path>Messages/OrderCreated.cs</path>
                     <code-block lang="c#">
                         namespace ElsaServer.Messages;
                         public record OrderCreated(string Id, string CustomerId, string Product, int Quantity, decimal Total);
@@ -230,14 +230,14 @@
                 <step>
                     Run your brand new Elsa Server application on port `5001`:
 
-                    <code-block lang="console">
+                    <code-block lang="bash">
                         dotnet run --urls "https://localhost:5001"
                     </code-block>
                 </step>
                 <step>
                     Run Elsa Studio on port 6001 and connect it to Elsa Server:
 
-                    <code-block lang="console">
+                    <code-block lang="bash">
                         docker pull elsaworkflows/elsa-studio-v3:latest
                         docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 6001:8080 elsaworkflows/elsa-studio-v3:latest
                     </code-block>

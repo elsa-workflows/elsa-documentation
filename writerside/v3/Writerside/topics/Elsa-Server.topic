@@ -65,7 +65,8 @@
                     This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
                 </p>
 
-                <code-block lang="c#" src="elsa-server/Program.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-server/Program.cs"/>
             </step>
         </procedure>
     </chapter>

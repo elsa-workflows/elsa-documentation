@@ -49,8 +49,8 @@
             <step>
                 <control>Modify Program.cs</control>
                 <p>Open the Program.cs file and replace its existing content with the code provided below:</p>
-                <emphasis>Program.cs:</emphasis>
-                <code-block lang="c#" src="elsa-studio/wasm/Program.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-studio/wasm/Program.cs"/>
             </step>
             <step>
                 <control>Remove Unnecessary Files</control>
@@ -66,7 +66,7 @@
             <step>
                 <control>Generate appsettings.json</control>
                 <p>Within the <code>wwwroot</code> directory, create a new <code>appsettings.json</code> file and populate it with the following content:</p>
-                <emphasis>wwwroot/appsettings.json:</emphasis>
+                <path>wwwroot/appsettings.json</path>
                 <code-block lang="json">
                     {
                         "Backend": {
@@ -78,8 +78,8 @@
             <step>
                 <control>Update index.html</control>
                 <p>To conclude the setup, open the <code>index.html</code> file and replace its content with the code showcased below:</p>
-                <emphasis>wwwroot/index.html:</emphasis>
-                <code-block lang="c#" src="elsa-studio/wasm/index.html"/>
+                <path>wwwroot/index.html</path>
+                <code-block lang="c#" src="installation/elsa-studio/wasm/index.html"/>
             </step>
         </procedure>
         <procedure switcher-key="Blazor Server">
@@ -104,8 +104,8 @@
             <step>
                 <control>Modify Program.cs</control>
                 <p>Open the Program.cs file and replace its existing content with the code provided below:</p>
-                <emphasis>Program.cs:</emphasis>
-                <code-block lang="c#" src="elsa-studio/server/Program.cs"/>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="installation/elsa-studio/server/Program.cs"/>
             </step>
             <step>
                 <control>Remove Unnecessary Files</control>
@@ -120,7 +120,7 @@
             <step>
                 <control>Update appsettings.json</control>
                 <p>Update the <code>appsettings.json</code> file with the following content:</p>
-                <emphasis>appsettings.json:</emphasis>
+                <path>appsettings.json</path>
                 <code-block lang="json">
                     {
                         "Backend": {
@@ -132,7 +132,7 @@
             <step>
                 <control>Update _Host.cshtml</control>
                 <p>To conclude the setup, open the <code>_Host.cshtml</code> file and replace its content with the code showcased below:</p>
-                <emphasis>Pages/_Host.cshtml:</emphasis>
+                <path>Pages/_Host.cshtml</path>
                 <code-block lang="razor"><![CDATA[
                     @page "/"
                     @using Elsa.Studio.Shell
