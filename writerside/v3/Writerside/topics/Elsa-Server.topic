@@ -88,8 +88,9 @@
 
     <seealso>
         <category ref="related">
-            <a href="Elsa-Server.topic"/>
             <a href="Elsa-Studio.topic"/>
+            <a href="Elsa-Server-Studio.topic"/>
+            <a href="Elsa-Web.topic"/>
         </category>
     </seealso>
 </topic>
