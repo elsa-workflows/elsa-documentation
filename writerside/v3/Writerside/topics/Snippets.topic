@@ -11,4 +11,30 @@
             password: password
         </code-block>
     </snippet>
+    <snippet id="run-elsa-server-and-studio-docker-container">
+        <code-block lang="bash" validate="false">
+            docker pull elsaworkflows/elsa-server-and-studio-v3:latest
+            docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:8080 elsaworkflows/elsa-server-and-studio-v3:latest
+        </code-block>
+    </snippet>
+    <snippet id="designer-guide-prerequisite">
+        <chapter title="Before you start" id="before-you-start-designer" switcher-key="Designer">
+            <p>
+                To follow this guide, make sure you have an Elsa Server + Studio running. The easiest way to do that is to <a href="Docker.topic#elsa-server-and-studio">run the Elsa Server and Studio Docker image</a>:
+            </p>
+            <include from="Snippets.topic" element-id="run-elsa-server-and-studio-docker-container"/>
+            <p>Login using the default credentials:</p>
+            <include from="Snippets.topic" element-id="default-admin-credentials"/>
+        </chapter>
+    </snippet>
+    <snippet id="programmatic-guide-prerequisite">
+        <chapter title="Before you start" id="before-you-start-programmatic" switcher-key="Programmatic">
+            <p>
+                This guide builds on top of <a href="Elsa-Web.topic"/>. Please follow that guide and then return here.
+            </p>
+            <tip title="Application Types">
+                In order to follow this guide, any ASP.NET Core application that is configured to execute Elsa workflows will do, including <a href="Elsa-Server.topic"/> and <a href="Elsa-Server-Studio.topic"/>.
+            </tip>
+        </chapter>
+    </snippet>
 </topic>

@@ -17,20 +17,8 @@
         <li>SetVariable</li>
     </list>
 
-    <chapter title="Before you start" id="before-you-start-programmatic" switcher-key="Programmatic">
-        <p>
-            This guide builds on top of <a href="Elsa-Web.topic"/>. Please follow that guide and then return here.
-        </p>
-        <tip title="Application Types">
-            In order to follow this guide, any ASP.NET Core application that is configured to execute Elsa workflows will do, including <a href="Elsa-Server.topic"/> and <a href="Elsa-Server-Studio.topic"/>.
-        </tip>
-    </chapter>
-
-    <chapter title="Before you start" id="before-you-start-designer" switcher-key="Designer">
-        <p>
-            To follow this guide, make sure you have an Elsa Server + Studio running. The easiest way to do that is to <a href="Docker.topic#elsa-server-and-studio">run the Elsa Server and Studio Docker image</a>.
-        </p>
-    </chapter>
+    <include from="Snippets.topic" element-id="programmatic-guide-prerequisite"/>
+    <include from="Snippets.topic" element-id="designer-guide-prerequisite"/>
 
     <chapter title="Workflow Overview" id="workflow-overview">
         <p>
@@ -62,6 +50,227 @@
         <p>Our workflow will essentially be a proxy sitting in front of the reqres API and return a portion of the response.</p>
     </chapter>
 
+    <chapter title="Design Workflow" id="create-workflow-using-designer" switcher-key="Designer">
+        <p>Follow these steps to create the workflow using Elsa Studio</p>
+        <procedure>
+            <step>Start Elsa Studio from your browser.</step>
+            <step>Create a new workflow called <control>Get User</control></step>
+            <step>
+                <p>Add the following activities to the design surface:</p>
+                <list>
+                    <li>HTTP Endpoint</li>
+                    <li>Set Variable</li>
+                    <li>HTTP Request (flow)</li>
+                    <li>HTTP Response (for 200 OK)</li>
+                    <li>HTTP Response (for 404 Not Found)</li>
+                </list>
+            </step>
+            <step>
+                <p>Create the following variables:</p>
+                <table>
+                    <tr>
+                        <td><control>Name</control></td>
+                        <td><control>Type</control></td>
+                        <td><control>Storage</control></td>
+                    </tr>
+                    <tr>
+                        <td>RouteData</td>
+                        <td>ObjectDictionary</td>
+                        <td>Workflow</td>
+                    </tr>
+                    <tr>
+                        <td>UserId</td>
+                        <td>string</td>
+                        <td>Workflow</td>
+                    </tr>
+                    <tr>
+                        <td>User</td>
+                        <td>Object</td>
+                        <td>Workflow</td>
+                    </tr>
+                </table>
+            </step>
+            <step>
+                <p>Configure the activities as follows:</p>
+                <p>
+                    <control>HTTP Endpoint</control>
+                </p>
+                <tabs>
+                    <tab title="Input">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                                <td><control>Syntax</control></td>
+                            </tr>
+                            <tr>
+                                <td>Path</td>
+                                <td>users/{userid}</td>
+                                <td>Default</td>
+                            </tr>
+                            <tr>
+                                <td>Supported Methods</td>
+                                <td>GET</td>
+                                <td>Default</td>
+                            </tr>
+                        </table>
+                    </tab>
+                    <tab title="Output">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Route Data</td>
+                                <td>RouteData</td>
+                            </tr>
+                        </table>
+                    </tab>
+                    <tab title="Common">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Trigger workflow</td>
+                                <td>Checked</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+                <p>
+                    <control>Set Variable</control>
+                </p>
+                <tabs>
+                    <tab title="Input">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                                <td><control>Syntax</control></td>
+                            </tr>
+                            <tr>
+                                <td>Variable</td>
+                                <td>UserId</td>
+                                <td>Default</td>
+                            </tr>
+                            <tr>
+                                <td>Value</td>
+                                <td>
+                                    <code>return Variables.RouteData["userid"];</code>
+                                </td>
+                                <td>C#</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+                <p>
+                    <control>HTTP Request (flow)</control>
+                </p>
+                <tabs>
+                    <tab title="Input">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                                <td><control>Syntax</control></td>
+                            </tr>
+                            <tr>
+                                <td>Expected Status Codes</td>
+                                <td>200, 404</td>
+                                <td>Default</td>
+                            </tr>
+                            <tr>
+                                <td>Url</td>
+                                <td>
+                                    <code>`return $"https://reqres.in/api/users/{Variables.UserId}";`</code>
+                                </td>
+                                <td>C#</td>
+                            </tr>
+                            <tr>
+                                <td>Method</td>
+                                <td>GET</td>
+                                <td>Default</td>
+                            </tr>
+                        </table>
+                    </tab>
+                    <tab title="Output">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Parsed Content</td>
+                                <td>User</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+                <p>
+                    <control>HTTP Response (200)</control>
+                </p>
+                <tabs>
+                    <tab title="Input">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                                <td><control>Syntax</control></td>
+                            </tr>
+                            <tr>
+                                <td>Status Code</td>
+                                <td>OK</td>
+                                <td>Default</td>
+                            </tr>
+                            <tr>
+                                <td>Content</td>
+                                <td>
+                                    <code>getUser().data</code>
+                                </td>
+                                <td>JavaScript</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+                <p>
+                    <control>HTTP Response (404)</control>
+                </p>
+                <tabs>
+                    <tab title="Input">
+                        <table>
+                            <tr>
+                                <td><control>Property</control></td>
+                                <td><control>Value</control></td>
+                                <td><control>Syntax</control></td>
+                            </tr>
+                            <tr>
+                                <td>Status Code</td>
+                                <td>NotFound</td>
+                                <td>Default</td>
+                            </tr>
+                            <tr>
+                                <td>Content</td>
+                                <td>User not found</td>
+                                <td>Default</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+            </step>
+            <step>
+                Connect each activity to the next. Ensure that you connect the <code>200</code> and <code>404</code> outcomes of the <control>HTTP Request (flow)</control> activity to the appropriate <control>HTTP Response</control> activity.
+            </step>
+            <step>
+                Publish the workflow.
+            </step>
+        </procedure>
+        <p>The final result should look like this: </p>
+        <img src="$PROJECT_DIR$/Writerside/images/guides/http-workflows/workflow.png" alt="Workflow" thumbnail="true" border-effect="rounded"/>
+    </chapter>
+
     <chapter title="Create C# Workflow" id="create-workflow-using-csharp" switcher-key="Programmatic">
         <p>Follow these steps to create the workflow from code</p>
         <procedure>
@@ -90,15 +299,34 @@
         </chapter>
         <chapter title="SetVariable Activity" id="setvariable-activity">
             <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="30-39" />
-            <p>Here we see the <code>SetVariable</code> activity being defined and configured to set the <code>userIdVariable</code> variable to the dictionary entry with key <code>"userid"</code>.</p>
-            <p>We set its <code>Path</code> property to respond to <code>users/{userid}</code>. Notice that we are using a route parameter using the name <code>userid</code>. This is the key we will use to grab the provided user ID from the inbound URL path.</p>
-            <p>To capture the route data, we assign the <code>routeDataVariable</code> variable to the <code>RouteData</code> output of the activity.</p>
+            <p>Here we see the <code>SetVariable</code> activity defined and configured to set the <code>userIdVariable</code> variable to the dictionary entry with key <code>"userid"</code>.</p>
+            <p>We set its <code>Variable</code> property to reference the <code>userIdVariable</code> variable and its <code>Value</code> property to a callback that returns the received user ID from the route data dictionary.</p>
+        </chapter>
+        <chapter title="SendHttpRequest Activity" id="sendhttprequest-activity">
+            <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="40-74" />
+            <p>The <code>SendHttpRequest</code> activity is configured to send an HTTP request to the reqres API endpoint.</p>
+            <p>We set its <code>Url</code> property to a URL that includes the received user ID.</p>
+            <p>To capture the response, we assign its <code>ParsedContent</code> output to the <code>userVariable</code> variable.</p>
+            <p>Since the caller of the workflow might provide user IDs that don't correspond to a user record in the reqres backend, we configure the activity to handle two possible HTTP status codes:</p>
+            <list>
+                <li>200 OK</li>
+                <li>404 Not Found</li>
+            </list>
+            <p>For each of these possible status codes, we assign an appropriate <code>WriteHttpResponse</code> activity.</p>
+            <p>for the 200 case, the WriteHttpResponse activity access the <code>data</code> field of the user response object received from reqres:</p>
+            <code-block lang="c#" src="guides/http-workflows/GetUser.cs" include-lines="51-63" />
         </chapter>
     </chapter>
 
     <chapter title="Run Workflow" id="run-workflow">
-        <p>Since the workflow uses the <code>HttpEndpoint</code> activity, it will trigger when we send an HTTP request to the <code>/workflows/users/{userId}</code> path.</p>
-        <p>Try it out by navigating to <a href="https://localhost:5001/workflows/users/2">https://localhost:5001/workflows/users/2</a>.</p>
+        <if switcher-key="Designer">
+            <p>Since the workflow uses the <control>HTTP Endpoint</control> activity, it will trigger when we send an HTTP request to the <path>/api/workflows/users/{userId}</path> path.</p>
+            <p>Try it out by navigating to <a href="http://localhost:13000/api/workflows/users/2">http://localhost:13000/api/workflows/users/2</a>.</p>
+        </if>
+        <if switcher-key="Programmatic">
+            <p>Since the workflow uses the <code>HttpEndpoint</code> activity, it will trigger when we send an HTTP request to the <path>/workflows/users/{userId}</path> path.</p>
+            <p>Try it out by navigating to <a href="https://localhost:5001/workflows/users/2">https://localhost:5001/workflows/users/2</a>.</p>
+        </if>
         <p>The response should look similar to this:</p>
         <code-block lang="json">
             {
@@ -112,18 +340,13 @@
     </chapter>
 
     <chapter title="Summary" id="summary">
-        <if switcher-key="Programmatic">
-            <p>In this guide, we learned how to define a workflow from code.</p>
-        </if>
-        <if switcher-key="Designer">
-            <p>In this guide, we learned how to design a workflow using <a href="Docker.topic#elsa-studio"/>.</p>
-        </if>
-        <p>We leveraged the <code>HttpEndpoint</code> activity and used is as a trigger to start the workflow</p>.
+        <p switcher-key="Programmatic">In this guide, we learned how to define a workflow from code.</p>
+        <p switcher-key="Designer">In this guide, we learned how to design a workflow using <a href="Docker.topic#elsa-studio"/>.</p>
+        <p>We leveraged the <code>HttpEndpoint</code> activity and used is as a trigger to start the workflow.</p>
         <p>The workflow is able to read route parameters and store it in a variable, which we then used as an input to send an API call to the reqres API that in turn returns the requested user.</p>
         <p>We have also seen how to handle various responses from reqres: 200 OK and 404 Not Found</p>
-        <p>
-            The source code for this guide can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/http-workflows">here</a>.
-        </p>
+        <p switcher-key="Programmatic">The source code for this guide can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/http-workflows">here</a>.</p>
+        <p switcher-key="Designer">The workflow created in this guide can be found <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/http-workflows/Workflows/get-user.json">here</a>.</p>
     </chapter>
 
     <seealso>
