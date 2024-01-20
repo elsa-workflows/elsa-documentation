@@ -6,7 +6,7 @@
        title="Prerequisites" id="Prerequisites">
 
     <p>
-        Before you can start creating your own workflow server using Elsa,there are a few prerequisites to consider.
+        Before you can start creating your own workflow server using Elsa, there are a few prerequisites to consider.
     </p>
 
     <chapter title=".NET" id="dotnet" >
@@ -18,6 +18,6 @@
     </chapter>
 
     <chapter title="Docker" id="docker" >
-        <p>In order to be able to run the various prebuilt Docker images hosting Elsa Server, Elsa Studio and Ela Server + Studio, you will need to have <a href="https://www.docker.com/products/docker-desktop/">Docker for Desktop</a> (or a similar tool) installed.</p>
+        <p>In order to be able to run the various prebuilt Docker images hosting Elsa Server, Elsa Studio and Elsa Server + Studio, you will need to have <a href="https://www.docker.com/products/docker-desktop/">Docker for Desktop</a> (or a similar tool) installed.</p>
     </chapter>
 </topic>

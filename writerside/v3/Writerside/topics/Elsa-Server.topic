@@ -53,6 +53,8 @@
                     dotnet add package Elsa.Scheduling
                     dotnet add package Elsa.Workflows.Api
                     dotnet add package Elsa.CSharp
+                    dotnet add package Elsa.JavaScript
+                    dotnet add package Elsa.Liquid
                 </code-block>
             </step>
 
@@ -77,4 +79,17 @@
             </step>
         </procedure>
     </chapter>
+
+    <chapter title="Source Code" id="source-code">
+        <p>
+            The source code for this chapter can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-server">here</a>
+        </p>
+    </chapter>
+
+    <seealso>
+        <category ref="related">
+            <a href="Elsa-Server.topic"/>
+            <a href="Elsa-Studio.topic"/>
+        </category>
+    </seealso>
 </topic>

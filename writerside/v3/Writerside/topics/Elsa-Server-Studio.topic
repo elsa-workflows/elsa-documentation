@@ -6,79 +6,158 @@
        title="Elsa Server + Studio" id="Elsa-Server-Studio">
 
     <p>
-        Tutorials are learning-oriented articles that help users to go through a process and achieve a deliverable.
-        Start with an introduction: for whom is this tutorial and what the reader will achieve by reading it.
-        Answer the question: "Why should I follow this?"
+        In this topic, we will create an ASP.NET Core application that acts as <emphasis>both</emphasis> an <a href="Elsa-Server.topic"/> <emphasis>and</emphasis> an <a href="Elsa-Studio.topic"/>.
     </p>
 
     <p>
-        Provide a short outline for the tutorial.
-        In this tutorial, you will learn how to:
+        For Elsa Studio, we will setup the Blazor parts using Blazor WebAssembly, which static files will be served from the ASP.NET Core host application.
     </p>
 
-    <list>
-        <li>Do this</li>
-        <li>Deal with that</li>
-    </list>
-
-    <chapter title="Before you start" id="before-you-start">
-        <p>
-            List the prerequisites that are required or recommended.
-            Make sure that:
-        </p>
-
+    <chapter title="Create Solution" id="create-solution">
+        <p>In this chapter, we will scaffold a new solution and two projects:</p>
         <list>
-            <li>Prerequisite one</li>
-            <li>Prerequisite two</li>
+            <li>The Host</li>
+            <li>The Client</li>
         </list>
+        <p>The host will host both the ASP.NET COre Elsa Server engine and the Blazor WebAssembly application.</p>
+        <p>The client represents the Elsa Studio application and targets the Blazor WebAssembly runtime and is hosted by the Host application.</p>
+        <p>Run the following commands to create a solution with two projects:</p>
+        <code-block lang="console">
+            # Create a new solution
+            dotnet new sln -n ElsaServerAndStudio
+
+            # Create the host project
+            dotnet new web -n "ElsaServer" -f net8.0
+
+            # Add the host project to the solution
+            dotnet sln add ElsaServer/ElsaServer.csproj
+
+            # Create the client project
+            dotnet new blazorwasm-empty -n "ElsaStudio" -f net7.0
+
+            # Add the client project to the solution
+            dotnet sln add ElsaStudio/ElsaStudio.csproj
+
+            # Navigate to the directory where the host project is located
+            cd ElsaServer
+
+            # Add a reference to the client project
+            dotnet add reference ../ElsaStudio/ElsaStudio.csproj
+
+        </code-block>
     </chapter>
 
-    <chapter title="Part 1" id="part-one">
-        <p>
-            Describe what the user will learn and accomplish in the first part,
-            then write a step-by-step procedure but on a real-world example.
-        </p>
-
+    <chapter title="Setup Host" id="setup-host">
+        <p>In this chapter, we will setup the host, which will host both the Elsa Server engine as well as the webassembly files for serving the Elsa Studio client assets to the browser.</p>
         <procedure>
             <step>
-                <p>Execute the following command in the terminal:</p>
+                <control>Add Packages</control>
+                <p>Add the following packages:</p>
 
-                <code-block lang="bash">
-                    run this --that
+                <code-block lang="console">
+                    dotnet add package Elsa
+                    dotnet add package Elsa.EntityFrameworkCore
+                    dotnet add package Elsa.EntityFrameworkCore.Sqlite
+                    dotnet add package Elsa.Identity
+                    dotnet add package Elsa.Scheduling
+                    dotnet add package Elsa.Workflows.Api
+                    dotnet add package Elsa.CSharp
+                    dotnet add package Elsa.JavaScript
+                    dotnet add package Elsa.Liquid
+                    dotnet add package Microsoft.AspNetCore.Components.WebAssembly.Server
                 </code-block>
             </step>
-
             <step>
-                Step with a <a href="https://www.jetbrains.com">link</a>.
+                <control>Update Program.cs</control>
+                <p>
+                    Open the Program.cs file in your project and replace its contents with the code provided below.
+                    This code does a lot of things like setting up database connections, enabling user authentication, and preparing the server to handle workflows.
+                </p>
+                <emphasis>Program.cs:</emphasis>
+                <code-block lang="c#" src="elsa-server-and-studio/server/Program.cs"/>
             </step>
-
             <step>
-                Final step in part 1.
+                <control>Update appsettings.json</control>
+                <p>Add the following configuration section to <code>appsettings.json</code> or <code>appsettings.Development.json</code> with the following content:</p>
+                <code-block lang="json"><![CDATA[
+                    {
+                        "Http": {
+                            "BaseUrl": "https://localhost:5001",
+                            "BasePath": "/api/workflows"
+                        }
+                    }
+                ]]></code-block>
+            </step>
+            <step>
+                <control>Create _Host.cshtml</control>
+                <p>To conclude the setup, create new folder called <code>Pages</code> and add a new file called <code>_Host.cshtml</code> and copy in the code showcased below:</p>
+                <emphasis>Pages/_Host.cshtml</emphasis>
+                <code-block lang="razor" src="elsa-server-and-studio/server/_Host.cshtml" />
             </step>
         </procedure>
     </chapter>
 
-    <chapter title="Part 2" id="part-two">
-        <p>This is the second part of the tutorial:</p>
+    <chapter title="Setup Client" id="setup-client">
+        <p>
+            Next, we will modify the client project.
+        </p>
 
         <procedure>
             <step>
-                From the menu, select <ui-path>Foo | Bar</ui-path>.
+                <control>Add Elsa Studio Packages</control>
+                <p>Navigate to the root directory of the client project and add the following Elsa Studio packages:</p>
+                <code-block lang="console">
+                    cd ../ElsaStudio
+                    dotnet add package Elsa.Studio
+                    dotnet add package Elsa.Studio.Core.BlazorWasm
+                    dotnet add package Elsa.Studio.Login.BlazorWasm
+                    dotnet add package Elsa.Api.Client
+                </code-block>
             </step>
             <step>
-                Enter <code>this text</code> in the <control>Text</control> field.
+                <control>Modify Program.cs</control>
+                <p>Open <code>Program.cs</code> and replace its existing content with the code provided below:</p>
+                <emphasis>Program.cs</emphasis>
+                <code-block lang="c#" src="elsa-server-and-studio/studio/Program.cs" />
             </step>
             <step>
-                Click <control>OK</control> to...
+                <control>Modify MainLayout.razor</control>
+                <p>Update <code>MainLayout.razor</code> with the following code listing:</p>
+                <emphasis>MainLayout.razor</emphasis>
+                <code-block lang="razor" src="elsa-server-and-studio/studio/MainLayout.razor" />
             </step>
         </procedure>
     </chapter>
 
-    <chapter title="What you've learned" id="what-learned">
-        <p>Summarize what the reader achieved by completing this tutorial.</p>
+    <chapter title="Launch the Application" id="run-application">
+        <p>To see your application in action, navigate back to the root directory containing the host project:</p>
+        <code-block lang="console">
+            cd ../ElsaServer
+        </code-block>
+
+        <p>Then execute the following command:</p>
+        <code-block lang="console">
+            dotnet run --urls https://locahost:5001
+        </code-block>
+
+        <p>
+            Your application is now accessible at <a href="https://localhost:5001">https://localhost:5001</a>.
+        </p>
+
+        <p>By default, you can log in using:</p>
+        <include from="Snippets.topic" element-id="default-admin-credentials"/>
+    </chapter>
+
+    <chapter title="Source Code" id="source-code">
+        <p>
+            The source code for this chapter can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/installation/elsa-server-and-studio">here</a>
+        </p>
     </chapter>
 
     <seealso>
-        <!--Give some related links to how-to articles-->
+        <category ref="related">
+            <a href="Elsa-Server.topic"/>
+            <a href="Elsa-Studio.topic"/>
+        </category>
     </seealso>
 </topic>

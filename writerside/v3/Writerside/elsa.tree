@@ -15,16 +15,18 @@
         <toc-element topic="Packages.topic"/>
         <toc-element topic="Docker.topic">
         </toc-element>
-        <toc-element topic="Application-Types.topic">
-            <toc-element topic="Elsa-Server.topic"/>
-            <toc-element topic="Elsa-Studio.topic"/>
-            <toc-element topic="Elsa-Server-Studio.topic"/>
-            <toc-element topic="Elsa-Web.topic"/>
-            <toc-element topic="Elsa-Console.topic"/>
-            <toc-element topic="Reusing-in-Blazor.topic"/>
-            <toc-element topic="Reusing-in-React.topic"/>
-            <toc-element topic="Reusing-in-Angular.topic"/>
-        </toc-element>
+    </toc-element>
+    <toc-element topic="Application-Types.topic">
+        <toc-element topic="Elsa-Server.topic"/>
+        <toc-element topic="Elsa-Studio.topic"/>
+        <toc-element topic="Elsa-Server-Studio.topic"/>
+        <toc-element topic="Elsa-Web.topic"/>
+        <toc-element topic="Elsa-Console.topic"/>
+    </toc-element>
+    <toc-element topic="Rehosting-the-Designer.md">
+        <toc-element topic="Reusing-in-Angular.topic"/>
+        <toc-element topic="Reusing-in-React.topic"/>
+        <toc-element topic="Reusing-in-Blazor.topic"/>
     </toc-element>
     <toc-element topic="Activities.topic">
         <toc-element topic="Library.topic">

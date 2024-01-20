@@ -198,7 +198,7 @@
         </code-block>
 
         <p switcher-key="Blazor WebAssembly">
-            Your application is now be accessible at <a href="https://localhost:6001">https://localhost:6001</a>.
+            Your application is now accessible at <a href="https://localhost:6001">https://localhost:6001</a>.
         </p>
 
         <code-block lang="console" switcher-key="Blazor Server">
