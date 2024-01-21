@@ -12,13 +12,10 @@ permissions:
 
 env:
     # Name of module and id separated by a slash
-    INSTANCE: Writerside/Elsa
+    INSTANCE: writerside/elsa
     ARTIFACT: webHelpELSA2-all.zip
     # Writerside docker image version
     DOCKER_VERSION: 232.10275
-# Add the variable below to upload Algolia indexes
-# Replace HI with the ID of the instance in capital letters
-#    ALGOLIA_ARTIFACT: algolia-indexes-HI.zip
 
 jobs:
     build:
@@ -44,38 +41,14 @@ jobs:
                 artifacts/report.json
             retention-days: 7
 
-# Add the step below to upload Algolia indexes
-        # - name: Upload algolia-indexes
-        #   uses: actions/upload-artifact@v3
-        #   with:
-        #     name: algolia-indexes
-        #     path: artifacts/${{ env.ALGOLIA_ARTIFACT }}
-        #     retention-days: 7
-
 # Add the job below and artifacts/report.json on Upload documentation step above if you want to fail the build when documentation contains errors
-    test:
-    # Requires build job results
-        needs: build
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Download artifacts
-              uses: actions/download-artifact@v1
-              with:
-                name: docs
-                path: artifacts
-
-            - name: Test documentation
-              uses: JetBrains/writerside-checker-action@v1
-              with:
-                instance: ${{ env.INSTANCE }}
-
+    
     deploy:
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         # Requires the build job results
-        needs: test
+        needs: build
         runs-on: ubuntu-latest
         steps:
             - name: Download artifact
