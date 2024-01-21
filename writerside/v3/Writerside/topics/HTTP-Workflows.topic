@@ -17,8 +17,7 @@
         <li>SetVariable</li>
     </list>
 
-    <include from="Snippets.topic" element-id="programmatic-guide-prerequisite"/>
-    <include from="Snippets.topic" element-id="designer-guide-prerequisite"/>
+    <include from="Snippets.topic" element-id="guide-prerequisite"/>
 
     <chapter title="Workflow Overview" id="workflow-overview">
         <p>
