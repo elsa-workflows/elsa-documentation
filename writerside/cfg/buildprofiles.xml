@@ -11,5 +11,10 @@
     <build-profile instance="lib">
         <variables></variables>
     </build-profile>
+    <build-profile instance="elsa">
+        <variables>
+            <noindex-content>false</noindex-content>
+        </variables>
+    </build-profile>
 
 </buildprofiles>

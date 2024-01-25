@@ -64,10 +64,7 @@
             This image hosts an ASP.NET Core application that runs Elsa Studio.
             To run the container, simply run the following commands from your terminal:
         </p>
-        <code-block lang="bash">
-            docker pull elsaworkflows/elsa-studio-v3:latest
-            docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=http://localhost:13000/elsa/api -p 14000:8080 elsaworkflows/elsa-studio-v3:latest
-        </code-block>
+        <include from="Snippets.topic" element-id="run-elsa-studio-docker-container"/>
         <note title="Requires Elsa Server">
             Note that Elsa Studio needs to connect to an existing Elsa Server instance, which URL is configured via the `ELSASERVER__URL` environment variable passed to the container (on port `13000` in this example).
             To quickly start an Elsa Server instance, you can run the Elsa Server Docker image as outlined in the <a href="#elsa-server">previous chapter</a>.

@@ -7,4 +7,5 @@
                   start-page="Snippets.topic" is-library="true">
 
     <toc-element topic="Snippets.topic"/>
+    <toc-element topic="Snippets-Designer.topic"/>
 </instance-profile>
