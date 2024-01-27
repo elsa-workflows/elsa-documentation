@@ -5,6 +5,7 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="External Application Interaction" id="External-Application-Interaction" switcher-label="Mode">
 
+    <show-structure depth="2"/>
     <p>
         A common scenario is to have a separate workflow server that handles the orchestration of tasks, and a separate application that is responsible for executing these tasks.
     </p>
@@ -15,7 +16,6 @@
         <li><control>ElsaServer</control>: an ASP.NET Core Web application scaffolded from <a href="Elsa-Server.topic">this guide</a>.</li>
         <li><control>Onboarding</control>: another ASP.NET Core Web Application that exposes a webhook endpoint to receive events from the workflow server and provides UI to the user to view and complete tasks.</li>
     </list>
-
     <p>
         Together, the two applications implement an employee onboarding process.
         The role of the workflow server is to orchestrate the process, while the onboarding app is responsible for executing individual tasks requested by the workflow server to execute.
@@ -24,7 +24,6 @@
     <p>
         These tasks will be completed by a human user. As a task is marked as completed, a signal in the form of an HTTP request is sent back to the workflow server, which then proceeds to the next step in the process.
     </p>
-
     <chapter title="Before you start" id="before-you-start">
         <p>
             For this guide, we will need the following:
@@ -40,165 +39,537 @@
             Please return here when you are ready.
         </p>
     </chapter>
+    <chapter title="Elsa Server" id="elsa-server">
+        <p>Now that we have a basic Elsa Server project, we will configure it with the ability to send webhook events.</p>
 
-    <chapter title="Configuring Webhooks" id="webhooks">
-        <p>
-            Now that we have a basic Elsa Server project, we will add the <control>Webhooks</control> module to it.
-        </p>
+        <chapter title="Configuring Webhooks" id="webhooks">
+            <p>For that, we will install the <control>Elsa.Webhooks</control> package.</p>
+            <procedure>
+                <step>
+                    <p>Add the following package to <path>ElsaServer.csproj</path>:</p>
 
+                    <code-block lang="bash">
+                        dotnet add package Elsa.Webhooks
+                    </code-block>
+                </step>
+                <step>
+                    <p>To enable webhooks, update <path>Program.cs</path> by adding the following code to the Elsa builder delegate:</p>
+                    <code-block lang="c#">
+                        elsa.UseWebhooks(webhooks =>
+                        {
+                            webhooks.WebhookOptions = options =>
+                            {
+                                builder.Configuration.GetSection("Webhooks").Bind(options);
+                            };
+                        });
+                    </code-block>
+                    <p>This will add webhook definitions from <path>appsettings.json</path>, which we configure next:</p>
+                </step>
+                <step>
+                    <p>Update <path>appsettings.json</path> by adding the following section:</p>
+                    <code-block lang="json">
+                        {
+                            "Webhooks": {
+                                "Endpoints": [
+                                    {
+                                        "EventTypes": [
+                                            "RunTask"
+                                    ],
+                                    "Url": "https://localhost:5002/api/webhooks/run-task"
+                                    }
+                                ]
+                            }
+                        }
+                    </code-block>
+                    <p>With this setup, the workflow server will invoke the configured URL everytime the <control>RunTask</control> activity executes.</p>
+                </step>
+            </procedure>
+        </chapter>
+        <chapter title="Create the Workflow" id="create-the-workflow">
+            <p switcher-key="Designer">
+                We will create <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/external-app-interaction/employee-onboarding.json">the following workflow</a> using Elsa Studio:
+            </p>
+            <if switcher-key="Designer">
+                <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/external-app-interaction/employee-onboarding.json">
+                    <img src="onboarding-workflow-designer.png" alt="The Employee Onboarding workflow"/>
+                </a>
+            </if>
+            <tip switcher-key="Designer" title="Download and Import">
+                You can download the workflow and import it using Elsa Studio.
+            </tip>
+            <p switcher-key="Programmatic">We will create the workflow using C# in the Elsa Server project.</p>
+
+            <chapter title="Designing the Workflow" id="designing-the-workflow" switcher-key="Designer">
+                <p>Start the workflow server application and the Elsa Studio container connected to the server.</p>
+                <p>To create the workflow, follow these steps:</p>
+
+                <procedure>
+                    <step>
+                        <control>New Workflow</control>
+                        <p>From the main menu, select <ui-path>Workflows | Definitions</ui-path> and click the <control>Create Workflow</control> button.</p>
+                        <p>Enter <code>Employee Onboarding</code> in the <control>Name</control> field.</p>
+                        <p>Click <control>OK</control> to create the workflow.</p>
+                    </step>
+                    <step>
+                        <control>Add Variable: Employee</control>
+                        <p>When we execute the workflow later on, we will be sending along information about the employee to onboard.</p>
+                        <p>To capture this employee input, we will store it in a variable called <code>Employee</code>.</p>
+                        <p>From the <ui-path>Variables</ui-path> tab, create a new variable called <control>Employee</control> of type <control>Object</control>.</p>
+                    </step>
+                    <step>
+                        <control>Ad Activity: Set Employee from Input</control>
+                        <p>From the Activity Picker, drag and drop the <control>Set Variable</control> activity on the design surface and configure its input fields as follows:</p>
+                        <table>
+                            <tr>
+                                <td><control>Field</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Variable</td>
+                                <td>Employee</td>
+                            </tr>
+                            <tr>
+                                <td>Value</td>
+                                <td>
+                                    <tabs>
+                                        <tab title="JavaScript">
+                                            <code-block lang="javascript">
+                                                getInput("Employee")
+                                            </code-block>
+                                        </tab>
+                                        <tab title="C#">
+                                            <code-block lang="c#">
+                                                return Input.Get("Employee");
+                                            </code-block>
+                                        </tab>
+                                    </tabs>
+                                </td>
+                            </tr>
+                        </table>
+                    </step>
+                    <step>
+                        <control>Add Activity: Create Email Account</control>
+                        <p>Now it is time to create an email account for the new employee.</p>
+                        <p>The workflow server itself will not perform this task; instead, it will send a webhook event to the Onboarding application that we will create later on.</p>
+                        <p>To send this webhook event, we leverage the Run Task activity.</p>
+                        <p>Add the <control>Run Task</control> activity to the design surface and configure it as follows:</p>
+                        <table>
+                            <tr>
+                                <td><control>Field</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Task Name</td>
+                                <td><control>Create Email Account</control></td>
+                            </tr>
+                            <tr>
+                                <td>Payload</td>
+                                <td>
+                                    <tabs>
+                                        <tab title="JavaScript">
+                                            <code-block lang="javascript">
+                                                return {
+                                                    employee: getEmployee(),
+                                                    description: "Create an email account for the new employee."
+                                                }
+                                            </code-block>
+                                        </tab>
+                                        <tab title="C#">
+                                            <code-block lang="c#">
+                                                return new {
+                                                    Employee = Variables.Employee,
+                                                    Description = "Create an email account for the new employee."
+                                                };
+                                            </code-block>
+                                        </tab>
+                                    </tabs>
+                                </td>
+                            </tr>
+                        </table>
+                    </step>
+                    <step>
+                        <control>Add Activity: Create Slack Account</control>
+                        <p>Now that the email account has been setup for the new employee, it is time to setup their Slack account.</p>
+                        <p>Just like the Create Email Account task, the workflow should send a webhook event to the Onboarding application using another Run Task activity.</p>
+                        <p>Add the <control>Run Task</control> activity to the design surface and configure it as follows:</p>
+                        <table>
+                            <tr>
+                                <td><control>Field</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Task Name</td>
+                                <td><control>Create Slack Account</control></td>
+                            </tr>
+                            <tr>
+                                <td>Payload</td>
+                                <td>
+                                    <tabs>
+                                        <tab title="JavaScript">
+                                            <code-block lang="javascript">
+                                                return {
+                                                    employee: getEmployee(),
+                                                    description: "Create a Slack account for the new employee."
+                                                }
+                                            </code-block>
+                                        </tab>
+                                        <tab title="C#">
+                                            <code-block lang="c#">
+                                                return new {
+                                                    Employee = Variables.Employee,
+                                                    Description = "Create a Slack account for the new employee."
+                                                };
+                                            </code-block>
+                                        </tab>
+                                    </tabs>
+                                </td>
+                            </tr>
+                        </table>
+                    </step>
+                    <step>
+                        <control>Add Activity: Create GitHub Account</control>
+                        <p>At the same time that the Slack account is being created, the Onboarding app should be able to go ahead and create a GitHub account at the same time.</p>
+                        <p>Here, too, the workflow should send a webhook event to the Onboarding application using another Run Task activity.</p>
+                        <p>Add another <control>Run Task</control> activity to the design surface and configure it as follows:</p>
+                        <table>
+                            <tr>
+                                <td><control>Field</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Task Name</td>
+                                <td><control>Create GitHub Account</control></td>
+                            </tr>
+                            <tr>
+                                <td>Payload</td>
+                                <td>
+                                    <tabs>
+                                        <tab title="JavaScript">
+                                            <code-block lang="javascript">
+                                                return {
+                                                    employee: getEmployee(),
+                                                    description: "Create a GitHub account for the new employee."
+                                                }
+                                            </code-block>
+                                        </tab>
+                                        <tab title="C#">
+                                            <code-block lang="c#">
+                                                return new {
+                                                    Employee = Variables.Employee,
+                                                    Description = "Create a GitHub account for the new employee."
+                                                };
+                                            </code-block>
+                                        </tab>
+                                    </tabs>
+                                </td>
+                            </tr>
+                        </table>
+                    </step>
+                    <step>
+                        <control>Add Activity: Add to HR System</control>
+                        <p>While a Slack account and a GitHub account are being provisioned for the new employee, they should be added to the HR system.</p>
+                        <p>As you might have guessed, the workflow should send a webhook event to the Onboarding application using another Run Task activity.</p>
+                        <p>Add another <control>Run Task</control> activity to the design surface and configure it as follows:</p>
+                        <table>
+                            <tr>
+                                <td><control>Field</control></td>
+                                <td><control>Value</control></td>
+                            </tr>
+                            <tr>
+                                <td>Task Name</td>
+                                <td><control>Add to HR System</control></td>
+                            </tr>
+                            <tr>
+                                <td>Payload</td>
+                                <td>
+                                    <tabs>
+                                        <tab title="JavaScript">
+                                            <code-block lang="javascript">
+                                                return {
+                                                    employee: getEmployee(),
+                                                    description: "Add the new employee to the HR system."
+                                                }
+                                            </code-block>
+                                        </tab>
+                                        <tab title="C#">
+                                            <code-block lang="c#">
+                                                return new {
+                                                    Employee = Variables.Employee,
+                                                    Description = "Add the new employee to the HR system."
+                                                };
+                                            </code-block>
+                                        </tab>
+                                    </tabs>
+                                </td>
+                            </tr>
+                        </table>
+                    </step>
+                    <step>
+                        <control>Add Activity: End</control>
+                        <p>Although this step is optional, it is never a bad idea to be explicit and signify the end of the workflow.</p>
+                        <p>Which is the purpose of the <control>End</control> activity. It doesn't contain any logic and is purely a marker activity.</p>
+                        <p>Go ahead and add an <control>End</control> activity to the design surface. No configuration necessary.</p>
+                    </step>
+                    <step>
+                        <control>Connect</control>
+                        <p>Now that we have all the pieces on the board, let's connect them together as shown in the <a href="#create-the-workflow">above visual</a>.</p>
+
+                        <note title="Connecting Activities">
+                            <p>The connections between activities on a <control>Flowchart</control> controls the flow of execution.</p>
+                            <p>As we saw on the screenshot above, it is possible to create parallel paths of execution, which is what allows activities to run concurrently.</p>
+                            <p>The ability to orchestrate asynchronous tasks in this way is one of many advantages of leveraging a workflow engine.</p>
+                        </note>
+                    </step>
+                    <step>
+                        <control>Publish</control>
+                        <p>Before we can invoke the workflow, we need to publish our changes by clicking the <ui-path>Publish</ui-path> button.</p>
+                    </step>
+                </procedure>
+            </chapter>
+
+            <chapter title="Coding the Workflow" id="coding-the-workflow" switcher-key="Programmatic">
+                <p>To create the Onboarding workflow, follow these steps:</p>
+                <procedure>
+                    <step>
+                        <control>Create Onboarding workflow class</control>
+                        <p>Create a new class called <code>Onboarding</code>:</p>
+                        <path>Workflows/Onboarding.cs</path>
+                        <code-block lang="c#" src="guides/external-application-integration/ElsaServer/Onboarding.cs"/>
+                    </step>
+                </procedure>
+                <p>The above workflow will be registered with the workflow engine automatically since the Elsa Server is configured to find all workflows in the same assembly of the <code>Program</code> class.</p>
+                <p>With that in place, let's create the Onboarding application next.</p>
+            </chapter>
+        </chapter>
+    </chapter>
+
+    <chapter title="Onboarding Application" id="onboarding-application">
+        <p>To create the Onboarding application, we will create a new project based on the MVC Web Application template.</p>
+        <p>The purpose of this application is to receive webhook events from the workflow server and create Task records in the database.</p>
+        <p>The UI of the application will display a list of these tasks and allow the user to click a <control>Complete</control> button.</p>
+        <p>Upon clicking this button, the application will send an HTTP request to the workflow server to resume the Onboarding workflow.</p>
+        <img src="onboarding-task-list.png" alt="The Employee Onboarding UI"/>
+        <p>Follow these steps to create the Onboarding application:</p>
         <procedure>
             <step>
-                <p>Add the following package to <path>ElsaServer.csproj</path>:</p>
-
+                <control>Create Project</control>
+                <p>Run the following command to generate a new MVC Application:</p>
                 <code-block lang="bash">
-                    dotnet add package Elsa.Webhooks
+                    dotnet new mvc -o Onboarding -f net8.0
                 </code-block>
             </step>
             <step>
-                <p>To enable webhooks, update <path>Program.cs</path> by adding the following code to the Elsa builder delegate:</p>
-                <code-block lang="c#">
-                    elsa.UseWebhooks(webhooks =>
+            </step>
+            <step>
+                <control>Add Packages</control>
+                <p>Navigate into the project directory:</p>
+                <code-block lang="bash">
+                    cd Onboarding
+                </code-block>
+                <p>Then add the following packages:</p>
+                <code-block lang="bash">
+                    dotnet add package Microsoft.EntityFrameworkCore
+                    dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+                    dotnet add package Microsoft.EntityFrameworkCore.Design
+                    dotnet add package Microsoft.EntityFrameworkCore.Sqlite.Design
+                    dotnet add package Elsa.EntityFrameworkCore
+                </code-block>
+            </step>
+            <step>
+                <control>Entity: OnboardingTask</control>
+                <p>
+                    For this application, we'll use Entity Framework Core to store the onboarding tasks in a SQLite database.
+                    First, let's model the onboarding task by creating a new class called `OnboardingTask`:
+                </p>
+                <path>Entities/OnboardingTask.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingOnboardingTask.cs"/>
+            </step>
+            <step>
+                <control>OnboardingDbContext</control>
+                <p>Next, let's create the database context:</p>
+                <path>Data/OnboardingDbContext.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingOnboardingDbContext.cs"/>
+            </step>
+            <step>
+                <control>Program.cs</control>
+                <p>Update <path>Program.cs</path> to register the DB context with DI:</p>
+                <path>Program.cs</path>
+                <code-block lang="c#"><![CDATA[
+                    builder.Services.AddDbContextFactory<OnboardingDbContext>(options => options.UseSqlite("Data Source=onboarding.db"));
+                ]]></code-block>
+            </step>
+            <step>
+                <control>Migrations</control>
+                <p>In order to have the application generate the necessary database structure automatically for us, we need to generate migration classes.</p>
+                <p>Run the following command to do so:</p>
+                <code-block lang="bash">
+                    dotnet ef migrations add Initial
+                </code-block>
+            </step>
+            <step>
+                <control>Apply Migrations</control>
+                <p>Run the following command to apply the migrations:</p>
+                <code-block lang="bash">
+                    dotnet ef database update
+                </code-block>
+                <p>This will apply the migration and generate the Task table in the <path>onboarding.db</path> SQLite database.</p>
+            </step>
+            <step>
+                <control>Task List UI</control>
+                <p>
+                    Now that we have our database access layer setup, let's work on the UI to display a list of tasks.
+                    For that, we will first introduce a view model called <code>IndexViewModel</code> for the <code>Index</code> action of the <code>homeController</code>:
+                </p>
+                <path>Views/Home/IndexViewModel.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingIndexViewModel.cs"/>
+            </step>
+            <step>
+                <control>HomeController</control>
+                <p>Update the <code>Index</code> action of the <code>HomeController</code> to use the view model:</p>
+                <path>Controllers/HomeController.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingHomeController1.cs"/>
+            </step>
+            <step>
+                <control>Index.cshtml</control>
+                <p>Update the <path>Index.cshtml</path> view to display the list of tasks:</p>
+                <code-block lang="razor" src="guides/external-application-integration/OnboardingIndex.cshtml"/>
+            </step>
+            <step>
+                <control>Handling Task Completion</control>
+                <p>The <code>HomeController</code> is able to list pending tasks. Now, let's add another action to it that can handle the event when a user clicks the <control>Complete</control> button.</p>
+                <p>Add the following action method to <code>HomeController</code>:</p>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingHomeController1.CompleteTask.cs"/>
+                <p>The complete controller should look like this:</p>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingHomeController2.cs"/>
+                <p>The above listing uses the <code>ElsaClient</code> to report the task as completed, which we will create next.</p>
+            </step>
+            <step>
+                <control>Elsa API Client</control>
+                <p>To interact with the Elsa Server's REST API, we will create an HTTP client called <code>ElsaClient</code>.</p>
+                <p>Create a new class called <code>ElsaClient</code>:</p>
+                <path>Services/ElsaClient.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingElsaClient.cs"/>
+            </step>
+            <step>
+                <control>Register ElsaClient</control>
+                <p>Update <path>Program.cs</path> to configure the Elsa HTTP client as follows:</p>
+                <path>Program.cs</path>
+                <code-block lang="c#"><![CDATA[
+                    var configuration = builder.Configuration;
+
+                    builder.Services.AddHttpClient<ElsaClient>(httpClient =>
                     {
-                        webhooks.WebhookOptions = options =>
-                        {
-                            builder.Configuration.GetSection("Webhooks").Bind(options);
-                        };
+                        var url = configuration["Elsa:ServerUrl"]!.TrimEnd('/') + '/';
+                        var apiKey = configuration["Elsa:ApiKey"]!;
+                        httpClient.BaseAddress = new Uri(url);
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
                     });
-                </code-block>
-                <p>This will add webhook definitions from <path>appsettings.json</path>, which we configure next:</p>
+                ]]></code-block>
             </step>
             <step>
-                <p>Update <path>appsettings.json</path> by adding the following section:</p>
+                <control>appsettings.json</control>
+                <p>The Elsa configuration section used in the previous step is defined in <path>appsettings.json</path> as follows:</p>
+                <path>appsettings.json</path>
                 <code-block lang="json">
                     {
-                        "Webhooks": {
-                            "Endpoints": [
-                                {
-                                    "EventTypes": [
-                                        "RunTask"
-                                ],
-                                "Url": "https://localhost:5002/api/webhooks/run-task"
-                                }
-                            ]
+                        "Elsa": {
+                            "ServerUrl": "https://localhost:5001/elsa/api",
+                            "ApiKey": "00000000-0000-0000-0000-000000000000"
                         }
                     }
                 </code-block>
-                <p>With this setup, the workflow server will invoke the configured URL everytime the <control>RunTask</control> activity executes.</p>
+            </step>
+            <step>
+                <control>Receiving Webhooks</control>
+                <p>Now that we have a way to display the list of task, let's setup a webhook controller that can receive tasks from the workflow server.</p>
+                <p>Create a new controller called <code>WebhookController</code>:</p>
+                <path>Controllers/WebhookController.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingWebhookController.cs"/>
+                <p>The above listing uses the <code>WebhookEvent</code> model to deserialize the webhook payload. The <code>WebhookEvent</code> and related models are defined as follows:</p>
+                <path>Models/WebhookEvent.cs</path>
+                <code-block lang="c#" src="guides/external-application-integration/OnboardingWebhookEvent.cs"/>
             </step>
         </procedure>
     </chapter>
 
-    <chapter title="Create the Workflow" id="create-the-workflow">
+    <chapter title="Running the Onboarding Process" id="running-the-onboarding-process">
+        <p>Now that we have both the Elsa Server and Onboarding applications ready, let's try it out</p>
+        <procedure>
+            <step>
+                <control>Start Onboarding App</control>
+                <p>First, run the Onboarding project:</p>
+                <code-block lang="bash">
+                    dotnet run --urls=https://localhost:5002
+                </code-block>
+            </step>
+            <step switcher-key="Designer">
+                <control>Start Onboarding Workflow</control>
+                <p>To initiate a new execution of the Onboarding workflow, we will send an HTTP request to Elsa Server's REST API that can execute a workflow by its definition ID and receive input.</p>
+                <p>As input, we will send a small JSON payload that represents the new employee to onboard:</p>
+                <code-block lang="curl">
+                    curl --location 'https://localhost:5001/elsa/api/workflow-definitions/{workflow_definition_id}/execute' \
+                            --header 'Content-Type: application/json' \
+                            --header 'Authorization: ApiKey 00000000-0000-0000-0000-000000000000' \
+                            --data-raw '{
+                            "input": {
+                                "Employee": {
+                                "Name": "Alice Smith",
+                                "Email": "alice.smith@acme.com"
+                            }
+                        }
+                    }'
+                </code-block>
+                <p>
+                    Make sure to replace {workflow_definition_id} with the actual workflow definition ID of the Onboarding workflow.
+                </p>
+            </step>
+            <step switcher-key="Programmatic">
+                <control>Start Onboarding Workflow</control>
+                <p>To initiate a new execution of the Onboarding workflow, we will send an HTTP request to Elsa Server's REST API that can execute a workflow by its definition ID and receive input.</p>
+                <p>As input, we will send a small JSON payload that represents the new employee to onboard:</p>
+                <code-block lang="curl">
+                    curl --location 'https://localhost:5001/elsa/api/workflow-definitions/Onboarding/execute' \
+                        --header 'Content-Type: application/json' \
+                        --header 'Authorization: ApiKey 00000000-0000-0000-0000-000000000000' \
+                        --data-raw '{
+                            "input": {
+                                "Employee": {
+                                "Name": "Alice Smith",
+                                "Email": "alice.smith@acme.com"
+                            }
+                        }
+                    }'
+                </code-block>
+            </step>
+            <step>
+                <control>View Tasks</control>
+                <p>The effect of the above request is that a new task will be created in the database, which will be displayed in the web application:</p>
+                <img src="onboarding-task-list.png" alt="The Employee Onboarding UI"/>
+            </step>
+            <step>
+                <control>Complete Task</control>
+                <p>
+                    When you click the Complete button, the task will be marked as completed in the database and the workflow will continue.
+                    When you refresh the Task list page, the task will be gone, but 3 new tasks will be created in the database:
+                </p>
+                <img src="onboarding-task-list-2.png" alt="More tasks"/>
+            </step>
+            <step>
+                <control>End</control>
+                <p>Once you complete all tasks, the workflow will be completed:</p>
+                <img src="onboarding-workflow-completed.png" alt="The workflow has completed"/>
+            </step>
+        </procedure>
+    </chapter>
 
-        <p switcher-key="Designer">
-            We will create <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/external-app-integration/employee-onboarding.json">the following workflow</a> using Elsa Studio:
-        </p>
-        <if switcher-key="Designer">
-            <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/external-app-integration/employee-onboarding.json">
-                <img src="onboarding-workflow-designer.png" alt="The Employee Onboarding workflow"/>
-            </a>
-        </if>
-        <tip switcher-key="Designer" title="Download and Import">
-            You can download the workflow and import it using Elsa Studio.
-        </tip>
-        <p switcher-key="Programmatic">We will create the workflow using C# in the Elsa Server project.</p>
+    <chapter title="Summary" id="summary">
+        <p>In this guide, we have seen how to set up an Elsa Server project and configure it to send webhook events to the <control>Onboarding</control> application.</p>
+        <p>We have seen how to leverage the <control>Run Task</control> activity that generates Run Task webhook events.</p>
+        <p>From the Onboarding app, we leveraged an Elsa REST API to report a given task as completed, which causes the workflow to resume,</p>
+    </chapter>
 
-        <chapter title="Designing the Workflow" id="designing-the-workflow" switcher-key="Designer">
-            <p>Start the workflow server application and the Elsa Studio container connected to the server.</p>
-            <p>To create the workflow, follow these steps:</p>
-
-            <procedure>
-                <step>
-                    From the main menu, select <ui-path>Workflows | Definitions</ui-path> and click the <control>Create Workflow</control> button.
-                </step>
-                <step>
-                    Enter <code>Employee Onboarding</code> in the <control>Name</control> field.
-                </step>
-                <step>
-                    Click <control>OK</control> to create the workflow.
-                </step>
-                <step>
-                    <p>When we execute the workflow later on, we will be sending along information about the employee to onboard.</p>
-                    <p>To capture this employee input, we will store it in a variable called <code>Employee</code>.</p>
-                    <p>From the <ui-path>Variables</ui-path> tab, create a new variable called <control>Employee</control> of type <control>Object</control>.</p>
-                </step>
-                <step>
-                    <control>Set Employee from Input</control>
-                    <p>From the Activity Picker, drag and drop the <control>Set Variable</control> activity on the design surface and configure its input fields as follows:</p>
-                    <table>
-                        <tr>
-                            <td><control>Field</control></td>
-                            <td><control>Value</control></td>
-                        </tr>
-                        <tr>
-                            <td>Variable</td>
-                            <td>Employee</td>
-                        </tr>
-                        <tr>
-                            <td>Value</td>
-                            <td>
-                                <tabs>
-                                    <tab title="JavaScript">
-                                        <code-block lang="javascript">
-                                            getInput("Employee")
-                                        </code-block>
-                                    </tab>
-                                    <tab title="C#">
-                                        <code-block lang="c#">
-                                            return Input.Get("Employee");
-                                        </code-block>
-                                    </tab>
-                                </tabs>
-                            </td>
-                        </tr>
-                    </table>
-                </step>
-                <step>
-                    <control>Create Email Account</control>
-                    <p>Now it is time to create an email account for the new employee.</p>
-                    <p>The workflow server itself will not perform this task; instead, it will send a webhook event to the Onboarding application that we will create later on.</p>
-                    <p>To send this webhook event, we leverage the Run Task activity.</p>
-                    <p>Add the <control>Run Task</control> activity to the design surface and configure it as follows:</p>
-                    <table>
-                        <tr>
-                            <td><control>Field</control></td>
-                            <td><control>Value</control></td>
-                        </tr>
-                        <tr>
-                            <td>Task Name</td>
-                            <td><control>Create Email Account</control></td>
-                        </tr>
-                        <tr>
-                            <td>Payload</td>
-                            <td>
-                                <tabs>
-                                    <tab title="JavaScript">
-                                        <code-block lang="javascript">
-                                            return {
-                                                employee: getEmployee(),
-                                                description: "Create an email account for the new employee"
-                                            }
-                                        </code-block>
-                                    </tab>
-                                    <tab title="C#">
-                                        <code-block lang="c#">
-                                            return new {
-                                                Employee = Variables.Employee,
-                                                Description = "Create an email account for the new employee"
-                                            };
-                                        </code-block>
-                                    </tab>
-                                </tabs>
-                            </td>
-                        </tr>
-                    </table>
-                </step>
-            </procedure>
-        </chapter>
-
-        <chapter title="Coding the Workflow" id="coding-the-workflow" switcher-key="Programmatic">
-            <p>TODO </p>
-        </chapter>
+    <chapter title="Source Code" id="source-code">
+        The completed code for this guide can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/external-app-interaction">here</a>.
     </chapter>
 
     <seealso>
