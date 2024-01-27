@@ -44,6 +44,35 @@
             </code-block>
         </procedure>
     </chapter>
+    
+    <chapter title="Elsa Server" id="elsa-server">
+        <p>When you're hosting an <a href="Elsa-Server.topic">Elsa Server</a>, providing workflows from JSON files is even easier.</p>
+        <p>All you need to do then is create a folder called <path>Workflows</path> and add any number of workflow JSON files to it.</p>
+        <p>Let's try it out:</p>
+        <procedure>
+            <step>Setup an <a href="Elsa-Server.topic">Elsa Server</a> project.</step>
+            <step>Create a new folder called <path>Workflows</path></step>
+            <step>
+                Create a new file called <path>HelloWorld.json</path> in the root of the project and make sure it is configured to be copied to the output directory.
+                <path>HelloWorld.json</path>
+                <code-block lang="json" src="guides/loading-workflows-from-json/HelloWorld.json"/>
+            </step>
+            <step>
+                <p>Run the application using the following command:</p>
+                <code-block lang="bash">
+                    dotnet run --urls "https://localhost:5001"
+                </code-block>
+            </step>
+            <step>
+                <p>Execute the workflow using the following curl:</p>
+                <code-block lang="curl">
+                    curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions/HelloWorld/execute' \
+                    --header 'Authorization: ApiKey {your-api-key}'
+                </code-block>
+                <p>Alternatively, <a href="Docker.topic#elsa-studio">start ab Elsa Studio container</a> and run the workflow from there</p>
+            </step>
+        </procedure>
+    </chapter>
 
     <chapter title="Summary" id="summary">
         <p>In this guide, we have seen how to load a JSON file and deserialize it into a <code>Workflow</code> class and then execute it.</p>
