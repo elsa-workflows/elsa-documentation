@@ -76,6 +76,7 @@
 
     <chapter title="Summary" id="summary">
         <p>In this guide, we have seen how to load a JSON file and deserialize it into a <code>Workflow</code> class and then execute it.</p>
+        <p>We have also seen how to configure an Elsa Server to serve workflows stored in JSON files.</p>
     </chapter>
 
     <seealso>
