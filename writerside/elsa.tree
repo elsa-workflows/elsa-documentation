@@ -26,6 +26,7 @@
     <toc-element topic="Guides.topic">
         <toc-element topic="HTTP-Workflows.topic"/>
         <toc-element topic="External-Application-Interaction.topic"/>
+        <toc-element topic="Loading-Workflows-from-JSON.topic"/>
     </toc-element>
     <toc-element topic="Rehosting-the-Designer.md">
         <toc-element topic="Reusing-in-Angular.topic"/>
