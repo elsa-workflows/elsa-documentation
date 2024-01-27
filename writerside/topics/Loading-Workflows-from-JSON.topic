@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Loading Workflows from JSON" id="Loading-Workflows-from-JSON">
+
+    <p>
+        Loading workflows from JSON is a great way to store workflows in a database or file system. This guide will show you how to load workflows from JSON files.
+    </p>
+
+    <chapter title="Console application" id="console-application">
+        <p>The most straightforward way to load workflows from JSON files is to simply load the contents of a JSON file, deserialize it and then execute the deserialized workflow.</p>
+
+        <procedure>
+            <step>
+                <p>Generate a new Console application using the following command:</p>
+                <code-block lang="bash">
+                    dotnet new console -n "ElsaConsole" -f net8.0
+                    cd ElsaConsole
+                    dotnet add package Elsa
+                    dotnet add package Elsa.Testing.Shared
+                </code-block>
+            </step>
+            <step>
+                <p>Here's a complete <path>Program.cs</path> file that demonstrates how to load a workflow from a JSON file and execute it:</p>
+                <path>Program.cs</path>
+                <code-block lang="c#" src="guides/loading-workflows-from-json/Program.cs"/>
+            </step>
+            <step>
+                Create a new file called <path>HelloWorld.json</path> in the root of the project and make sure it is configured to be copied to the output directory.
+                <path>HelloWorld.json</path>
+                <code-block lang="json" src="guides/loading-workflows-from-json/HelloWorld.json"/>
+            </step>
+            <step>
+                <p>Run the program using the following command:</p>
+                <code-block lang="bash">
+                    dotnet run
+                </code-block>
+            </step>
+            <p>The console should output the following:</p>
+            <code-block lang="console">
+                Hello World!
+            </code-block>
+        </procedure>
+    </chapter>
+
+    <chapter title="Summary" id="summary">
+        <p>In this guide, we have seen how to load a JSON file and deserialize it into a <code>Workflow</code> class and then execute it.</p>
+    </chapter>
+
+    <seealso>
+        <!--Give some related links to how-to articles-->
+    </seealso>
+</topic>
