@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Invoking Workflows" id="Invoking-Workflows" switcher-label="Mode">
+
+    <show-structure depth="2"/>
+
+    <p>
+        There are multiple ways to start a workflow:
+    </p>
+
+    <list>
+        <li><a href="#using-elsa-studio">Using Elsa Studio.</a></li>
+        <li><a href="#using-triggers">Using a trigger, such as <control>HTTP Endpoint</control></a>.</li>
+        <li>Using activities such as <control>Dispatch Workflow</control></li>
+        <li>Using the ELSA REST API.</li>
+        <li>Using C# code using the workflow runtime service, workflow inbox or workflow dispatcher.</li>
+    </list>
+
+    <p>In this guide, we will see an example of each of these methods.</p>
+
+    <chapter title="Before you start" id="before-you-start">
+        <p>
+            For this guide, we will need the following:
+        </p>
+        <list>
+            <li>An <a href="Elsa-Server.topic">Elsa Server</a> project</li>
+            <li>
+                <p>An <a href="Docker.topic#elsa-studio">Elsa Studio</a> instance</p>
+                <include from="Snippets-Designer.topic" element-id="run-elsa-studio-docker-container" />
+            </li>
+        </list>
+        <p>
+            Please return here when you are ready.
+        </p>
+    </chapter>
+
+    <chapter title="Tutorials" id="invoking-workflows-using">
+        <chapter title="Elsa Studio" id="using-elsa-studio">
+            <link-summary>
+                Learn how to start a workflow directly from Elsa Studio.
+            </link-summary>
+            <p>
+                The easiest way to start a workflow is directly from <a href="Elsa-Studio.topic"/>.
+            </p>
+
+            <procedure switcher-key="Designer">
+                <step>
+                    <control>Start Elsa Server</control>
+                    <p>Run Elsa Server:</p>
+                    <code-block lang="bash">
+                        dotnet run --urls=https://localhost:5001
+                    </code-block>
+                </step>
+                <step>
+                    <control>Start Elsa Studio</control>
+                    <p>Run Elsa Studio:</p>
+                    <code-block lang="bash">
+                        docker pull elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 5002:8080 elsaworkflows/elsa-studio-v3:latest
+                    </code-block>
+                </step>
+                <step>
+                    <control>Create a Workflow</control>
+                    <p>Create a new workflow called <control>Using Elsa Studio</control></p>
+                </step>
+                <step>
+                    <control>Add WriteLine Activity</control>
+                    <p>Add a <control>WriteLine</control> activity and configure it to print the text <control>Started from Elsa Studio!</control></p>
+                </step>
+                <step>
+                    <control>Start the Workflow</control>
+                    <p>On the far end of the toolbar above the design surface, press the play icon. This will create and start a new instance of your workflow.</p>
+                    <img src="using-elsa-studio-1.png" alt="Press the Start button to start the workflow" border-effect="rounded" thumbnail="true"/>
+                </step>
+            </procedure>
+            <procedure switcher-key="Programmatic">
+                <step>
+                    <control>Create a Workflow</control>
+                    <p>Create a new workflow class called <code>UsingElsaStudio</code> with the following implementation:</p>
+                    <path>Workflows/UsingElsaStudio.cs</path>
+                    <code-block lang="c#" src="guides/invoking-workflows/UsingElsaStudio.cs"/>
+                </step>
+                <step>
+                    <control>Start Elsa Server</control>
+                    <p>Run Elsa Server:</p>
+                    <code-block lang="bash">
+                        dotnet run --urls=https://localhost:5001
+                    </code-block>
+                </step>
+                <step>
+                    <control>Start Elsa Studio</control>
+                    <p>Run Elsa Studio:</p>
+                    <code-block lang="bash">
+                        docker pull elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 5002:8080 elsaworkflows/elsa-studio-v3:latest
+                    </code-block>
+                </step>
+                <step>
+                    <control>Open the Workflow</control>
+                    <p>From the left menu, go to <ui-path>Workflows | Definitions</ui-path> and select the programmatic workflow.</p>
+                </step>
+                <step>
+                    <control>Start the Workflow</control>
+                    <p>On the far end of the toolbar above the design surface, press the play icon. This will create and start a new instance of your workflow.</p>
+                    <img src="using-elsa-studio-2.png" alt="Press the Start button to start the workflow" border-effect="rounded" thumbnail="true"/>
+                </step>
+            </procedure>
+            <p>Upon clicking the start button, the workflow will execute.</p>
+        </chapter>
+        <chapter title="Triggers" id="using-triggers">
+            <p>Another way to kick off a new workflow execution is by having the workflow be invoked through a trigger.</p>
+            <p>A trigger is represented by an activity, which provides trigger details to services external to the workflow that are ultimately responsible for triggering the workflow.</p>
+            <p>Elsa ships with various triggers out of the box, such as:</p>
+
+            <list>
+                <li><control>HTTP Endpoint</control>: triggers the workflow when a given HTTP request is sent to the workflow server.</li>
+                <li><control>Timer</control>: triggers the workflow each given interval based on a TimeSpan expression.</li>
+                <li><control>Cron</control>: triggers the workflow each given interval based on a CRON expression.</li>
+                <li><control>Event</control>: triggers when a given event is received by the workflow server.</li>
+            </list>
+
+            <p>We will use the HTTP Endpoint trigger as an example to invoke the workflow whenever a certain HTTP request is sent to the server.</p>
+
+            <procedure>
+                <step>
+                    <control>Start Elsa Server</control>
+                    <p>Run Elsa Server:</p>
+                    <code-block lang="bash">
+                        dotnet run --urls=https://localhost:5001
+                    </code-block>
+                </step>
+                <step>
+                    <control>Start Elsa Studio</control>
+                    <p>Run Elsa Studio:</p>
+                    <code-block lang="bash">
+                        docker pull elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 5002:8080 elsaworkflows/elsa-studio-v3:latest
+                    </code-block>
+                </step>
+                <step>
+                    <control>Create a Workflow</control>
+                    <p>Create a new workflow called <control>Using HTTP Trigger</control></p>
+                </step>
+                <step>
+                    <control>Add HTTP Endpoint Activity</control>
+                    <p>Add an <control>HTTP Endpoint</control> activity and configure it as follows:</p>
+                    <table>
+                        <tr>
+                            <td>Property</td>
+                            <td>Value</td>
+                            <td>Tab</td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td><control>hello-world</control></td>
+                            <td>Input</td>
+                        </tr>
+                        <tr>
+                            <td>Supported Methods</td>
+                            <td><control>[GET]</control></td>
+                            <td>Input</td>
+                        </tr>
+                        <tr>
+                            <td>Trigger workflow</td>
+                            <td><control>Checked</control></td>
+                            <td>Common</td>
+                        </tr>
+                    </table>
+                </step>
+                <step>
+                    <control>Add HTTP Response Activity</control>
+                    <p>Add an <control>HTTP Response</control> activity and configure it as follows:</p>
+                    <table>
+                        <tr>
+                            <td>Property</td>
+                            <td>Value</td>
+                            <td>Tab</td>
+                        </tr>
+                        <tr>
+                            <td>Status Code</td>
+                            <td><control>OK</control></td>
+                            <td>Input</td>
+                        </tr>
+                        <tr>
+                            <td>Content</td>
+                            <td><control>Hello world!</control></td>
+                            <td>Input</td>
+                        </tr>
+                    </table>
+                </step>
+                <step>
+                    <control>Connect Activities</control>
+                    <p>Connect the <control>HTTP Endpoint</control> activity to the <control>HTTP Response activity</control></p>
+                    <img src="using-http-trigger.png" alt="Two connected activities" thumbnail="false" border-effect="rounded"/>
+                </step>
+                <step>
+                    <control>Publish</control>
+                    <p>In order to activate the trigger, the workflow must be published.</p>
+                    <p>To publish the workflow, click the <ui-path>Publish</ui-path> button:</p>
+                    <img src="using-http-trigger-publish-button.png" alt="Publish the workflow" thumbnail="false" border-effect="rounded"/>
+                </step>
+                <step>
+                    <control>Trigger the Workflow</control>
+                    <p>Although we technically <emphasis>could</emphasis> start this workflow using the <ui-path>Start</ui-path> button, this would immediately suspend the workflow's execution, due to the way that the trigger activities are designed.</p>
+                    <note title="Triggers and Blocking Activities">
+                        When a trigger activity executes, it determines if it was <emphasis>the trigger causing the workflow execution</emphasis>.
+                        If it was, it will immediately complete itself, allowing the workflow to continue.
+                        If it was <emphasis>not</emphasis> the trigger, it will instead <emphasis>create a bookmark</emphasis> and wait for it to be resumed.
+                    </note>
+                    <p>The correct way to trigger a workflow starting with an HTTP Endpoint activity as its trigger is to send an HTTP request to the workflow server.</p>
+                    <p>In order to send an HTTP request that triggers the workflow, we need the following information:</p>
+                    <list>
+                        <li>The complete URL pointing to the workflow.</li>
+                        <li>The expected HTTP methods</li>
+                    </list>
+                    <p>Both these details can be easily found on the HTTP Endpoint activity:</p>
+                    <img src="using-http-trigger-settings.png" alt="Publish the workflow" thumbnail="false" border-effect="rounded"/>
+                    <p>This translates to the following curl:</p>
+                    <code-block lang="curl">
+                        curl --location 'https://localhost:5001/workflows/hello-world'
+                    </code-block>
+                    <p>And since this is a simple GET request, we can of course paste the URL straight into the browser:</p>
+                    <img src="using-http-trigger-browser.png" alt="Invoking the workflow via the browser" thumbnail="false" border-effect="rounded"/>
+                </step>
+                <p>The HTTP Endpoint activity offers a simple yet effective way to trigger workflows via HTTP requests.</p>
+                <p>To learn more about implementing HTTP workflows, be sure to follow the <a href="HTTP-Workflows.topic">HTTP Workflows guide</a></p>
+            </procedure>
+        </chapter>
+        <chapter title="Dispatch Workflow Activity" id="using-dispatch-workflow-activity">
+            <p>The <control>Dispatch Workflow</control> activity can start a new workflow from the current workflow.</p>
+            <p>It allows you to specify what workflow to run and provide any input required by the workflow.</p>
+            <p>Let's try it out.</p>
+
+            <procedure>
+                <step>
+                    <control>Start Elsa Server</control>
+                    <p>Run Elsa Server:</p>
+                    <code-block lang="bash">
+                        dotnet run --urls=https://localhost:5001
+                    </code-block>
+                </step>
+                <step>
+                    <control>Start Elsa Studio</control>
+                    <p>Run Elsa Studio:</p>
+                    <code-block lang="bash">
+                        docker pull elsaworkflows/elsa-studio-v3:latest
+                        docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e ELSASERVER__URL=https://localhost:5001/elsa/api -p 5002:8080 elsaworkflows/elsa-studio-v3:latest
+                    </code-block>
+                </step>
+                <step>
+                    <control>Create a Workflow</control>
+                    <p>Create a new workflow called <control>Dispatch Workflow</control></p>
+                </step>
+                <step>
+                    <control>Add Dispatch Workflow Activity</control>
+                    <p>Add a <control>Dispatch Workflow</control> activity and configure it as follows:</p>
+                    <table>
+                        <tr>
+                            <td>Property</td>
+                            <td>Value</td>
+                            <td>Tab</td>
+                        </tr>
+                        <tr>
+                            <td>Workflow Definition</td>
+                            <td><control>Using Elsa Studio</control></td>
+                            <td>Input</td>
+                        </tr>
+                    </table>
+                </step>
+                <step>
+                    <control>Start the Workflow</control>
+                    <p>On the far end of the toolbar above the design surface, press the play icon. This will create and start a new instance of your workflow.</p>
+                    <img src="using-dispatch-workflow-start-button.png" alt="Press the Start button to start the workflow" border-effect="rounded" thumbnail="true"/>
+                </step>
+                <p>Navigate to <ui-path>Workflows | Instances</ui-path> to see that the workflow did indeed invoke the <control>Using Elsa Studio</control> workflow:</p>
+                <img src="using-dispatch-workflow-workflow-instances.png" alt="The Dispatch Workflow workflow started another workflow: the Using Elsa Studio workflow." border-effect="rounded" thumbnail="true"/>
+                <p>The Dispatch Workflow activity offers a simple way to invoke a workflow from another workflow.</p>
+            </procedure>
+        </chapter>
+    </chapter>
+
+    <seealso>
+        <category ref="related">
+            <a href="HTTP-Workflows.topic"/>
+        </category>
+    </seealso>
+</topic>

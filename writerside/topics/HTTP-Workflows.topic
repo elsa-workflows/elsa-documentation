@@ -5,6 +5,10 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="HTTP Workflows" id="HTTP-Workflows" switcher-label="Mode">
 
+    <link-summary>
+        In this guide, we'll take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
+    </link-summary>
+
     <p>
         In this guide, we'll take a look at a workflow that can receive HTTP requests, send HTTP requests and write output to the HTTP response object.
         Our workflow will handle inbound HTTP requests, invoke a backend API using an HTTP call, and write back the response to the client.
