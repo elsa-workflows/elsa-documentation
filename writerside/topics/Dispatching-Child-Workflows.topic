@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Dispatching Child Workflows" id="Dispatching-Child-Workflows" switcher-label="Mode">
+
+    <p>When building workflows, you might want to reuse existing workflows as part of a larger workflow.</p>
+    <p>In Elsa, you can reuse workflows by dispatching them from other workflows. This is done using the <control>Dispatch Workflow</control> activity.</p>
+
+    <chapter title="Dispatching a workflow" id="dispatching-a-workflow">
+        <p>
+            To dispatch a workflow, you need to add a <control>Dispatch Workflow</control> activity to your workflow.
+            This activity has a <ui-path>Workflow Definition</ui-path> property that you can use to specify the definition ID of the workflow you want to dispatch.
+        </p>
+        <p>
+            When the DispatchWorkflow activity executes, it dispatches the selected workflow.
+            The dispatched workflow will run in the background and the parent workflow will continue executing, unless the <ui-path>Wait For Completion</ui-path> property is set to <code>true</code>.
+        </p>
+    </chapter>
+
+    <chapter title="Passing Input" id="passing-input">
+        <p>
+            You can pass input to the dispatched workflow.
+            To do this, you need to set the <ui-path>Input</ui-path> property to a JSON object that contains the input you want to pass to the workflow.
+        </p>
+        <p>When the workflow is executed, the <control>Dispatch Workflow</control> activity will dispatch the workflow with the specified input.</p>
+    </chapter>
+
+    <chapter title="Receiving Output" id="receiving-output">
+        <p>
+            You can also receive output from the dispatched workflow.
+            To do this, you need to set the <ui-path>Wait For Completion</ui-path> property to <code>true</code> and set the <ui-path>Output</ui-path> property to a JSON object that contains the output you want to receive from the workflow.
+        </p>
+    </chapter>
+
+    <chapter title="Trying it out" id="trying-it-out">
+        <p>Let's try it out.</p>
+        <p>First, we will create a child workflow and then a parent workflow that will dispatch said child workflow for execution.</p>
+        <chapter title="Example 1: Dispatching a Workflow" id="example-1">
+            <procedure title="Create Child Workflow">
+                <step><p>Create a new workflow called <b>Child Workflow</b>.</p></step>
+                <step><p>Add a new <control>WriteLine</control> activity to the design surface.</p></step>
+                <step><p>Configure the <control>WriteLine</control> activity's <control>Text</control> property with the text <code>Hello from Child</code>.</p></step>
+                <step>Publish the workflow.</step>
+            </procedure>
+            <procedure title="Create Parent Workflow">
+                <step>Create a new workflow called <b>Parent Workflow</b>.</step>
+                <step>
+                    <p>Add a new <control>WriteLine</control> activity to the design surface.</p>
+                    <p>Configure the <control>WriteLine</control> activity's <control>Text</control> property with the text <code>Parent started</code>.</p>
+                </step>
+                <step>
+                    <p>Add a new <control>Dispatch Workflow</control> activity with the following settings:</p>
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td>Value</td>
+                        </tr>
+                        <tr>
+                            <td>Workflow Definition</td>
+                            <td>Child Workflow</td>
+                        </tr>
+                        <tr>
+                            <td>Wait For Completion</td>
+                            <td>true</td>
+                        </tr>
+                    </table>
+                </step>
+                <step>Add another <control>WriteLine</control> activity to the design surface and configure its <control>Text</control> property with the text <code>Parent completed</code>.</step>
+                <step>Publish the workflow.</step>
+            </procedure>
+            <procedure title="Running the Parent Workflow">
+                <step>From Elsa Studio, open the <emphasis>Parent Workflow</emphasis> and click on the <ui-path>Start</ui-path> button.</step>
+                <step>
+                    <p>From the left menu, select the <ui-path>Workflows | Workflow Instances</ui-path> menu item and notice that two workflow instances have been created:</p>
+                    <list type="decimal">
+                        <li>Parent Workflow</li>
+                        <li>Child Workflow</li>
+                    </list>
+                </step>
+            </procedure>
+        </chapter>
+
+    </chapter>
+
+    <seealso>
+        <!--Give some related links to how-to articles-->
+    </seealso>
+</topic>
