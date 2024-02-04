@@ -12,11 +12,11 @@
     </p>
 
     <list>
-        <li><a href="#using-elsa-studio">Using Elsa Studio.</a></li>
+        <li><a href="#using-elsa-studio">Using Elsa Studio</a>.</li>
         <li><a href="#using-triggers">Using a trigger, such as <control>HTTP Endpoint</control></a>.</li>
-        <li>Using activities such as <control>Dispatch Workflow</control></li>
-        <li>Using the ELSA REST API.</li>
-        <li>Using C# code using the workflow runtime service, workflow inbox or workflow dispatcher.</li>
+        <li><a href="#using-dispatch-workflow-activity">Using activities such as <control>Dispatch Workflow</control><a/>.</li>
+        <li><a href="#using-elsa-rest-api">Using the ELSA REST API</a>.</li>
+        <li><a href="using-elsa-library">Using the Elsa library</a>.</li>
     </list>
 
     <p>In this guide, we will see an example of each of these methods.</p>
@@ -222,7 +222,7 @@
                     <code-block lang="curl">
                         curl --location 'https://localhost:5001/workflows/hello-world'
                     </code-block>
-                    <p>And since this is a simple GET request, we can of course paste the URL straight into the browser:</p>
+                    <p>And since this is a simple GET request, we can paste the URL straight into the browser:</p>
                     <img src="using-http-trigger-browser.png" alt="Invoking the workflow via the browser" thumbnail="false" border-effect="rounded"/>
                 </step>
                 <p>The HTTP Endpoint activity offers a simple yet effective way to trigger workflows via HTTP requests.</p>
@@ -279,6 +279,34 @@
                 <img src="using-dispatch-workflow-workflow-instances.png" alt="The Dispatch Workflow workflow started another workflow: the Using Elsa Studio workflow." border-effect="rounded" thumbnail="true"/>
                 <p>The Dispatch Workflow activity offers a simple way to invoke a workflow from another workflow.</p>
             </procedure>
+        </chapter>
+        <chapter title="Elsa REST API" id="using-elsa-rest-api">
+            <p>When setting up Elsa Server from the <a href="Elsa-Server.topic">installation guide</a>, it will include the Elsa API module which exposes API endpoints.</p>
+            <p>These endpoints are consumed by <a href="Elsa-Studio.topic">Elsa Studio</a>, but can also be used by your own application and from other HTTP clients such as <a href="https://www.postman.com/">Postman</a>.</p>
+            <p>One of these endpoints provides the ability to start a workflow.</p>
+            <p>The following curl shows an example that starts a workflow:</p>
+            <code-block lang="curl">
+                curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definitions/{workflow-definition-id}/execute' \
+                --header 'Authorization: ApiKey {your-api-key}'
+            </code-block>
+        </chapter>
+        <chapter title="Elsa Library" id="using-elsa-library">
+            <p>It is also possible to programmatically execute workflows from within the Elsa Server itself. For example, you could have a custom API controller from which you want to invoke a specific workflow</p>
+            <p>Elsa offers various services, ranging from general-purpose low-level services such as <code>IWorkflowRunner</code> to opinionated high-level services such as <code>IWorkflowRuntime</code></p>.
+            <p>The right service to use depends on your use case. When you have a workflow definition ID that you want to execute immediately, use the <code>IWorkflowRuntime</code> service:</p>
+            <code-block lang="c#">
+                await _workflowRuntime.StartWorkflowAsync(definitionId);
+            </code-block>
+            <p>If you want to execute a workflow asynchronously and not wait for it to start or complete, you can use <code>IWorkflowDispatcher</code>:</p>
+            <code-block lang="c#">
+                var dispatchRequest = new DispatchWorkflowDefinitionRequest
+                {
+                    DefinitionId = "your-definition-id",
+                    VersionOptions = VersionOptions.Published
+                };
+
+                await _workflowDispatcher.DispatchAsync(dispatchRequest);
+            </code-block>
         </chapter>
     </chapter>
 
