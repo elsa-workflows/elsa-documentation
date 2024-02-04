@@ -28,6 +28,7 @@
         <toc-element topic="External-Application-Interaction.topic"/>
         <toc-element topic="Loading-Workflows-from-JSON.topic"/>
         <toc-element topic="Invoking-Workflows.topic"/>
+        <toc-element topic="Dispatching-Child-Workflows.topic"/>
     </toc-element>
     <toc-element topic="Rehosting-the-Designer.md">
         <toc-element topic="Reusing-in-Angular.topic"/>
