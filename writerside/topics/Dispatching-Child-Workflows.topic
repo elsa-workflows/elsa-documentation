@@ -17,34 +17,30 @@
             When the DispatchWorkflow activity executes, it dispatches the selected workflow.
             The dispatched workflow will run in the background and the parent workflow will continue executing, unless the <ui-path>Wait For Completion</ui-path> property is set to <code>true</code>.
         </p>
-    </chapter>
 
-    <chapter title="Passing Input" id="passing-input">
-        <p>
-            You can pass input to the dispatched workflow.
-            To do this, you need to set the <ui-path>Input</ui-path> property to a JSON object that contains the input you want to pass to the workflow.
-        </p>
-        <p>When the workflow is executed, the <control>Dispatch Workflow</control> activity will dispatch the workflow with the specified input.</p>
-    </chapter>
+        <chapter title="Trying it out" id="trying-it-out-demo-1">
+            <p>First, we will create a child workflow and then a parent workflow that will dispatch said child workflow for execution.</p>
 
-    <chapter title="Receiving Output" id="receiving-output">
-        <p>
-            You can also receive output from the dispatched workflow.
-            To do this, you need to set the <ui-path>Wait For Completion</ui-path> property to <code>true</code> and set the <ui-path>Output</ui-path> property to a JSON object that contains the output you want to receive from the workflow.
-        </p>
-    </chapter>
-
-    <chapter title="Trying it out" id="trying-it-out">
-        <p>Let's try it out.</p>
-        <p>First, we will create a child workflow and then a parent workflow that will dispatch said child workflow for execution.</p>
-        <chapter title="Example 1: Dispatching a Workflow" id="example-1">
-            <procedure title="Create Child Workflow">
+            <procedure title="Create Child Workflow" switcher-key="Designer">
                 <step><p>Create a new workflow called <b>Child Workflow</b>.</p></step>
                 <step><p>Add a new <control>WriteLine</control> activity to the design surface.</p></step>
                 <step><p>Configure the <control>WriteLine</control> activity's <control>Text</control> property with the text <code>Hello from Child</code>.</p></step>
                 <step>Publish the workflow.</step>
             </procedure>
-            <procedure title="Create Parent Workflow">
+            <if switcher-key="Designer">
+                <p>The result should look like this:</p>
+                <img src="child-workflow-1.png" alt="Child Workflow" border-effect="rounded" thumbnail="true" />
+                <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/dispatching-child-workflows/ElsaServer/Workflows/child-workflow.json">Download Child Workflow</a>
+            </if>
+            <procedure title="Create Child Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Create a new workflow class called <code>ChildWorkflow</code> using the following code:</p>
+                    <path>Workflows/ChildWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ChildWorkflow1.cs"/>
+                </step>
+            </procedure>
+
+            <procedure title="Create Parent Workflow" switcher-key="Designer">
                 <step>Create a new workflow called <b>Parent Workflow</b>.</step>
                 <step>
                     <p>Add a new <control>WriteLine</control> activity to the design surface.</p>
@@ -70,7 +66,21 @@
                 <step>Add another <control>WriteLine</control> activity to the design surface and configure its <control>Text</control> property with the text <code>Parent completed</code>.</step>
                 <step>Publish the workflow.</step>
             </procedure>
+            <if switcher-key="Designer">
+                <p>The result should look like this:</p>
+                <img src="parent-workflow-1.png" alt="PArent Workflow" border-effect="rounded" thumbnail="true" />
+                <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/dispatching-child-workflows/ElsaServer/Workflows/parent-workflow.json">Download Parent Workflow</a>
+            </if>
+            <procedure title="Create Parent Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Create a new class called <code>ParentWorkflow</code> using the following code:</p>
+                    <path>Workflows/ParentWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ParentWorkflow1.cs"/>
+                </step>
+            </procedure>
+
             <procedure title="Running the Parent Workflow">
+                <step>Make sure the Elsa Server app is running.</step>
                 <step>From Elsa Studio, open the <emphasis>Parent Workflow</emphasis> and click on the <ui-path>Start</ui-path> button.</step>
                 <step>
                     <p>From the left menu, select the <ui-path>Workflows | Workflow Instances</ui-path> menu item and notice that two workflow instances have been created:</p>
@@ -81,8 +91,130 @@
                 </step>
             </procedure>
         </chapter>
+    </chapter>
+
+    <chapter title="Passing Input" id="passing-input">
+        <p>
+            You can pass input to the dispatched workflow.
+            To do this, you need to set the <ui-path>Input</ui-path> property to a JSON object that contains the input you want to pass to the workflow.
+        </p>
+        <p>When the workflow is executed, the <control>Dispatch Workflow</control> activity will dispatch the workflow with the specified input.</p>
+
+        <chapter title="Trying it out" id="trying-it-out-demo-2">
+            <p>Let's see how we can pass input from the parent workflow to the child workflow using the <control>Dispatch Workflow</control> activity.</p>
+
+            <procedure title="Update Child Workflow" switcher-key="Designer">
+                <step>Open <b>Child Workflow</b> in Elsa Studio.</step>
+                <step>
+                    <p>From the <ui-path>Input/Output</ui-path> tab, add a new <control>Input</control> called <code>Message</code> of type <code>String</code>.</p>
+                </step>
+                <step>
+                    <p>Update the <control>WriteLine</control> activity's <control>Text</control> property with a dynamic expression:</p>
+                    <tabs>
+                        <tab title="JavaScript">
+                            <code-block lang="javascript">
+                                getMessage()
+                            </code-block>
+                        </tab>
+                        <tab title="C#">
+                            <code-block lang="c#">
+                                return Inputs.Message;
+                            </code-block>
+                        </tab>
+                        <tab title="Python">
+                            <code-block lang="python">
+                                input.get("Message")
+                            </code-block>
+                        </tab>
+                        <tab title="Liquid">
+                            <code-block lang="twig">
+                                {{ Input.Message }}
+                            </code-block>
+                        </tab>
+                    </tabs>
+                </step>
+                <step>Publish the changes.</step>
+            </procedure>
+            <procedure title="Update Child Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Update the <code>ChildWorkflow</code> class as follows:</p>
+                    <path>Workflows/ChildWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ChildWorkflow2.cs"/>
+                </step>
+            </procedure>
+
+            <procedure title="Update Parent Workflow" switcher-key="Designer">
+                <step>Open <b>Parent Workflow</b> in Elsa Studio.</step>
+                <step>
+                    <p>Update the <control>Dispatch Workflow</control> activity's <control>Input</control> property with a dynamic expression:</p>
+                    <tabs>
+                        <tab title="JavaScript">
+                            <code-block lang="javascript">
+                                return {
+                                   Message: "Hello from Parent"
+                                }
+                            </code-block>
+                        </tab>
+                        <tab title="C#">
+                            <code-block lang="c#">
+                                return new
+                                {
+                                   Message = "Hello from Parent"
+                                };
+                            </code-block>
+                        </tab>
+                        <tab title="Liquid">
+                            <code-block lang="twig">
+                                {
+                                   "Input": "Hello from Parent"
+                                }
+                            </code-block>
+                        </tab>
+                    </tabs>
+                </step>
+                <step>Publish the workflow.</step>
+            </procedure>
+            <procedure title="Update Parent Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Update the <code>ParentWorkflow</code> as follows:</p>
+                    <path>Workflows/ParentWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ParentWorkflow2.cs"/>
+                </step>
+            </procedure>
+
+            <procedure title="Running the Parent Workflow">
+                <step>Make sure the Elsa Server app is running.</step>
+                <step>From Elsa Studio, open the <emphasis>Parent Workflow</emphasis> and click on the <ui-path>Start</ui-path> button.</step>
+                <step>Keep an eye out on the console to witness the changed output.</step>
+            </procedure>
+        </chapter>
 
     </chapter>
+
+    <chapter title="Receiving Output" id="receiving-output">
+        <p>
+            You can also receive output from the dispatched workflow.
+            To do this, you need to set the <ui-path>Wait For Completion</ui-path> property to <code>true</code> and set the <ui-path>Output</ui-path> property to a JSON object that contains the output you want to receive from the workflow.
+        </p>
+    </chapter>
+
+    <chapter title="Before you start" id="before-you-start">
+        <p>
+            For this guide, we will need the following:
+        </p>
+        <list>
+            <li>An <a href="Elsa-Server.topic">Elsa Server</a> project</li>
+            <li>
+                <p>An <a href="Docker.topic#elsa-studio">Elsa Studio</a> instance</p>
+                <include from="Snippets-Designer.topic" element-id="run-elsa-studio-docker-container" />
+            </li>
+        </list>
+        <p>
+            Please return here when you are ready.
+        </p>
+    </chapter>
+
+
 
     <seealso>
         <!--Give some related links to how-to articles-->
