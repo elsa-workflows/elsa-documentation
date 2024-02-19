@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Decision" id="Decision-Activity" switcher-label="Mode">
+
+    <p>
+        The <control>Decision</control> activity models a decision that yields a <emphasis>true</emphasis> or a <emphasis>false</emphasis> outcome, and is analogous to C#'s <code>if</code> statement.
+    </p>
+
+    <chapter title="Type Information">
+        <table>
+            <tr>
+                <td>Attribute</td>
+                <td>Value</td>
+            </tr>
+            <tr>
+                <td>.NET Type</td>
+                <td>FlowDecision</td>
+            </tr>
+            <tr>
+                <td>Namespace</td>
+                <td>Elsa.Workflows.Activities.Flowchart.Activities</td>
+            </tr>
+            <tr>
+                <td>Package</td>
+                <td>Elsa.Workflows.Core</td>
+            </tr>
+        </table>
+    </chapter>
+
+    <chapter title="Properties" id="properties">
+
+        <table>
+            <tr>
+                <td>Property</td>
+                <td>Type</td>
+                <td>Description</td>
+            </tr>
+            <tr>
+                <td>Condition</td>
+                <td>Elsa.Input&lt;bool&gt;</td>
+                <td>An expression that evaluates to a boolean value</td>
+            </tr>
+        </table>
+    </chapter>
+
+    <chapter title="Outcomes" id="outcomes">
+        <deflist type="medium">
+            <def title="True">
+                Triggered when the condition evaluates to <code>true</code>
+            </def>
+            <def title="False">
+                Triggered when the condition evaluates to <code>false</code>
+            </def>
+        </deflist>
+    </chapter>
+
+    <chapter title="Sample Usage" id="sample-usage" switcher-key="Programmatic">
+
+    </chapter>
+
+    <seealso>
+        <!--Provide links to related how-to guides, overviews, and tutorials.-->
+    </seealso>
+</topic>

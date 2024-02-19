@@ -42,4 +42,8 @@
         <description>Created after removal of "Guides" from Elsa</description>
         <accepts>Guides.html</accepts>
     </rule>
+    <rule id="2d360448">
+        <description>Created after removal of "Library" from Elsa</description>
+        <accepts>Library.html</accepts>
+    </rule>
 </rules>

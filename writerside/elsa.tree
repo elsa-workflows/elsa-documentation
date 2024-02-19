@@ -30,15 +30,18 @@
         <toc-element topic="Invoking-Workflows.topic"/>
         <toc-element topic="Dispatching-Child-Workflows.topic"/>
     </toc-element>
+    <toc-element topic="Activities.topic">
+        <toc-element topic="Control-Flow-Activities.topic">
+            <toc-element topic="Decision-Activity.topic"/>
+        </toc-element>
+        <toc-element topic="MassTransit-Activities.topic"/>
+    </toc-element>
+    <toc-element topic="Extensibility.topic">
+        <toc-element topic="Writing-Custom-Activities.md"/>
+    </toc-element>
     <toc-element topic="Rehosting-the-Designer.md">
         <toc-element topic="Reusing-in-Angular.topic"/>
         <toc-element topic="Reusing-in-React.topic"/>
         <toc-element topic="Reusing-in-Blazor.topic"/>
-    </toc-element>
-    <toc-element topic="Activities.topic">
-        <toc-element topic="Library.topic">
-            <toc-element topic="MassTransit.topic"/>
-        </toc-element>
-        <toc-element topic="Writing-Custom-Activities.md"/>
     </toc-element>
 </instance-profile>

@@ -3,17 +3,17 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="MassTransit" id="MassTransit" switcher-label="Message Broker">
+       title="MassTransit" id="MassTransit-Activities" switcher-label="Message Broker" help-id="MassTransit">
 
     <code-block lang="console">
         dotnet add package Elsa.MassTransit
     </code-block>
     <p>
-        <a href="https://masstransit.io/">MassTransit</a> is an open-source distributed application framework for .NET that provides a consistent abstraction on top of the supported message transports.
+        <a href="MassTransit-Activities.topic">MassTransit</a> is an open-source distributed application framework for .NET that provides a consistent abstraction on top of the supported message transports.
     </p>
     <p>
         It enables .NET developers to model messages as C# types, which can then be sent &amp; received.
-        To receive messages, one would typically write a <a href="https://masstransit.io/documentation/concepts/consumers">Consumer</a>.
+        To receive messages, one would typically write a <a href="MassTransit-Activities.topic">Consumer</a>.
     </p>
     <p>
         When using the MassTransit module with Elsa, there is an additional method of sending &amp; handling messages; through workflow activities.
