@@ -9,32 +9,21 @@
         The <control>Decision</control> activity models a decision that yields a <emphasis>true</emphasis> or a <emphasis>false</emphasis> outcome, and is analogous to C#'s <code>if</code> statement.
     </p>
 
-    <chapter title="Type Information">
-        <table>
-            <tr>
-                <td>Attribute</td>
-                <td>Value</td>
-            </tr>
-            <tr>
-                <td>.NET Type</td>
-                <td>FlowDecision</td>
-            </tr>
-            <tr>
-                <td>Namespace</td>
-                <td>Elsa.Workflows.Activities.Flowchart.Activities</td>
-            </tr>
-            <tr>
-                <td>Package</td>
-                <td>Elsa.Workflows.Core</td>
-            </tr>
-        </table>
+    <img src="FlowDecision.png" alt="Decision activity" thumbnail="false" border-effect="none" width="430" height="270"/>
+
+    <chapter title="Type Information" id="type-information">
+        <deflist type="wide">
+            <def title=".NET Type">FlowDecision</def>
+            <def title="Namespace">Elsa.Workflows.Activities.Flowchart.Activities</def>
+            <def title="Package">Elsa.Workflows.Core</def>
+        </deflist>
     </chapter>
 
-    <chapter title="Properties" id="properties">
+    <chapter title="Input" id="inputs">
 
         <table>
             <tr>
-                <td>Property</td>
+                <td>Name</td>
                 <td>Type</td>
                 <td>Description</td>
             </tr>
@@ -47,18 +36,19 @@
     </chapter>
 
     <chapter title="Outcomes" id="outcomes">
-        <deflist type="medium">
-            <def title="True">
-                Triggered when the condition evaluates to <code>true</code>
-            </def>
-            <def title="False">
-                Triggered when the condition evaluates to <code>false</code>
-            </def>
+        <deflist type="wide">
+            <def title="True">Triggered when the condition evaluates to <code>true</code></def>
+            <def title="False">Triggered when the condition evaluates to <code>false</code></def>
         </deflist>
     </chapter>
 
-    <chapter title="Sample Usage" id="sample-usage" switcher-key="Programmatic">
-
+    <chapter title="Sample Usage" id="sample-usage">
+        <p>The following workflow shows an example of how the <control>Decision</control> activity can be used inside a <control>Flowchart</control> activity.</p>
+        <code-block lang="c#" src="activities/FlowDecisionWorkflow.cs" switcher-key="Programmatic"/>
+        <if switcher-key="Designer">
+            <img src="FlowDecisionWorkflow.png" alt="Sample usage of the Decision activity" thumbnail="true" border-effect="rounded"/>
+            
+        </if>
     </chapter>
 
     <seealso>
