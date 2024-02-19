@@ -68,7 +68,7 @@
             </procedure>
             <if switcher-key="Designer">
                 <p>The result should look like this:</p>
-                <img src="parent-workflow-1.png" alt="PArent Workflow" border-effect="rounded" thumbnail="true" />
+                <img src="parent-workflow-1.png" alt="Parent Workflow" border-effect="rounded" thumbnail="true" />
                 <a href="https://raw.githubusercontent.com/elsa-workflows/elsa-guides/main/src/guides/dispatching-child-workflows/ElsaServer/Workflows/parent-workflow.json">Download Parent Workflow</a>
             </if>
             <procedure title="Create Parent Workflow" switcher-key="Programmatic">
@@ -192,29 +192,136 @@
     </chapter>
 
     <chapter title="Receiving Output" id="receiving-output">
-        <p>
+        <p switcher-key="Designer">
             You can also receive output from the dispatched workflow.
-            To do this, you need to set the <ui-path>Wait For Completion</ui-path> property to <code>true</code> and set the <ui-path>Output</ui-path> property to a JSON object that contains the output you want to receive from the workflow.
+            To do this, you need to set the <ui-path>Wait For Completion</ui-path> property to <code>true</code> and set the <ui-path>Output</ui-path> property to a workflow variable of type <code>Object</code> or <code>ObjectDictionary</code> that contains the output you want to receive from the workflow.
         </p>
+        <note title="Workflow Variable Aliases" switcher-key="Designer">
+            <p>The <code>ObjectDictionary</code> type that you see when configuring a workflow variable's <ui-path>Type</ui-path> property is an alias to the C#'s <code>IDictionary&lt;string, object&gt;</code> type.</p>
+            <p>Type aliases simplifies serialized type information.</p>
+        </note>
+        <p switcher-key="Programmatic">
+            You can also receive output from the dispatched workflow.
+            To do this, you need to set the <code>WaitForCompletion</code> property to <code>true</code> and assign a workflow variable to the <code>Output</code> property of type <code>IDictionary&lt;string, object&gt;</code>.
+        </p>
+
+        <chapter title="Trying it Out" id="trying-it-out-demo-3">
+            <p>In this example, we will see how to update the child workflow to produce an output, that is then captured by the parent workflow's <b>Dispatch Workflow</b> activity.</p>
+            <procedure title="Update Child Workflow" switcher-key="Designer">
+                <step>Open <b>Child Workflow</b> in Elsa Studio.</step>
+                <step>
+                    <p>Add a new <b>Output Definition</b> called <control>Response</control> of type <control>String</control></p>
+                    <img src="child-workflow-2.png" alt="Child Workflow Output" border-effect="rounded" thumbnail="true" />
+                    <img src="child-workflow-3.png" alt="Child Workflow Output Settings" border-effect="rounded" thumbnail="true" />
+                </step>
+                <step>
+                    <p>Add a new <control>Set Output</control> activity to the workflow and configure it as follows</p>
+                    <table>
+                        <tr>
+                            <td>Property</td>
+                            <td>Value</td>
+                        </tr>
+                        <tr>
+                            <td>Output</td>
+                            <td><code>Response</code></td>
+                        </tr>
+                        <tr>
+                            <td>Value</td>
+                            <td><code>Hello from Child</code></td>
+                        </tr>
+                    </table>
+                    <p>Make sure that you connect the <control>Write Line</control> activity to the <control>Set Output</control> activity.</p>
+                    <img src="child-workflow-4.png" alt="Set Output activity" border-effect="rounded" thumbnail="false" />
+                </step>
+                <step>
+                    Publish the workflow.
+                </step>
+            </procedure>
+            <procedure title="Update Child Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Update the <code>ChildWorkflow</code> class as follows:</p>
+                    <path>Workflows/ChildWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ChildWorkflow3.cs"/>
+                </step>
+            </procedure>
+
+            <p>Now that the child workflow produces an output, let's update the parent workflow to capture this output.</p>
+            <procedure title="Update Parent Workflow" switcher-key="Designer">
+                <step>Open <b>Parent Workflow</b> in Elsa Studio</step>
+                <step>
+                    <p>Add a new workflow variable called <control>ChildOutput</control> of type <code>ObjectDictionary</code></p>
+                    <img src="parent-workflow-2.png" alt="Add variable" border-effect="rounded" thumbnail="true" />
+                    <img src="parent-workflow-3.png" alt="Add ChildOutput variable" border-effect="rounded" thumbnail="true" />
+                </step>
+                <step>
+                    <p>Select the <control>Dispatch Workflow</control> activity and select its <ui-path>Outputs</ui-path> tab</p>
+                    <p>From this tab, you will see the <control>Result</control> property that is displayed as a dropdown list.</p>
+                    <p>From this list, select the <code>ChildOutput</code> variable that we created in the previous step.</p>
+                    <img src="parent-workflow-4.png" alt="Bind Result output to ChildOutput variable" border-effect="rounded" thumbnail="true" />
+                </step>
+                <step>
+                    <p>Select the existing <control>Write Line</control> activity and update its <ui-path>Text</ui-path> property with one of the following:</p>
+                    <tabs>
+                        <tab title="C#">
+                            <code-block lang="c#">
+                                return Variables.ChildOutput["Response"];
+                            </code-block>
+                        </tab>
+                        <tab title="JavaScript">
+                            <code-block lang="javascript">
+                                getChildOutput().Response
+                            </code-block>
+                        </tab>
+                        <tab title="Python">
+                            <code-block lang="python">
+                                variables.ChildOutput.Response
+                            </code-block>
+                        </tab>
+                        <tab title="Liquid">
+                            <code-block lang="twig">
+                                {{ Variables.ChildOutput["Response"] }}
+                            </code-block>
+                        </tab>
+                    </tabs>
+                </step>
+                <step>Publish the workflow</step>
+            </procedure>
+            <procedure title="Update Parent Workflow" switcher-key="Programmatic">
+                <step>
+                    <p>Update the <code>ParentWorkflow</code> class as follows:</p>
+                    <path>Workflows/ParentWorkflow.cs</path>
+                    <code-block lang="c#" src="guides/dispatching-child-workflows/ParentWorkflow3.cs"/>
+                </step>
+            </procedure>
+        </chapter>
+
+        <procedure title="Running the Parent Workflow">
+            <step>From the <emphasis>Parent Workflow</emphasis> open in the editor, click on the <ui-path>Start</ui-path> button.</step>
+            <step>
+                <p>From the left menu, select the <ui-path>Workflows | Workflow Instances</ui-path> menu item and notice that two workflow instances have been created:</p>
+                <img src="workflow-instances-1.png" alt="Workflow Instances" border-effect="rounded" thumbnail="true" />
+            </step>
+            <step switcher-key="Designer">
+                <p>Inspect the Child Workflow instance to observe that it produced an output.</p>
+                <img src="child-workflow-5.png" alt="Set Output activity" border-effect="rounded" thumbnail="true" />
+            </step>
+            <step switcher-key="Designer">
+                <p>Inspect the Parent Workflow instance to observe that its Dispatch Workflow activity received the output from the dispatched Child workflow.</p>
+                <img src="parent-workflow-5.png" alt="Dispatch Workflow activity output" border-effect="rounded" thumbnail="true" />
+                <p>Also observe that the <control>Write Line</control> activity printed the expected result.</p>
+                <img src="parent-workflow-6.png" alt="Write Line activity printed the expected result" border-effect="rounded" thumbnail="true" />
+            </step>
+        </procedure>
     </chapter>
 
-    <chapter title="Before you start" id="before-you-start">
-        <p>
-            For this guide, we will need the following:
-        </p>
-        <list>
-            <li>An <a href="Elsa-Server.topic">Elsa Server</a> project</li>
-            <li>
-                <p>An <a href="Docker.topic#elsa-studio">Elsa Studio</a> instance</p>
-                <include from="Snippets-Designer.topic" element-id="run-elsa-studio-docker-container" />
-            </li>
-        </list>
-        <p>
-            Please return here when you are ready.
-        </p>
+    <chapter title="Summary" id="summary">
+        <p>In this guide, we have seen how to dispatch child workflows using the <control>Dispatch Workflow</control> activity.</p>
+        <p>We have seen how to send input to and receive output from the child workflow.</p>
     </chapter>
 
-
+    <chapter title="Source Code" id="source-code">
+        The completed code for this guide can be found <a href="https://github.com/elsa-workflows/elsa-guides/tree/main/src/guides/dispatching-child-workflows/ElsaServer">here</a>.
+    </chapter>
 
     <seealso>
         <!--Give some related links to how-to articles-->
