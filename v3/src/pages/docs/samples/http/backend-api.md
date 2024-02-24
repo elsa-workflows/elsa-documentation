@@ -14,15 +14,21 @@ This is an example of a workflow that demonstrates the following features:
 - Using expressions.
 - Using route parameters.
 
+Download the following file to import the workflow:
 [http-backend-api.json](/samples/http/backend-api/http-backend-api.json)
 
-Sample CURL:
+After importing the workflow, make sure to publish it and note the URL of the HTTP trigger.
+The URL of the HTTP trigger can be found on the Input panel of the HTTP Endpoint activity:
+
+![HTTP Endpoint Input](/samples/http/backend-api/http-endpoint-input.png)
+
+The following is a sample request:
 
 ```shell
 curl --location 'https://localhost:5001/workflows/users/2'
 ```
 
-Sample response:
+Here is a sample response:
 
 ```json
 {
