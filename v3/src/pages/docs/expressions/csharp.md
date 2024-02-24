@@ -17,7 +17,7 @@ The following functions are specific to handling activity output.
 
 | Function                                | Description                                       | Example                          |
 |-----------------------------------------|---------------------------------------------------|----------------------------------|
-| `Output.From(string, string?): object?` | Gets the output of the activity by activity name. | `Output.From("HttpEndpoint1")`   |
+| `Output.Get(string, string?): object?` | Gets the output of the activity by activity name. | `Output.Get("HttpEndpoint1")`   |
 | `Output.LastResult: object?`            | Gets the last result.                             | `Output.LastResult`              |
 
 ## Workflow variables and input
