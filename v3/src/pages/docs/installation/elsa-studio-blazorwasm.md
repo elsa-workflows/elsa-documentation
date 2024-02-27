@@ -80,6 +80,8 @@ builder.Services.AddRemoteBackend(
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
+builder.Services.AddResponseCompression();
+
 
 // Build the application.
 var app = builder.Build();
