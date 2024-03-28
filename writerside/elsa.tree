@@ -37,7 +37,7 @@
         <toc-element topic="MassTransit-Activities.topic"/>
     </toc-element>
     <toc-element topic="Extensibility.topic">
-        <toc-element topic="Writing-Custom-Activities.md"/>
+        <toc-element topic="Custom-Activities.topic"/>
     </toc-element>
     <toc-element topic="Rehosting-the-Designer.md">
         <toc-element topic="Reusing-in-Angular.topic"/>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Custom Activities" id="Custom-Activities" help-id="Custom-Activities">
+
+    <p>
+        Elsa comes packed with prebuilt activities that cater to a variety of use cases, ranging from low-level primitives such as Set Variable to high-level activities such as Send Email.
+    </p>
+    <p>
+        In ,many scenarios, it's recommended to implement your own, domain-specific activities.
+        Having specialized activities that cater to your particular domain simplifies the creation and management of workflows significantly.
+    </p>
+    <p>
+        In this topic, we will learn how to develop custom activities.
+    </p>
+
+    <chapter title="Creating Custom Activities" id="creating-custom-activities">
+        <p>
+            To create a custom activity, you create a new class that implements <code>IActivity</code> or a base class that implements this interface.
+            For example, <code>Activity</code> or <code>CodeActivity</code>.
+        </p>
+        <p>The following class is a basic example of an activity that simply writes a message to the console:</p>
+
+        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessage.cs"/>
+
+        <note title="Activity vs CodeActivity">
+            <p>The difference between inheriting your custom activity from <code>Activity</code> and <code>CodeActivity</code> is subtle but important:</p>
+            <list>
+                <li><code>CodeActivity</code>: will <emphasis>complete automatically</emphasis>.</li>
+                <li><code>Activity</code>: needs to <emphasis>complete explicitly</emphasis>.</li>
+            </list>
+        </note>
+    </chapter>
+
+    <chapter title="Activity Input" id="activity-input">
+        <p>Activities, much like regular C# methods and JavaScript functions, can receive <emphasis>input</emphasis> and produce <emphasis>output</emphasis>.</p>
+        <p>In that sense, an activity is to a workflow as a C# statement is to a program. Activities are the building blocks that make up the logic of the workflow.</p>
+        <p>To define input, all you have to do is expose them as public properties on your activity class. For example, let's update the previous PrintMessage activity to accept a message as its input.</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithInput.cs"/>
+    </chapter>
+
+    <chapter title="Input Expressions" id="activity-input-expressions">
+        <p>Often times, you will want to provide activity input using dynamic expressions, rather than providing a static, literal value.</p>
+        <p>To have your activity support this, you need to wrap the input property type with <code>Input&lt;T&gt;</code></p>
+        <p>As an example, let's update the <code>PrintMessage</code> to support an expression for its <code>Message</code> input property:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs"/>
+        <p>Notice that when you wrap an input property with <code>Input&lt;T&gt;</code>, this affects the way you access its value:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
+    </chapter>
+
+    <chapter title="Activity Providers" id="activity-providers">
+        <p>There are various ways to provide activities to the system. At its heart, an activity is represented by an <emphasis>Activity Descriptor</emphasis>.</p>
+        <p>Activity descriptors are provided by an abstraction called <emphasis>Activity Providers</emphasis>.</p>
+        <p>One implementation of an activity provider is the <code>TypedActivityProvider</code>. This provider generates activity descriptors based on the presence of .NET types that implement the <code>IActivity</code> interface.</p>
+    </chapter>
+
+    <chapter title="Summary" id="summary">
+        <p>We have learned how to extend Elsa with custom activities.</p>
+        <p>To create a custom activity, we create a new class that directly or indirectly implements <code>IActivity</code></p>
+    </chapter>
+
+    <seealso>
+        <!--Give some related links to how-to articles-->
+    </seealso>
+</topic>

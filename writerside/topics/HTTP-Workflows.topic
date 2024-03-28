@@ -21,7 +21,21 @@
         <li>SetVariable</li>
     </list>
 
-    <include from="Snippets.topic" element-id="guide-prerequisite"/>
+    <chapter title="Before you start" id="before-you-start">
+        <p>
+            For this guide, we will need the following:
+        </p>
+        <list>
+            <li>An <a href="Elsa-Server.topic">Elsa Server</a> project</li>
+            <li switcher-key="Designer">
+                <p>An <a href="Docker.topic#elsa-studio">Elsa Studio</a> instance</p>
+                <include from="Snippets-Designer.topic" element-id="run-elsa-studio-docker-container" />
+            </li>
+        </list>
+        <p>
+            Please return here when you are ready.
+        </p>
+    </chapter>
 
     <chapter title="Workflow Overview" id="workflow-overview">
         <p>

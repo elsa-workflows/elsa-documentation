@@ -46,4 +46,8 @@
         <description>Created after removal of "Library" from Elsa</description>
         <accepts>Library.html</accepts>
     </rule>
+    <rule id="b541ad5">
+        <description>Created after removal of "Writing Custom Activities" from Elsa</description>
+        <accepts>Writing-Custom-Activities.html</accepts>
+    </rule>
 </rules>
