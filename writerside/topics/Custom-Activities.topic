@@ -42,12 +42,15 @@
     </chapter>
 
     <chapter title="Input Expressions" id="activity-input-expressions">
-        <p>Often times, you will want to provide activity input using dynamic expressions, rather than providing a static, literal value.</p>
+        <p>Oftentimes, you will want to provide activity input using dynamic expressions, rather than providing a static, literal value.</p>
+        <p>For example, we may want to get the message to print from a workflow variable, instead of hardcoding it directly into the activity's input property.</p>
         <p>To have your activity support this, you need to wrap the input property type with <code>Input&lt;T&gt;</code></p>
         <p>As an example, let's update the <code>PrintMessage</code> to support an expression for its <code>Message</code> input property:</p>
         <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs"/>
         <p>Notice that when you wrap an input property with <code>Input&lt;T&gt;</code>, this affects the way you access its value:</p>
         <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
+        <p>The following demonstrates how to use it in a programmatic workflow:</p>
+        <code-block
     </chapter>
 
     <chapter title="Activity Providers" id="activity-providers">
