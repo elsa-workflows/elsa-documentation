@@ -1,0 +1,1 @@
+services.AddActivityProvider<FruitsActivityProvider>();

@@ -49,22 +49,31 @@
     <chapter title="Glossary" id="glossary">
         <p>A glossary of commonly used terms in Elsa:</p>
         <deflist>
-            <def title="Workflow">
+            <def title="Workflow" id="workflow">
                 A workflow is a sequence of one or more activities that can be executed.
                 In Elsa, a workflow is represented by an instance of the `Workflow` class, and is itself an activity.
                 The Workflow class has a single `Root` property of type `IActivity` that will be scheduled for execution when the workflow executes.
             </def>
-            <def title="Workflow Instance">
+            <def title="Workflow Instance" id="workflow-instance">
                 A workflow instance represents a DB-persistable instance of a workflow that is being executed. It is represented by the `WorkflowInstance` class.
             </def>
-            <def title="Activity">
+            <def title="Activity" id="activity">
                 An activity is a unit of work that can be executed by the workflow engine.
                 Activities can be chained together to form a workflow.
                 In Elsa, activities are represented by classes that implement the `IActivity` interface.
             </def>
-            <def title="Bookmark">
+            <def title="Bookmark" id="bookmark">
                 A bookmark represents a point in a workflow where the workflow can be paused and resumed later.
                 Bookmarks are created by blocking activities, such as the `Event` activity or the Delay activity.
+            </def>
+            <def title="Burst of Execution" id="burst-of-execution">
+                Whenever the workflow runner is executing activities, for as long as it is executing, it is performing a burst of execution.
+                For example, when you have a workflow that executes from start to finish, the workflow executed in a single burst of execution.
+                On the other hand, if you have a workflow that starts until it reaches a <emphasis>blocking activity</emphasis>, such as an <code>Event</code> activity, the burst of execution ends, given that no additional activities are being queued for execution. When the Delay activity ultimately triggers, it causes a new burst of execution to occur.
+            </def>
+            <def title="Blocking Activity" id="blocking-activity">
+                This term refers to activities that do not immediately complete themselves when they are first executed. Usually they create one or more bookmarks, but this is not a requirement for an activity to be blocking execution.
+                The term "blocking" stems from the fact that the workflow will not continue executing subsequent activities on this path until the blocking activity is resumed.
             </def>
         </deflist>
     </chapter>

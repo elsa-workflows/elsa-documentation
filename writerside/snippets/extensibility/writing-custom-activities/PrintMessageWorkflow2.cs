@@ -1,3 +1,4 @@
+using Elsa.JavaScript.Models;
 using Elsa.Workflows;
 using Elsa.Workflows.Contracts;
 
@@ -9,7 +10,7 @@ public class PrintMessageWorkflow : WorkflowBase
 
         builder.Root = new PrintMessage
         {
-            Message = new(context => $"The message is: {message.Get(context)}")
+            Message = new(JavaScriptExpression.Create("`The message is: ${getMessage()}`"))
         };
     }
 }

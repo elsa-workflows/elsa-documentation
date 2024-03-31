@@ -5,6 +5,8 @@
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Custom Activities" id="Custom-Activities" help-id="Custom-Activities">
 
+    <show-structure depth="2"/>
+
     <p>
         Elsa comes packed with prebuilt activities that cater to a variety of use cases, ranging from low-level primitives such as Set Variable to high-level activities such as Send Email.
     </p>
@@ -32,31 +34,116 @@
                 <li><code>Activity</code>: needs to <emphasis>complete explicitly</emphasis>.</li>
             </list>
         </note>
+
+        <chapter title="Metadata" id="activity-metadata">
+            <p>When using activities in tools such as <a href="Elsa-Studio.topic"/>, there's an opportunity to offer user-friendly information about the activity, such as a display name and a description</p>
+            <p>This information can be attached to your custom activity using the <code>ActivityAttribute</code>.</p>
+            <p>The following is an example of <code>ActivityAttribute</code> applied to the <code>PrintMessage</code> activity:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithActivityMetadata.cs"/>
+            <p>In this example, we annotate the activity with a namespace of <code>"MyCompany"</code> and a description.</p>
+        </chapter>
     </chapter>
 
-    <chapter title="Activity Input" id="activity-input">
+    <chapter title="Registering Activities" id="registering-activities">
+        <p>In order to be able to use activities in a workflow, they need to be registered with the system.</p>
+        <p>Specifically, they need to be registered with a service called the <emphasis>Activity Registry</emphasis></p>
+        <p>The easiest way to do so is from yur application's bootstrap code. For example, the following <path>Program.cs</path> file demonstrates registering the <code>PrintMessage</code> activity:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/Program1.cs"/>
+        <p>Alternatively, if you want to register all activities from a given assembly, you can use the <code>AddActivitiesFrom&lt;TMarker&gt;</code> extension method instead:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/Program2.cs"/>
+        <p>That will register all activities found in the assembly that contains the specified type. The marker type can be any type within the assembly, so it does not need to be an activity itself. As the generic type parameter suggest; it's a marker type, used to specify the assembly to look for activity types.</p>
+    </chapter>
+
+    <chapter title="Input" id="activity-input">
         <p>Activities, much like regular C# methods and JavaScript functions, can receive <emphasis>input</emphasis> and produce <emphasis>output</emphasis>.</p>
         <p>In that sense, an activity is to a workflow as a C# statement is to a program. Activities are the building blocks that make up the logic of the workflow.</p>
         <p>To define input, all you have to do is expose them as public properties on your activity class. For example, let's update the previous PrintMessage activity to accept a message as its input.</p>
         <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithInput.cs"/>
+        <chapter title="Metadata" id="input-metadata">
+            <p>When using activities in tools such as <a href="Elsa-Studio.topic"/>, there's an opportunity to offer user-friendly information about the activity input, such as a display name and a description</p>
+            <p>This information can be attached to your custom activity's input property using the <code>InputAttribute</code>.</p>
+            <p>The following is an example of <code>InputAttribute</code> applied to the <code>Message</code> property:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithInputMetadata.cs"/>
+            <p>In this example, we annotate the <code>Message</code> input property with a description.</p>
+        </chapter>
+        <chapter title="Expressions" id="activity-input-expressions">
+            <p>Oftentimes, you will want to provide activity input using dynamic expressions, rather than providing a static, literal value.</p>
+            <p>For example, we may want to get the message to print from a workflow variable, instead of hardcoding it directly into the activity's input property.</p>
+            <p>To have your activity support this, you need to wrap the input property type with <code>Input&lt;T&gt;</code></p>
+            <p>As an example, let's update the <code>PrintMessage</code> to support an expression for its <code>Message</code> input property:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs"/>
+            <p>Notice that when you wrap an input property with <code>Input&lt;T&gt;</code>, this affects the way you access its value:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
+            <p>The following demonstrates how to specify an expression for the Message property in a workflow created using the workflow builder API:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWorkflow1.cs"/>
+            <p>In the above example, we use a simple C# delegate expression to dynamically evaluate the message to print at runtime.</p>
+            <p>Instead of using C# delegate syntax, we can also opt to use any of the other installed expression provider syntaxes, such as JavaScript:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWorkflow2.cs"/>
+            <p>Notice that the only difference is the way that we create the expression:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWorkflow2.cs" include-lines="15-15"/>
+        </chapter>
     </chapter>
 
-    <chapter title="Input Expressions" id="activity-input-expressions">
-        <p>Oftentimes, you will want to provide activity input using dynamic expressions, rather than providing a static, literal value.</p>
-        <p>For example, we may want to get the message to print from a workflow variable, instead of hardcoding it directly into the activity's input property.</p>
-        <p>To have your activity support this, you need to wrap the input property type with <code>Input&lt;T&gt;</code></p>
-        <p>As an example, let's update the <code>PrintMessage</code> to support an expression for its <code>Message</code> input property:</p>
-        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs"/>
-        <p>Notice that when you wrap an input property with <code>Input&lt;T&gt;</code>, this affects the way you access its value:</p>
-        <code-block lang="c#" src="extensibility/writing-custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
-        <p>The following demonstrates how to use it in a programmatic workflow:</p>
-        <code-block
+    <chapter title="Output" id="activity-output">
+        <p>Activities can produce outputs. This is done by implementing properties that are of type <code>Output&lt;T&gt;</code>.</p>
+        <p>For example, the following activity produces a random number between 0 and 100:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/GenerateRandomNumber1.cs"/>
+        <chapter title="Metadata" id="output-metadata">
+            <p>Just like with input properties, output properties can be annotated with metadata, too.</p>
+            <p>To do so, use the <code>OutputAttribute</code>.</p>
+            <p>The following is an example of <code>OutputAttribute</code> applied to the <code>Result</code> property:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/GenerateRandomNumber2.cs"/>
+            <p>In this example, we annotate the <code>Result</code> output property with a description.</p>
+        </chapter>
+        <p>There are two ways to access the output of this activity:</p>
+        <list type="decimal">
+            <li>By capturing the output using a workflow variable</li>
+            <li>By accessing the output directly from the workflow engine's memory register</li>
+        </list>
+        <p>Let's take a look at both approaches.</p>
+        <chapter title="Capture via Variable" id="capture-output-via-variable">
+            <p>First, let's see how to use a workflow variable to capture the output:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/GenerateRandomNumberWorkflow1.cs"/>
+            <p>In the above workflow, we do the following:</p>
+            <list>
+                <li>Execute the <code>GenerateRandomNumber</code> activity</li>
+                <li>Capture the output of the activity in a variable called <code>RandomNumber</code></li>
+                <li>Print a message that displays the value of the <code>RandomNumber</code> variable</li>
+            </list>
+        </chapter>
+        <chapter title="Direct Access" id="direct-access">
+            <p>Next, let's see how to access the output from the <code>GenerateRandomNumber</code> activity directly:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/GenerateRandomNumberWorkflow2.cs"/>
+            <p>Notice that we have to provide a name for the activity from which we want to access its output, as well as the name of the output property.</p>
+            <p>An alternative, more type-safe approach is to first declare the activity as a local variable. We can then use that variable to reference it and its output, as seen in the following example:</p>
+            <code-block lang="c#" src="extensibility/writing-custom-activities/GenerateRandomNumberWorkflow3.cs"/>
+        </chapter>
+        <p>The best approach depends primarily on your personal preference, but there is an important difference between the two.</p>
+        <p>Activity output is <emphasis>transient in nature</emphasis>, which means that the output exists only for the duration of the <a href="Overview.topic" anchor="burst-of-execution" summary="Whenever the workflow runner is executing activities, for as long as it is executing, it is performing a burst of execution. Click to read more.">current burst of execution</a>.</p>
+        <p>If you need to be able to access the output value across bursts of execution, using a variable to capture the output is a better choice, because <emphasis>variables are configured to be persistent by default</emphasis>.</p>
     </chapter>
 
     <chapter title="Activity Providers" id="activity-providers">
         <p>There are various ways to provide activities to the system. At its heart, an activity is represented by an <emphasis>Activity Descriptor</emphasis>.</p>
         <p>Activity descriptors are provided by an abstraction called <emphasis>Activity Providers</emphasis>.</p>
         <p>One implementation of an activity provider is the <code>TypedActivityProvider</code>. This provider generates activity descriptors based on the presence of .NET types that implement the <code>IActivity</code> interface.</p>
+        <p>This layer of abstractions allows for advanced scenarios where the source of activity descriptors can be dynamic.</p>
+        <p>For example, ELSA allows you to define workflows and then invoke them as activities. Through a specialized activity provider, these workflows appear as activities from the toolbox.</p>
+        <p>Another sample use case is to provide activities based on an Open API specification. Each operation on each resource would automatically be represented by an activity, rather than having to use the <code>SendHttpRequest</code> activity directly.</p>
+        <p>Follow these steps to create custom activity providers:</p>
+        <list type="decimal">
+            <li>Implement <code>Elsa.Workflows.Contracts.IActivityProvider</code></li>
+            <li>Register your custom activity provider</li>
+        </list>
+        <p>The following is a sample activity provider:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/FruitActivityProvider.cs"/>
+        <p>The activity provider uses a simple string array of fruit names as its data source. For each fruit in the list, an activity descriptor is generated,  representing a "Buy (fruit)" activity.</p>
+        <p>To register the provider, use the <code>AddActivityProvider&lt;T&gt;</code> extension method:</p>
+        <code-block lang="c#" src="extensibility/writing-custom-activities/Program3.cs"/>
+        <note title="Programmatic Workflows and Dynamic Activities">
+            <p>Activities that are dynamically provided to the system cannot currently be used in programmatic workflows.</p>
+            <p>There is an open issue for this functionality: <a href="https://github.com/elsa-workflows/elsa-core/issues/5162">https://github.com/elsa-workflows/elsa-core/issues/5162</a></p>
+        </note>
     </chapter>
 
     <chapter title="Summary" id="summary">
