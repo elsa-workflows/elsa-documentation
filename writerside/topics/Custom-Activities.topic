@@ -8,14 +8,13 @@
     <show-structure depth="2"/>
 
     <p>
-        Elsa comes packed with prebuilt activities that cater to a variety of use cases, ranging from low-level primitives such as Set Variable to high-level activities such as Send Email.
+        Elsa comes equipped with an array of prebuilt activities designed to accommodate a diverse set of use cases, from foundational tasks like "Set Variable" to more complex operations such as "Send Email." These built-in activities provide a robust foundation for building and managing workflows efficiently across various scenarios.
     </p>
     <p>
-        In ,many scenarios, it's recommended to implement your own, domain-specific activities.
-        Having specialized activities that cater to your particular domain simplifies the creation and management of workflows significantly.
+        However, to truly harness the full potential of Elsa, creating domain-specific activities tailored to your unique needs is often advisable. Custom activities, designed with your specific domain in mind, greatly streamline workflow creation and management, making the process more intuitive and aligned with your operational requirements.
     </p>
     <p>
-        In this topic, we will learn how to develop custom activities.
+        This guide will delve into the development of custom activities, offering insights and practical advice on how to extend Elsa's capabilities with tailor-made solutions that fit your domain perfectly.
     </p>
 
     <chapter title="Creating Custom Activities" id="creating-custom-activities">
