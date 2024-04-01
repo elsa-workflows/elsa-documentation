@@ -19,16 +19,15 @@
 
     <chapter title="Creating Custom Activities" id="creating-custom-activities">
         <p>
-            To craft a custom activity, start by defining a new class that implements the <code>IActivity</code> interface or inherits from a base class that does. Examples include <code>Activity</code> or <code>CodeActivity</code>.
+            To create a custom activity, start by defining a new class that implements the <code>IActivity</code> interface or inherits from a base class that does. Examples include <code>Activity</code> or <code>CodeActivity</code>.
         </p>
         <p>A simple example of a custom activity is one that outputs a message to the console:</p>
 
         <code-block lang="c#" src="extensibility/custom-activities/PrintMessageActivity.cs"/>
 
-        <chapter title="Anatomy of an Activity" id="anatomy-of-an-activity">
-
+        <chapter title="Anatomy" id="anatomy-of-an-activity">
             <p>When developing custom activities for Elsa, understanding the basic structure and lifecycle of an activity is crucial.</p>
-            <p>Let's dissect the sample PrintMessage activity.</p>
+            <p>Let's dissect the sample <code>PrintMessage</code> activity.</p>
 
             <chapter title="Essential Components" id="activity-essential-components">
                 <list>
@@ -72,12 +71,180 @@
             <p>This approach allows developers to focus on the core logic of their activities without worrying about activity completion.</p>
         </chapter>
 
-        <chapter title="Activity Metadata" id="activity-metadata">
+        <chapter title="Metadata" id="activity-metadata">
             <p>When utilizing activities within tools such as <a href="Elsa-Studio.topic"/>, it presents an opportunity to convey user-friendly details about the activity, like its display name and description.</p>
             <p>Such information can be associated with your custom activity through the <code>ActivityAttribute</code>.</p>
             <p>Below is an example where the <code>ActivityAttribute</code> is applied to the <code>PrintMessage</code> activity:</p>
             <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithActivityMetadata.cs"/>
             <p>In this case, the activity is annotated with a namespace of <code>"MyCompany"</code> and a description for clarity.</p>
+        </chapter>
+
+        <chapter title="Composition" id="composite-activities">
+            <p>Composite activities combine multiple activities into a single unit, allowing for complex workflows that include conditional logic and branching. This capability is demonstrated in the <code>If</code> activity example below:</p>
+            <code-block lang="c#" src="extensibility/custom-activities/If.cs"/>
+            <p>This example illustrates how a composite activity can evaluate a condition and then proceed with one of two possible paths, effectively modeling an "if-else" statement within a workflow.</p>
+            <note title="Illustration Purpose">
+                <p>The <code>If</code> activity demonstrated here is provided solely for illustrative purposes to showcase the concept of composite activities. Elsa already includes an <code>If</code> activity out-of-the-box, so developers do not need to implement it themselves. This example is intended to inspire how custom composite activities might be designed to fit specific workflow requirements.</p>
+            </note>
+            <if switcher-key="Programmatic">
+                <p>The following example shows how to use the <code>If</code> activity:</p>
+                <code-block lang="c#" src="extensibility/custom-activities/IfWorkflow.cs"/>
+            </if>
+            <if switcher-key="Designer">
+                <p>When adding the activity to the canvas, notice that the two properties are presented as embedded ports inside the activity:</p>
+                <img src="if-workflow-1.png" border-effect="rounded" alt="The If activity has two embedded ports: Then and Else" thumbnail="true"/>
+                <p>To add activities to an embedded port, simply click on one of them, which will take you to a nested designer:</p>
+                <img src="if-workflow-2.png" border-effect="rounded" alt="Inside the Then port of the If activity" thumbnail="true"/>
+            </if>
+        </chapter>
+
+        <chapter title="Outcomes" id="activity-outcomes">
+            <p>Defining custom outcomes for an activity allows for nuanced control over its execution path based on specific conditions. These outcomes can be explicitly declared by annotating the activity class with the <code>FlowNodeAttribute</code>. For example:</p>
+            <code-block lang="c#">
+                [FlowNode("Pass", "Fail")]
+            </code-block>
+            <p>This annotation specifies two distinct outcomes for the activity: "Pass" and "Fail." These outcomes dictate the possible execution paths following the activity's completion. To trigger a specific outcome during runtime, utilize the <code>CompleteActivityWithOutcomesAsync</code> method within your activity's execution logic.</p>
+            <p>Consider the following practical illustration:</p>
+            <code-block lang="c#" src="extensibility/custom-activities/PerformTask.cs"/>
+            <p>In this scenario, the defined outcomes guide the flow of execution within flowcharts, enabling conditional progression based on the result of the activity. This mechanism enhances the flexibility and decision-making capabilities within workflows, allowing for dynamic responses to activity results.</p>
+        </chapter>
+
+        <chapter title="Input" id="activity-input">
+            <p>Similar to C# methods and JavaScript functions, activities can accept <emphasis>input</emphasis> and generate <emphasis>output</emphasis>.</p>
+            <p>In essence, an activity functions within a workflow much like a statement within a program, serving as a fundamental component that constructs the logic of the workflow.</p>
+            <p>To define inputs, simply expose public properties within your activity class. For instance, the <code>PrintMessage</code> activity below is updated to receive a message as input:</p>
+            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithInput.cs"/>
+            <chapter title="Input Metadata" id="input-metadata">
+                <p>Utilizing activities within tools such as <a href="Elsa-Studio.topic"/>, offers a chance to provide accessible information about the activity's inputs, including display names and descriptions.</p>
+                <p>This detail can be appended to your custom activity's input property using the <code>InputAttribute</code>.</p>
+                <p>Here is an instance where the <code>InputAttribute</code> is applied to the <code>Message</code> property:</p>
+                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithInputMetadata.cs"/>
+                <p>In this example, the <code>Message</code> input property is embellished with a description for better understanding.</p>
+            </chapter>
+            <chapter title="Expressions" id="activity-input-expressions">
+                <p>Often, you'll want to dynamically set the activity's input through expressions, instead of fixed, literal values.</p>
+                <p>For instance, you might want the message to be printed to originate from a workflow variable, rather than being hardcoded into the activity's input.</p>
+                <p>To enable this, you should encapsulate the input property type within <code>Input&lt;T&gt;</code>.</p>
+                <p>As an illustration, the <code>PrintMessage</code> activity below is modified to support expressions for its <code>Message</code> input property:</p>
+                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithExpressionInput.cs"/>
+                <p>Note that encapsulating an input property with <code>Input&lt;T&gt;</code> changes the manner in which its value is accessed:</p>
+                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
+                <if switcher-key="Programmatic">
+                    <p>The example below demonstrates specifying an expression for the <code>Message</code> property in a workflow created using the workflow builder API:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow1.cs"/>
+                    <p>In this scenario, we utilize a simple C# delegate expression to dynamically determine the message to print at runtime.</p>
+                    <p>Alternatively, other installed expression provider syntaxes, such as JavaScript, can be employed:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow2.cs"/>
+                    <p>The only variance is in the creation of the expression:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow2.cs" include-lines="15-15"/>
+                </if>
+                <if switcher-key="Designer">
+                    <p>When an input property is encapsulated with <code>Input&lt;T&gt;</code>, Elsa Studio enables the user to select from any installed syntaxes for input:</p>
+                    <img src="activity-input-metadata-1.png" alt="Activity input and different syntax support" border-effect="rounded" thumbnail="true"/>
+                </if>
+            </chapter>
+        </chapter>
+
+        <chapter title="Output" id="activity-output">
+            <p>Activities are capable of generating outputs, achieved by implementing properties typed as <code>Output&lt;T&gt;</code>.</p>
+            <p>For instance, the activity below generates a random number between 0 and 100:</p>
+            <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumber1.cs"/>
+            <chapter title="Output Metadata" id="output-metadata">
+                <p>Similarly to input properties, output properties can be enriched with metadata.</p>
+                <p>This is accomplished using the <code>OutputAttribute</code>.</p>
+                <p>An example of the <code>OutputAttribute</code> applied to the <code>Result</code> property follows:</p>
+                <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumber2.cs"/>
+                <p>In this instance, the <code>Result</code> output property is adorned with a description for enhanced clarity.</p>
+            </chapter>
+            <p>There are two approaches to managing activity output:</p>
+            <list type="decimal">
+                <li>Capturing the output via a workflow variable</li>
+                <li>Direct access to the output from the workflow engine's memory register</li>
+            </list>
+            <p>Let's examine both methods in detail.</p>
+            <chapter title="Capture via Variable" id="capture-output-via-variable">
+                <if switcher-key="Programmatic">
+                    <p>Firstly, here's how to capture the output using a workflow variable:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow1.cs"/>
+                    <p>In this workflow, the steps include:</p>
+                    <list>
+                        <li>Executing the <code>GenerateRandomNumber</code> activity</li>
+                        <li>Capturing the activity's output in a variable named <code>RandomNumber</code></li>
+                        <li>Displaying a message with the value of the <code>RandomNumber</code> variable</li>
+                    </list>
+                </if>
+                <if switcher-key="Designer">
+                    <p>To capture output via a variable, follow these steps:</p>
+                    <procedure>
+                        <step>
+                            <p>Create a new workflow</p>
+                            <img src="random-number-workflow-1.png" alt="Create a new workflow called Random Number Workflow" border-effect="rounded"/>
+                        </step>
+                        <step>
+                            <p>Establish a new variable of type <code>decimal</code> named <emphasis>RandomNumber</emphasis></p>
+                            <img src="random-number-workflow-2.png" alt="Create a new workflow called Random Number Workflow" border-effect="rounded" thumbnail="true"/>
+                        </step>
+                        <step>
+                            <p>Integrate the <ui-path>Generate Random Number</ui-path> activity into the canvas and link its Result output to the <ui-path>RandomNumber</ui-path> variable.</p>
+                            <img src="random-number-workflow-3.png" alt="Add activity and bind output" border-effect="rounded" thumbnail="true"/>
+                        </step>
+                        <step>
+                            <p>Add the <ui-path>Print Message</ui-path> activity to the canvas and set up its <ui-path>Message</ui-path> property with a JavaScript expression leveraging the variable.</p>
+                            <p>Ensure the activities are connected.</p>
+                            <img src="random-number-workflow-4.png" alt="Add activity and bind output" border-effect="rounded" thumbnail="true"/>
+                        </step>
+                    </procedure>
+                </if>
+            </chapter>
+            <chapter title="Direct Access" id="direct-access">
+                <if switcher-key="Programmatic">
+                    <p>Now, let's explore direct access to the output from the <code>GenerateRandomNumber</code> activity:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow2.cs"/>
+                    <p>This requires naming the activity from which the output will be accessed, as well as the output property's name.</p>
+                    <p>An alternative, type-safe method is to declare the activity as a local variable initially. This allows for referencing both the activity and its output, as demonstrated below:</p>
+                    <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow3.cs"/>
+                </if>
+                <if switcher-key="Designer">
+                    <p>To directly access the output from the <ui-path>Generate Random Number</ui-path> activity, follow these steps:</p>
+                    <procedure>
+                        <step>
+                            <p>Remove the RandomNumber variable</p>
+                            <img src="random-number-workflow-5.png" alt="Delete the RandomNumber variable" border-effect="rounded" thumbnail="true"/>
+                        </step>
+                        <step>
+                            <p>Upon adding an activity to the canvas, the designer automatically assigns it a default name. Use the name <code>GenerateRandomNumber1</code> for the <ui-path>Generate Random Number</ui-path> activity as an example.</p>
+                            <img src="random-number-workflow-6.png" alt="The name of the activity" border-effect="rounded" thumbnail="true"/>
+                            <p>Knowing the activity's name, update the <ui-path>Print Message</ui-path> activity's <ui-path>Message</ui-path> property with the following expression to access its output:</p>
+                            <tabs>
+                                <tab title="JavaScript">
+                                    <code-block lang="javascript">
+                                        const randomNumber = getResultFromGenerateRandomNumber1();
+                                        return `The random number is: ${randomNumber}`;
+                                    </code-block>
+                                </tab>
+                                <tab title="C#">
+                                    <code-block lang="c#">
+                                        var randomNumber = Output.From&lt;decimal&gt;("GenerateRandomNumber1", "Result");
+                                        return $"The random number is: {randomNumber}";
+                                    </code-block>
+                                </tab>
+                            </tabs>
+
+                        </step>
+                    </procedure>
+
+                </if>
+            </chapter>
+            <p>While both approaches are effective for managing activity output, it's crucial to note a key distinction: activity output is <emphasis>transient</emphasis>, existing only for the duration of the <a href="Overview.topic" anchor="burst-of-execution" summary="As the workflow runner executes activities, it performs what is known as a burst of execution. Click to learn more.">current execution burst</a>.</p>
+            <p>To access the output value beyond these bursts, capturing the output in a variable is recommended, as <emphasis>variables are inherently persistent</emphasis>.</p>
+        </chapter>
+        <chapter title="Leveraging Dependency Injection in Activities" id="activity-dependency-injection">
+            <p>To integrate external services within your activities, you can dynamically resolve these services using the <code>context</code> argument provided in the activity's <code>ExecuteAsync</code> method. This approach allows for the seamless use of dependency injection (DI) patterns, even within the constraints of workflow execution.</p>
+            <p>Below is a practical example demonstrating how to resolve a service in an activity:</p>
+            <code-block lang="c#" src="extensibility/custom-activities/GetWeatherForecast.cs"/>
+            <note title="Choosing Service Location over Constructor Injection">
+                <p>Elsa's design choice to favor service location through the execution context over constructor dependency injection is deliberate. This decision supports the flexibility in constructing activity instances directly within workflow definitions. Incorporating constructor-based DI would complicate the instantiation of activities, thereby restricting the fluidity in building and manipulating workflow graphs programmatically.</p>
+            </note>
         </chapter>
     </chapter>
 
@@ -89,136 +256,6 @@
         <p>Alternatively, to register all activities from a specific assembly, the <code>AddActivitiesFrom&lt;TMarker&gt;</code> extension method can be utilized:</p>
         <code-block lang="c#" src="extensibility/custom-activities/Program2.cs"/>
         <p>This approach registers all activities discovered within the assembly containing the specified type. The marker type can be any class within the assembly, not necessarily an activity. It serves as a pointer to the assembly to be searched for activity types.</p>
-    </chapter>
-
-    <chapter title="Input" id="activity-input">
-        <p>Similar to C# methods and JavaScript functions, activities can accept <emphasis>input</emphasis> and generate <emphasis>output</emphasis>.</p>
-        <p>In essence, an activity functions within a workflow much like a statement within a program, serving as a fundamental component that constructs the logic of the workflow.</p>
-        <p>To define inputs, simply expose public properties within your activity class. For instance, the <code>PrintMessage</code> activity below is updated to receive a message as input:</p>
-        <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithInput.cs"/>
-        <chapter title="Input Metadata" id="input-metadata">
-            <p>Utilizing activities within tools such as <a href="Elsa-Studio.topic"/>, offers a chance to provide accessible information about the activity's inputs, including display names and descriptions.</p>
-            <p>This detail can be appended to your custom activity's input property using the <code>InputAttribute</code>.</p>
-            <p>Here is an instance where the <code>InputAttribute</code> is applied to the <code>Message</code> property:</p>
-            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithInputMetadata.cs"/>
-            <p>In this example, the <code>Message</code> input property is embellished with a description for better understanding.</p>
-        </chapter>
-        <chapter title="Expressions" id="activity-input-expressions">
-            <p>Often, you'll want to dynamically set the activity's input through expressions, instead of fixed, literal values.</p>
-            <p>For instance, you might want the message to be printed to originate from a workflow variable, rather than being hardcoded into the activity's input.</p>
-            <p>To enable this, you should encapsulate the input property type within <code>Input&lt;T&gt;</code>.</p>
-            <p>As an illustration, the <code>PrintMessage</code> activity below is modified to support expressions for its <code>Message</code> input property:</p>
-            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithExpressionInput.cs"/>
-            <p>Note that encapsulating an input property with <code>Input&lt;T&gt;</code> changes the manner in which its value is accessed:</p>
-            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWithExpressionInput.cs" include-lines="11"/>
-            <if switcher-key="Programmatic">
-                <p>The example below demonstrates specifying an expression for the <code>Message</code> property in a workflow created using the workflow builder API:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow1.cs"/>
-                <p>In this scenario, we utilize a simple C# delegate expression to dynamically determine the message to print at runtime.</p>
-                <p>Alternatively, other installed expression provider syntaxes, such as JavaScript, can be employed:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow2.cs"/>
-                <p>The only variance is in the creation of the expression:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/PrintMessageWorkflow2.cs" include-lines="15-15"/>
-            </if>
-            <if switcher-key="Designer">
-                <p>When an input property is encapsulated with <code>Input&lt;T&gt;</code>, Elsa Studio enables the user to select from any installed syntaxes for input:</p>
-                <img src="activity-input-metadata-1.png" alt="Activity input and different syntax support" border-effect="rounded" thumbnail="true"/>
-            </if>
-        </chapter>
-    </chapter>
-
-    <chapter title="Output" id="activity-output">
-        <p>Activities are capable of generating outputs, achieved by implementing properties typed as <code>Output&lt;T&gt;</code>.</p>
-        <p>For instance, the activity below generates a random number between 0 and 100:</p>
-        <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumber1.cs"/>
-        <chapter title="Output Metadata" id="output-metadata">
-            <p>Similarly to input properties, output properties can be enriched with metadata.</p>
-            <p>This is accomplished using the <code>OutputAttribute</code>.</p>
-            <p>An example of the <code>OutputAttribute</code> applied to the <code>Result</code> property follows:</p>
-            <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumber2.cs"/>
-            <p>In this instance, the <code>Result</code> output property is adorned with a description for enhanced clarity.</p>
-        </chapter>
-        <p>There are two approaches to managing activity output:</p>
-        <list type="decimal">
-            <li>Capturing the output via a workflow variable</li>
-            <li>Direct access to the output from the workflow engine's memory register</li>
-        </list>
-        <p>Let's examine both methods in detail.</p>
-        <chapter title="Capture via Variable" id="capture-output-via-variable">
-            <if switcher-key="Programmatic">
-                <p>Firstly, here's how to capture the output using a workflow variable:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow1.cs"/>
-                <p>In this workflow, the steps include:</p>
-                <list>
-                    <li>Executing the <code>GenerateRandomNumber</code> activity</li>
-                    <li>Capturing the activity's output in a variable named <code>RandomNumber</code></li>
-                    <li>Displaying a message with the value of the <code>RandomNumber</code> variable</li>
-                </list>
-            </if>
-            <if switcher-key="Designer">
-                <p>To capture output via a variable, follow these steps:</p>
-                <procedure>
-                    <step>
-                        <p>Create a new workflow</p>
-                        <img src="random-number-workflow-1.png" alt="Create a new workflow called Random Number Workflow" border-effect="rounded"/>
-                    </step>
-                    <step>
-                        <p>Establish a new variable of type <code>decimal</code> named <emphasis>RandomNumber</emphasis></p>
-                        <img src="random-number-workflow-2.png" alt="Create a new workflow called Random Number Workflow" border-effect="rounded" thumbnail="true"/>
-                    </step>
-                    <step>
-                        <p>Integrate the <ui-path>Generate Random Number</ui-path> activity into the canvas and link its Result output to the <ui-path>RandomNumber</ui-path> variable.</p>
-                        <img src="random-number-workflow-3.png" alt="Add activity and bind output" border-effect="rounded" thumbnail="true"/>
-                    </step>
-                    <step>
-                        <p>Add the <ui-path>Print Message</ui-path> activity to the canvas and set up its <ui-path>Message</ui-path> property with a JavaScript expression leveraging the variable.</p>
-                        <p>Ensure the activities are connected.</p>
-                        <img src="random-number-workflow-4.png" alt="Add activity and bind output" border-effect="rounded" thumbnail="true"/>
-                    </step>
-                </procedure>
-            </if>
-        </chapter>
-        <chapter title="Direct Access" id="direct-access">
-            <if switcher-key="Programmatic">
-                <p>Now, let's explore direct access to the output from the <code>GenerateRandomNumber</code> activity:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow2.cs"/>
-                <p>This requires naming the activity from which the output will be accessed, as well as the output property's name.</p>
-                <p>An alternative, type-safe method is to declare the activity as a local variable initially. This allows for referencing both the activity and its output, as demonstrated below:</p>
-                <code-block lang="c#" src="extensibility/custom-activities/GenerateRandomNumberWorkflow3.cs"/>
-            </if>
-            <if switcher-key="Designer">
-                <p>To directly access the output from the <ui-path>Generate Random Number</ui-path> activity, follow these steps:</p>
-                <procedure>
-                    <step>
-                        <p>Remove the RandomNumber variable</p>
-                        <img src="random-number-workflow-5.png" alt="Delete the RandomNumber variable" border-effect="rounded" thumbnail="true"/>
-                    </step>
-                    <step>
-                        <p>Upon adding an activity to the canvas, the designer automatically assigns it a default name. Use the name <code>GenerateRandomNumber1</code> for the <ui-path>Generate Random Number</ui-path> activity as an example.</p>
-                        <img src="random-number-workflow-6.png" alt="The name of the activity" border-effect="rounded" thumbnail="true"/>
-                        <p>Knowing the activity's name, update the <ui-path>Print Message</ui-path> activity's <ui-path>Message</ui-path> property with the following expression to access its output:</p>
-                        <tabs>
-                            <tab title="JavaScript">
-                                <code-block lang="javascript">
-                                    const randomNumber = getResultFromGenerateRandomNumber1();
-                                    return `The random number is: ${randomNumber}`;
-                                </code-block>
-                            </tab>
-                            <tab title="C#">
-                                <code-block lang="c#">
-                                    var randomNumber = Output.From&lt;decimal&gt;("GenerateRandomNumber1", "Result");
-                                    return $"The random number is: {randomNumber}";
-                                </code-block>
-                            </tab>
-                        </tabs>
-
-                    </step>
-                </procedure>
-
-            </if>
-        </chapter>
-        <p>While both approaches are effective for managing activity output, it's crucial to note a key distinction: activity output is <emphasis>transient</emphasis>, existing only for the duration of the <a href="Overview.topic" anchor="burst-of-execution" summary="As the workflow runner executes activities, it performs what is known as a burst of execution. Click to learn more.">current execution burst</a>.</p>
-        <p>To access the output value beyond these bursts, capturing the output in a variable is recommended, as <emphasis>variables are inherently persistent</emphasis>.</p>
     </chapter>
 
     <chapter title="Activity Providers" id="activity-providers">
