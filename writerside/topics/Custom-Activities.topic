@@ -67,7 +67,7 @@
         <chapter title="Activity vs CodeActivity" id="activity-vs-code-activity">
             <p>When your custom activity's workflow is straightforward and concludes immediately after its task, inheriting from <code>CodeActivity</code> offers a streamlined approach. This base class is engineered to automatically signal the completion of the activity post-execution, eliminating the need for explicit completion logic.</p>
             <p>To illustrate, let's revisit the <code>PrintMessage</code> activity, this time reimagined using <code>CodeActivity</code> as its base. This example underscores the absence of manual completion:</p>
-            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageActivity.cs"/>
+            <code-block lang="c#" src="extensibility/custom-activities/PrintMessageCodeActivity.cs"/>
             <p>This approach allows developers to focus on the core logic of their activities without worrying about activity completion.</p>
         </chapter>
 
