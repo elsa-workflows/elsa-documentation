@@ -43,7 +43,7 @@ public class Sum : CodeActivity<int>
         
         var result = a + b;
         
-        context.SetResul(result);
+        context.SetResult(result);
     }
 ```
 
