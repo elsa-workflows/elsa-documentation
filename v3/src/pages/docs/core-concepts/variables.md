@@ -75,7 +75,7 @@ To make the type available from the designer, register it with the management se
 ```clike
 services.AddElsa(elsa => 
 {
-    elsa.UseWorkflowManagament(management => 
+    elsa.UseWorkflowManagement(management => 
     {
         management.AddVariableType<Person>(category: "CRM");
     });
