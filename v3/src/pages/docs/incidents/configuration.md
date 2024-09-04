@@ -7,12 +7,12 @@ We can configure what the workflow engine should do in case of an incident throu
 
 ## Global
 
-The default strategy is `Fault`, but we can change it by setting the `IncidentStrategy` property of the `WorkflowOptions` class:
+The default strategy is `FaultStrategy`, but we can change it by setting the `IncidentStrategy` property of the `WorkflowOptions` class:
 
 ```clike
 services.Configure<IncidentOptions>(options =>
 {
-    options.DefaultIncidentStrategy = typeof(ContinueWithIncidents);
+    options.DefaultIncidentStrategy = typeof(ContinueWithIncidentsStrategy);
 });
 ```
 
@@ -27,7 +27,7 @@ public class MyWorkflow : WorkflowBase
 {
     protected override void Build(IWorkflowBuilder builder)
     {
-        builder.WorkflowOptions.IncidentStrategyType = typeof(ContinueWithIncidents);
+        builder.WorkflowOptions.IncidentStrategyType = typeof(ContinueWithIncidentsStrategy);
     }
 }
 ```
