@@ -48,6 +48,8 @@ The following is an example of an activity that receives input and returns outpu
 ```clike
 public class Sum : CodeActivity<int>
 {
+    public Sum() { } // Default constructor necessary in order to support JSON serialization.
+
     public Sum(Variable<int> a, Variable<int> b, Variable<int> result)
     {
         A = new(a);
@@ -214,13 +216,13 @@ Should a dependency be needed it can be retrived from the Elsa Activity Executio
 ```
  public IApiService _apiService { get; set; }
 
-        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
-        {
-            
-           _apiService =  context.GetRequiredService<IApiService>();
+protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+{
+    
+   _apiService =  context.GetRequiredService<IApiService>();
 
-            await context.CompleteActivityAsync(new Outcomes(outcome));
-        }
+    await context.CompleteActivityAsync(new Outcomes(outcome));
+}
 
 ```
 Be sure to add the Dependency into the application context in the `Program.cs` file.
