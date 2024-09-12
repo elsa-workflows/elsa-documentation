@@ -77,6 +77,7 @@ const navigation = [
             { title: 'Primitives', href: '/docs/activity-library/primitives' },
             { title: 'Scripting', href: '/docs/activity-library/scripting' },
             { title: 'Workflows', href: '/docs/activity-library/workflows' },
+            { title: 'Email', href: '/docs/activity-library/email' },
         ]
     },
     {
