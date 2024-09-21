@@ -24,6 +24,7 @@
         <toc-element topic="Elsa-Console.topic"/>
     </toc-element>
     <toc-element topic="Concepts.topic">
+        <toc-element topic="Outcomes.topic"/>
         <toc-element topic="Correlation-ID.topic"/>
     </toc-element>
     <toc-element topic="Guides.topic">

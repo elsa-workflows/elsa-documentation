@@ -24,25 +24,22 @@
         <!--    Add up to 2 topics that you want to promote. Use the "type" attribute to select an icon.    -->
         <spotlight>
             <a href="Correlation-ID.topic" type="data" summary="A Correlation ID is a flexible identifier used to associate related workflow instances or link workflows with domain entities, enabling traceability and monitoring across systems."/>
+            <a href="Outcomes.topic" type="cross-check"/>
         </spotlight>
 
         <!--    Add several topics that are most important for this section.    -->
-<!--        <primary>-->
-<!--            <title>Get started</title>-->
-<!--            <a href=""/>-->
-<!--            <a href="" summary="With a custom card summary"/>-->
-<!--            <a href="">Custom card title</a>-->
-<!--            <a href="" summary="With a custom card summary">Custom card title</a>-->
-<!--        </primary>-->
+        <primary>
+            <title>Primary Concepts</title>
+            <a href="Correlation-ID.topic"/>
+            <a href="Outcomes.topic"/>
+        </primary>
 
         <!--    Add several topics that are less important or are relevant only for advanced/experienced users.    -->
-<!--        <secondary>-->
-<!--            <title>Explore advanced features</title>-->
-<!--            <a href=""/>-->
-<!--            <a href="" summary="With a custom card summary"/>-->
-<!--            <a href="">Custom card title</a>-->
-<!--            <a href="" summary="With a custom card summary">Custom card title</a>-->
-<!--        </secondary>-->
+        <secondary>
+            <title>Explore advanced features</title>
+            <a href="Correlation-ID.topic"/>
+            <a href="Outcomes.topic"/>
+        </secondary>
 
         <!--    Optionally add additional cards and links to topics that are not in this section but may be relevant.    -->
 <!--        <misc>-->
