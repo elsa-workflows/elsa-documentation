@@ -285,7 +285,7 @@
             </step>
         </procedure>
         <p>The final result should look like this: </p>
-        <img src="$PROJECT_DIR$/Writerside/images/guides/http-workflows/workflow.png" alt="Workflow" thumbnail="true" border-effect="rounded"/>
+        <img src="../images/guides/http-workflows/workflow.png" alt="Workflow" thumbnail="true" border-effect="rounded"/>
     </chapter>
 
     <chapter title="Create C# Workflow" id="create-workflow-using-csharp" switcher-key="Programmatic">

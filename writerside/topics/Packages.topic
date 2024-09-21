@@ -6,29 +6,23 @@
        title="Packages" id="Packages">
 
     <p>
-        Elsa Workflows is modular and distributed via several NuGet packages.
-        This allows you to pick and choose the components you need, ensuring a lightweight integration into your projects.
+        Some introduction might go here.
     </p>
 
-    <chapter title="Commonly Used Packages" id="commonly-used-packages" >
-        <p>The primary package you'll need to get started with Elsa is the <a href="https://www.nuget.org/packages/Elsa">Elsa package</a>. It's a bundle that includes the following essential packages:</p>
+    <chapter title="Some chapter name, which is more or less equivalent to a section" id="some-chapter-id" >
+        <p>Some paragraph might go here.</p>
         <list>
             <li><a href="https://www.nuget.org/packages/Elsa.Api.Common">Elsa.Api.Common</a></li>
             <li><a href="https://www.nuget.org/packages/Elsa.Mediator">Elsa.Mediator</a></li>
-            <li><a href="https://www.nuget.org/packages/Elsa.Workflows.Core">Elsa.Workflows.Core</a></li>
-            <li><a href="https://www.nuget.org/packages/Elsa.Workflows.Management">Elsa.Workflows.Management</a></li>
-            <li><a href="https://www.nuget.org/packages/Elsa.Workflows.Runtime">Elsa.Workflows.Runtime</a></li>
         </list>
-        <p>To install the core Elsa package into your project, use the dotnet CLI:</p>
+        <p>Another paragraph might go here.</p>
         <code-block lang="bash">
-            dotnet add package Elsa
+            A code block looks like this.
         </code-block>
-        <p>
-            While the core package provides a solid foundation, Elsa offers additional packages for specialized scenarios.
-        </p>
+        <p>Another paragraph might go here.</p>
     </chapter>
-    <chapter title="Package Feeds" id="package-feeds">
-        <p>Elsa Workflows packages are distributed through various feeds based on their stability and release phase:</p>
+    <chapter title="Another chapter" id="another-chapter">
+        <p>Some paragraph might go here.</p>
         <table>
             <tr>
                 <td>Type</td>
@@ -40,68 +34,14 @@
                 <td>NuGet</td>
                 <td><a href="https://api.nuget.org/v3/index.json">https://api.nuget.org/v3/index.json</a></td>
             </tr>
-            <tr>
-                <td>Release Candidates</td>
-                <td>NuGet</td>
-                <td><a href="https://api.nuget.org/v3/index.json">https://api.nuget.org/v3/index.json</a></td>
-            </tr>
-            <tr>
-                <td>Previews</td>
-                <td>Feedz.io</td>
-                <td><a href="https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json">https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json</a></td>
-            </tr>
         </table>
-        <chapter title="Releases" id="releases">
-            <p>Stable versions of Elsa are distributed via NuGet.org.</p>
-        </chapter>
-        <chapter title="Release Candidates (RC)" id="release-candidates">
-            <p>
-                RC packages are also available on NuGet.org.
-                They offer a sneak peek into upcoming features, allowing users to test and provide feedback before the final release.
-                While RC packages are generally stable, they might still undergo changes before the final release.
-            </p>
-        </chapter>
-        <chapter title="Previews" id="previews">
-            <p>
-                Preview versions represent the cutting-edge developments in Elsa.
-                They are automatically built and deployed to a public feed on <a href="https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json">Feedz.io</a> whenever changes are pushed to the `main` branch.
-                While they provide the latest features and fixes, they might introduce breaking changes from one preview build to the next.
-            </p>
-            <p>
-                To access preview packages, include the feed URL when using the dotnet CLI or add it to your `NuGet.config`:
-            </p>
-            <code-block lang="xml">
-                &lt;?xml version="1.0" encoding="utf-8"?&gt;
-                &lt;configuration&gt;
-                &lt;packageSources&gt;
-                &lt;clear /&gt;
-                &lt;add key=&quot;NuGet official package source&quot; value=&quot;https://api.nuget.org/v3/index.json&quot; /&gt;
-                &lt;add key=&quot;Elsa 3 preview&quot; value=&quot;https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json&quot; /&gt;
-                &lt;/packageSources&gt;
-                &lt;/configuration&gt;
-            </code-block>
-            <warning title="Preview Packages Filter">
-                Ensure the "Preview" checkbox is ticked in your NuGet explorer to view the preview packages.
-            </warning>
-        </chapter>
+
+        <warning title="A warning block.">
+            They are like markdown quotation blocks.
+        </warning>
+
+        <note title="And notes can be displayed, too.">
+            They are like markdown quotation blocks.
+        </note>
     </chapter>
-<chapter title="Versioning Strategy" id="versioning-strategy">
-    <p>Elsa adheres to the following versioning strategy:</p>
-    <list>
-        <li><b>Released packages:</b> Major.Minor.Revision (e.g., 3.0.1)</li>
-        <li><b>Release Candidate packages:</b> Major.Minor.Revision-preview.X (e.g., 3.0.2-preview.64)</li>
-        <li><b>Preview packages:</b> Major.Minor.Revision-preview.X (e.g., 3.0.2-preview.128)</li>
-    </list>
-
-    <p>
-        The major version remains consistent unless significant changes occur.
-        New features increment the minor version, while fixes or minor improvements bump the revision number.
-    </p>
-
-    <note title="Preview Package Suffix">
-        We use the `preview` suffix for both RC and Preview packages to align with NuGet's package sorting method.
-        Different suffixes like `rc` could mislead NuGet into treating RC packages as newer than Preview ones, despite their build numbers.
-        The `preview` suffix ensures consistent ordering in NuGet's system.
-    </note>
-</chapter>
 </topic>

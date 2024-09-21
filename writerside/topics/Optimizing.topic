@@ -13,13 +13,13 @@
 
         <!-- Spotlight section limited to two topics -->
         <spotlight>
-            <a href="log-persistence.topic.xml" type="learn" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
+            <a href="LogPersistence.topic" type="learn" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
         </spotlight>
 
         <!-- Primary section can hold additional important topics -->
         <primary>
             <title>Key Optimization Topics</title>
-            <a href="log-persistence.topic.xml" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
+            <a href="LogPersistence.topic" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
         </primary>
 
         <!-- Future topics can be added under secondary, misc, or other sections -->

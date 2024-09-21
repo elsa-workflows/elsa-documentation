@@ -44,5 +44,7 @@
         <toc-element topic="Reusing-in-React.topic"/>
         <toc-element topic="Reusing-in-Blazor.topic"/>
     </toc-element>
-    <toc-element topic="Optimizing.topic"/>
+    <toc-element topic="Optimizing.topic">
+        <toc-element topic="LogPersistence.topic"/>
+    </toc-element>
 </instance-profile>
