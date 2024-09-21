@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Optimizing" id="Optimizing">
+
+    <section-starting-page>
+        <title>Optimizing</title>
+        <description>
+            This section covers various strategies and features to optimize the performance and scalability.
+        </description>
+
+        <!-- Spotlight section limited to two topics -->
+        <spotlight>
+            <a href="log-persistence.topic.xml" type="learn" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
+        </spotlight>
+
+        <!-- Primary section can hold additional important topics -->
+        <primary>
+            <title>Key Optimization Topics</title>
+            <a href="log-persistence.topic.xml" summary="Learn how to control what activity input and output gets persisted as part of activity execution logs.">Log Persistence</a>
+        </primary>
+
+        <!-- Future topics can be added under secondary, misc, or other sections -->
+<!--        <secondary>-->
+<!--            <title>Advanced Optimization Techniques</title>-->
+<!--        </secondary>-->
+
+<!--        <misc>-->
+<!--            <cards>-->
+<!--                <title>Additional Resources</title>-->
+<!--                &lt;!&ndash; Placeholder for future cards &ndash;&gt;-->
+<!--            </cards>-->
+<!--        </misc>-->
+    </section-starting-page>
+
+</topic>
