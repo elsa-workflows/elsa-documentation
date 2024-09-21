@@ -3,10 +3,10 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Optimizing" id="Optimize" help-id="Optimizing">
+       title="Optimize" id="Optimize" help-id="Optimize">
 
     <section-starting-page>
-        <title>Optimizing</title>
+        <title>Optimizing Elsa Workflows</title>
         <description>
             This section covers various strategies and features to optimize the performance and scalability.
         </description>
