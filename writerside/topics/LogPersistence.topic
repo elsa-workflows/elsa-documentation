@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="LogPersistence" id="LogPersistence">
+
+    <p>
+        Whenever an activity executes, it generates an <b>activity execution record</b> that stores both its input and output.
+    </p>
+    <p>
+        However, this can lead to rapid database growth and might inadvertently store sensitive information that shouldn't be part of the workflow's persistent data. To address these concerns, the Log Persistence feature provides granular control over what activity inputs and outputs are persisted in the execution records.
+    </p>
+    <p>
+        In the following image, the selected Activity Execution stores both input ("State") and output ("Output"). For instance, the <code>ParsedContent</code> field contains a JSON payload that was posted to the HTTP Endpoint activity.
+    </p>
+    <img src="../images/log-persistence/activity-input-output-with-state.png" alt="The selected Activity Execution contains activity input and output" thumbnail="true" border-effect="rounded"/>
+    <p>
+        Typically, inputs like this are bound to workflow variables, which have their own storage mechanisms. To reduce database size and prevent redundant storage, it may be beneficial to exclude such fields from the activity execution record.
+    </p>
+    <img src="../images/log-persistence/activity-input-output-without-state.png" alt="The selected Activity Execution contains no activity input or output" thumbnail="true" border-effect="rounded"/>
+    <p>Let’s explore how we can control which fields are persisted and which ones are excluded with activity execution records.</p>
+
+    <chapter title="Log Persistence Scope" id="log-persistence-scope">
+        <p>
+            Log Persistence can be configured at various scopes, allowing for fine-grained control:
+        </p>
+        <list>
+            <li>Application-wide</li>
+            <li>Workflow-wide</li>
+            <li>Activity-wide</li>
+            <li>Per input/output</li>
+        </list>
+        <p>
+            For each of these scopes, you can specify a <code>LogPersistenceMode</code> value, which can be set to one of the following options:
+        </p>
+        <list>
+            <li><b>Include</b>: The activity’s input and output will be included in the execution record.</li>
+            <li><b>Exclude</b>: The activity’s input and output will <b>not</b> be included in the execution record.</li>
+            <li><b>Inherit</b>: The system will defer to the parent scope to determine whether to include or exclude input and output.</li>
+        </list>
+        <p>Let’s break down how each scope functions.</p>
+
+        <chapter title="Application-wide" id="application-wide">
+            <p>
+                To globally control whether activity input and output are persisted, configure the application-wide default in your <code>Program.cs</code> file:
+            </p>
+            <code-block lang="c#">
+                services.AddElsa(elsa =>
+                {
+                    elsa.UseManagement(management =>
+                    {
+                        management.SetDefaultLogPersistenceMode(LogPersistenceMode.Exclude);
+                    });
+                });
+            </code-block>
+            <p>
+                With this configuration, by default, no activity input or output will be included in execution records across all workflows and activities.
+            </p>
+        </chapter>
+
+        <chapter title="Workflow-wide" id="workflow-wide">
+            <p>
+                You can override the global log persistence setting on a per-workflow basis through the <b>Log Persistence Mode</b> setting in the workflow definition:
+            </p>
+            <img src="../images/log-persistence/workflow-definition-log-persistence-mode-property.png" alt="Control Log Persistence Mode per workflow" thumbnail="true" border-effect="rounded"/>
+            <list>
+                <li><b>Inherit</b>: The workflow inherits the application-wide setting.</li>
+                <li><b>Include</b>: All activity input and output will be persisted by default for this workflow.</li>
+                <li><b>Exclude</b>: No activity input or output will be persisted by default for this workflow.</li>
+            </list>
+        </chapter>
+
+        <chapter title="Activity-wide" id="activity-wide">
+            <p>
+                To gain even finer control, you can override the workflow-wide setting on a per-activity basis through the <b>Persistence</b> tab:
+            </p>
+            <img src="../images/log-persistence/activity-log-persistence-mode-property.png" alt="Control Log Persistence Mode per activity" thumbnail="true" border-effect="rounded"/>
+            <list>
+                <li><b>Inherit</b>: The activity inherits the workflow-wide setting.</li>
+                <li><b>Include</b>: All input and output for this activity will be persisted.</li>
+                <li><b>Exclude</b>: No input or output for this activity will be persisted.</li>
+            </list>
+        </chapter>
+
+        <chapter title="Per Input/Output" id="per-input-output">
+            <p>
+                Lastly, you can override the activity-wide setting at the level of individual inputs or outputs. This is done from the same <b>Persistence</b> tab, allowing you to selectively include or exclude specific properties, such as <code>ParsedPayload</code>:
+            </p>
+            <img src="../images/log-persistence/input-output-log-persistence-mode-property.png" alt="Control Log Persistence Mode per activity input/output" thumbnail="true" border-effect="rounded"/>
+            <list>
+                <li><b>Inherit</b>: The input/output inherits the activity-wide setting.</li>
+                <li><b>Include</b>: The specific input/output will be included in the execution record.</li>
+                <li><b>Exclude</b>: The specific input/output will not be included in the execution record.</li>
+            </list>
+        </chapter>
+    </chapter>
+
+    <chapter title="Conclusion" id="conclusion">
+        <p>
+            The Log Persistence feature provides flexible control over which parts of an activity’s input and output are persisted, helping to reduce database growth and protect sensitive data. By configuring log persistence at different scopes—application-wide, workflow-wide, activity-wide, and per input/output—you can strike the right balance between retaining essential information and minimizing unnecessary storage. This ensures efficient workflows, tailored storage needs, and enhanced security for your application.
+        </p>
+    </chapter>
+</topic>
