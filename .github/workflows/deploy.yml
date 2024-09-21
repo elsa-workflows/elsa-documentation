@@ -15,7 +15,7 @@ env:
     INSTANCE: writerside/elsa
     ARTIFACT: webHelpELSA2-all.zip
     # Writerside docker image version
-    DOCKER_VERSION: 242.21870
+    DOCKER_VERSION: 233.14389
 
 jobs:
   build:
