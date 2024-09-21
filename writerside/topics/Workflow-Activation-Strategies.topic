@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Workflow Activation Strategies" id="Workflow-Activation-Strategies">
+
+    <p>
+        Workflows can be configured with an <b>activation strategy</b>, which controls whether a given workflow can be executed or not.
+        For example, the <b>Always</b> strategy will always allow the workflow to be executed, while the <b>Singleton</b> strategy will
+        only allow the workflow to be executed if an existing workflow instance isn't already in the <i>Running</i> state.
+    </p>
+
+    <p>
+        Out of the box, Elsa ships with the following activation strategies:
+    </p>
+
+    <table>
+        <tr>
+            <td>Strategy</td>
+            <td>Description</td>
+        </tr>
+        <tr>
+            <td>Always</td>
+            <td>Always allow the workflow to execute.</td>
+        </tr>
+        <tr>
+            <td>Singleton</td>
+            <td>Only allow the workflow to execute if there isn't already an instance of the same workflow running.</td>
+        </tr>
+        <tr>
+            <td>Correlation</td>
+            <td>Only allow the workflow to execute with a given correlation ID if there isn't already any other workflow running with the same correlation ID.</td>
+        </tr>
+        <tr>
+            <td>Correlated Singleton</td>
+            <td>Only allow the workflow to execute with a given correlation ID if there isn't already an instance of the same workflow running with the same correlation ID.</td>
+        </tr>
+    </table>
+</topic>
