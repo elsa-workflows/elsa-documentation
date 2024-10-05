@@ -89,7 +89,7 @@
           "typeName": "String[]",
           "expression": {
             "type": "JavaScript",
-            "value": "getEmployee().email;"
+            "value": "getEmployee().Email;"
           }
         },
         "cc": null,

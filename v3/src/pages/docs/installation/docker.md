@@ -28,7 +28,7 @@ Run the following commands to try the latest Elsa Server Docker image:
 
 ```shell
 docker pull elsaworkflows/elsa-server-v3:latest
-docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 HTTP__BASEURL=http://localhost:13000 -p 13000:8080 elsaworkflows/elsa-server-v3:latest
+docker run -t -i -e ASPNETCORE_ENVIRONMENT='Development' -e HTTP_PORTS=8080 -e HTTP__BASEURL=http://localhost:13000 -p 13000:8080 elsaworkflows/elsa-server-v3:latest
 ```
 
 Navigate to: http://localhost:13000/
@@ -108,7 +108,7 @@ To run the container, simply run the following commands from your terminal:
 
 ```shell
 docker pull elsaworkflows/elsa-studio-v3:latest
-docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=http://localhost:13000/elsa/api -p 14000:80 elsaworkflows/elsa-studio-v3:latest
+docker run -t -i -e ASPNETCORE_ENVIRONMENT=Development -e ELSASERVER__URL=http://localhost:13000/elsa/api -p 14000:8080 elsaworkflows/elsa-studio-v3:latest
 ```
 
 When the container has started, open a web browser and navigate to http://localhost:14000/.

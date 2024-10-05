@@ -17,10 +17,10 @@ public interface IAlteration
 Next, implement an **alteration handler** that handles the alteration type.
 
 ```clike
-public interface IAlterationHandler where T : IAlteration
+public interface IAlterationHandler
 {
     bool CanHandle(IAlteration alteration);
-    ValueTask HandleAsync(AlterationHandlerContext context);
+    ValueTask HandleAsync(AlterationContext context);
 }
 ```
 
@@ -50,7 +50,7 @@ public class MyAlteration : IAlteration
 
 public class MyAlterationHandler : AlterationHandlerBase<MyAlteration>
 {
-    public override async ValueTask HandleAsync(AlterationHandlerContext<MyAlteration> context, CancellationToken cancellationToken = default)
+    public override async ValueTask HandleAsync(AlterationContext context, MyAlteration alteration)
     {
         context.WorkflowExecutionContext.Output.Add("Message", context.Alteration.Message);
     }

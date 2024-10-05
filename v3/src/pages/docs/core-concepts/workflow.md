@@ -14,9 +14,6 @@ The `Root` property is of type `IActivity`, which is the base interface for all 
 The following is an example of instantiating a Workflow object and setting its `Root` property to a `Sequence` activity:
 
 ```clike
-
-```clike
-
 var workflow = new Workflow
 {
     Root = new Sequence

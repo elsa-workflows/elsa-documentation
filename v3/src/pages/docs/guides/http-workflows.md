@@ -301,7 +301,7 @@ The result should look similar to this:
 ## Workflow from Designer
 
 An alternative to creating workflows in code is to use Elsa Studio, which is a web application that allows you to create and manage workflows.
-To setup an ASP.NET application that hosts Elsa Studio, follow the instructions [here](../installation/elsa-studio-blazorwasm.md), or run the designer directly from a Docker container as described [here](../installation/docker#elsa-studio).
+To setup an ASP.NET application that hosts Elsa Studio, follow the instructions [here](../installation/elsa-studio-blazorwasm), or run the designer directly from a Docker container as described [here](../installation/docker#elsa-studio).
 
 {% callout title="Connecting Elsa Studio to Elsa Server" %}
 Make sure to have your Elsa Studio application configured to point to the Elsa Server URL we created in this guide. For example: https://localhost:5001/elsa/api.
