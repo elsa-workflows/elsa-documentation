@@ -126,7 +126,7 @@ This produces two outcomes of the activity. In this case, a "Pass" or "Fail". To
 
 ```clike
 
- protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
 {
     var outcome = 2 > 1 ? "Pass" : "Fail";
 
@@ -202,25 +202,24 @@ Therefore, calling a Dependency in the Traditional manner,as follows will not be
 ```
 public IApiService _apiService { get; set; }
 
-    public simpleActivity(IApiService apiService)
-    {
-        _apiService = apiService;
-    }
+public SimpleActivity(IApiService apiService)
+{
+    _apiService = apiService;
+}
 
 ```
 
-Should a dependency be needed it can be retrived from the Elsa Activity Execution Context, using `context.GetRequiredService` as Follows:
+Should a dependency be needed it can be retrieved from the Elsa Activity Execution Context, using `context.GetRequiredService` as Follows:
 
 ```
  public IApiService _apiService { get; set; }
 
-        protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
-        {
-            
-           _apiService =  context.GetRequiredService<IApiService>();
+protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+{
+   _apiService =  context.GetRequiredService<IApiService>();
 
-            await context.CompleteActivityAsync(new Outcomes(outcome));
-        }
+    await context.CompleteActivityAsync(new Outcomes(outcome));
+}
 
 ```
 Be sure to add the Dependency into the application context in the `Program.cs` file.

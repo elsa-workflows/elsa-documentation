@@ -21,11 +21,11 @@ These are built-in JS functions that are common to most JavaScript implementatio
 
 The following functions are specific to handling activity output.
 
-| Function                                 | Description                                       | Example                               |
-|------------------------------------------|---------------------------------------------------|---------------------------------------|
-| `getOutputFrom(string, string?): any`    | Gets the output of the activity by activity name. | `getOutputFrom('HttpEndpoint1')`      |
-| `get{OutputName}From{ActivityId}(): any` | Gets the output of the activity by activity name. | `getParsedContentFromHttpEndpoint1()` |
-| `getLastResult(): any`                   | Gets the last result.                             | `getLastResult()`                     |
+| Function                                   | Description                                             | Example                               |
+|--------------------------------------------|---------------------------------------------------------|---------------------------------------|
+| `getOutputFrom(string, string?): any`      | Gets the output of the activity by activity name or ID. | `getOutputFrom('HttpEndpoint1')`      |
+| `get{OutputName}From{ActivityName}(): any` | Gets the output of the activity by activity name.       | `getParsedContentFromHttpEndpoint1()` |
+| `getLastResult(): any`                     | Gets the last result.                                   | `getLastResult()`                     |
 
 ## Workflow variables and input
 
