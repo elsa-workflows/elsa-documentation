@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Workflow Instance Variables" id="Workflow-Instance-Variables">
+
+    <show-structure depth="2"/>
+
+    <p>
+        This topic covers various services and API endpoints available for listing and managing the variables of a
+        workflow instance.
+    </p>
+
+    <chapter title="Programmatic Access" id="programmatic-access">
+        <chapter title="Listing" id="list-variables">
+            <p>You can use the <code>IWorkflowInstanceVariableManager</code> service to retrieve all variables of a
+                workflow instance. The following example demonstrates how to read the variables:</p>
+
+            <code-block lang="c#">
+                var workflowInstanceId = "some-workflow-instance-id";
+                var variables = await _workflowInstanceVariableManager.GetVariablesAsync(workflowInstanceId,
+                cancellationToken);
+
+                // Print each variable.
+                foreach (var variable in variables)
+                {
+                    Console.WriteLine($"Id: {variable.Id}, Name: {variable.Name}, Value: {variable.Value}");
+                }
+            </code-block>
+
+            <note>
+                The <code>GetVariablesAsync</code> method retrieves all the variables associated with a specified
+                workflow instance. Ensure that the <code>workflowInstanceId</code> is valid and that the workflow
+                instance exists.
+            </note>
+
+            <p>Each variable retrieved is represented by a unique ID, a name, and a value.</p>
+        </chapter>
+
+        <chapter title="Updating" id="update-variables">
+            <p>You can also use the <code>IWorkflowInstanceVariableManager</code> service to update one or more
+                variables of a workflow instance. Below is an example of how to perform the update:</p>
+
+            <code-block lang="csharp">
+                var variablesToUpdate = [
+                {
+                    new VariableUpdateValue("some-variable-id", "Some variable value"),
+                    new VariableUpdateValue("another-variable-id", 42)
+                }];
+
+                // Update the variables. This returns a complete list of variables, including both unchanged and changed variables.
+                var variables = await _workflowInstanceVariableManager.SetVariablesAsync(workflowInstanceId, variablesToUpdate, cancellationToken);
+
+                // Print each variable.
+                foreach (var variable in variables)
+                {
+                    Console.WriteLine($"Id: {variable.Id}, Name: {variable.Name}, Value: {variable.Value}");
+                }
+            </code-block>
+
+            <note>
+                The <code>SetVariablesAsync</code> method replaces the specified variables' values. Any variable not
+                included in the update request will retain its original value. Ensure that the variable IDs provided are
+                correct to avoid unintended updates.
+            </note>
+
+            <p>Updating variables in a workflow instance can be particularly useful for dynamically adjusting the
+                workflow's behavior based on changing data inputs or conditions during execution.</p>
+        </chapter>
+    </chapter>
+
+    <chapter title="API Access" id="api-access">
+        <chapter title="Listing" id="api-list-variables">
+            <p>The workflow instance API also provides an endpoint for retrieving a list of all variables for a
+                specified workflow instance. You can make a <code>GET</code> request to the following endpoint:</p>
+
+            <code-block lang="bash">
+                curl --location
+                'https://localhost:5001/elsa/api/workflow-instances/{your-workflow-instance-id}/variables' \
+                --header 'Authorization: ApiKey {your-api-key}'
+            </code-block>
+
+            <p>The API returns a JSON object containing the variables associated with the workflow instance. Below is an example response:</p>
+
+            <code-block lang="json">
+                {
+                    "items": [
+                        {
+                            "id": "ff1c0b14864811ea",
+                            "name": "Message",
+                            "value": "Hello, World!"
+                        },
+                        {
+                            "id": "ea1bbdf90ea22ca7",
+                            "name": "Sender",
+                            "value": "Elsa"
+                        }
+                    ],
+                    "count": 2
+                }
+            </code-block>
+
+            <p>Each item in the response includes the variable's unique <code>id</code>, <code>name</code>, and <code>value</code>,
+                allowing you to inspect the current state of the workflow instance's variables.</p>
+        </chapter>
+
+        <chapter title="Updating" id="api-update-variables">
+            <p>To update one or more variables in a workflow instance via the API, send a <code>POST</code> request to
+                the following endpoint:</p>
+
+            <code-block lang="bash">
+                curl --location
+                'https://localhost:5001/elsa/api/workflow-instances/{your-workflow-instance-id}/variables' \
+                --header 'Content-Type: application/json' \
+                --header 'Authorization: ApiKey {your-api-key}' \
+                --data '{
+                "variables": [
+                    {
+                        "id": "ff1c0b14864811ea",
+                        "value": "Hello, Elsa!"
+                    },
+                    {
+                        "id": "ea1bbdf90ea22ca7",
+                        "value": "World"
+                    }
+                ]
+                }'
+            </code-block>
+
+            <p>The request payload specifies the <code>id</code> of each variable to update, along with the new <code>value</code>.
+                Ensure the variable IDs match those in the workflow instance to prevent accidental data mismatches.</p>
+        </chapter>
+    </chapter>
+
+</topic>
