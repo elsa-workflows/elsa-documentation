@@ -49,6 +49,7 @@
         <toc-element topic="Reusing-in-Blazor.topic"/>
     </toc-element>
     <toc-element topic="Operate.topic">
+        <toc-element topic="Workflow-Instance-Variables.topic"/>
         <toc-element topic="Workflow-Activation-Strategies.topic"/>
     </toc-element>
     <toc-element topic="Optimize.topic">
