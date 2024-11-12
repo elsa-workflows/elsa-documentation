@@ -76,11 +76,14 @@ builder.Services.AddServerSideBlazor(options =>
 });
 
 // Register shell services and modules.
+var backendApiConfig = new BackendApiConfig
+{
+    ConfigureBackendOptions = options => configuration.GetSection("Backend").Bind(options),
+    ConfigureHttpClientBuilder = options => options.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler),
+};
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
-builder.Services.AddRemoteBackend(
-    elsaClient => elsaClient.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler),
-    options => configuration.GetSection("Backend").Bind(options));
+builder.Services.AddRemoteBackend(backendApiConfig);
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
