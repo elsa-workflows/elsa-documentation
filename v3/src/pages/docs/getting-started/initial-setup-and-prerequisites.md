@@ -19,7 +19,7 @@ For those who want a quick introduction to Elsa or wish to test workflows withou
 
 1. **Create a New Console Application**:
    ```bash
-   dotnet new console -n "ElsaConsole" -f net7.0
+   dotnet new console -n "ElsaConsole" -f net8.0
    ```
 
 2. **Install Elsa NuGet Packages**:
