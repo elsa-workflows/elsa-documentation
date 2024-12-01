@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Persistent Database" id="Persistent-Database">
+
+    <p>
+        This topic provides steps to set up Elsa Server and Studio with a PostgreSQL database using Docker Compose.
+        PostgreSQL is used as an example - other database engines are supported as well, including MySql and SQL Server.
+    </p>
+
+    <chapter title="Docker Compose Configuration" id="docker-compose-setup">
+        <p>
+            Below is the Docker Compose file used to set up Elsa with PostgreSQL:
+        </p>
+        <code-block lang="yaml">
+services:
+
+    postgres:
+        image: postgres:latest
+        command: -c 'max_connections=2000'
+        environment:
+            POSTGRES_USER: elsa
+            POSTGRES_PASSWORD: elsa
+            POSTGRES_DB: elsa
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+    elsa-server-and-studio:
+        image: elsaworkflows/elsa-server-and-studio-v3-3-0-preview:latest
+        pull_policy: always
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            HTTP_PORTS: 8080
+            HTTP__BASEURL: http://localhost:14000
+            DATABASEPROVIDER: PostgreSql
+            CONNECTIONSTRINGS__POSTGRESQL: Server=postgres;Username=elsa;Database=elsa;Port=5432;Password=elsa;SSLMode=Prefer;MaxPoolSize=2000;Timeout=60
+        ports:
+            - "14000:8080"
+        depends_on:
+            - postgres
+
+volumes:
+    postgres-data:
+        </code-block>
+    </chapter>
+
+    <chapter title="Configuration Details" id="configuration-details">
+        <p>
+            The Docker Compose file defines two services:
+        </p>
+        <list>
+            <li>
+                <b>PostgreSQL Service:</b> A PostgreSQL database container configured with the following settings:
+                <list>
+                    <li><b>User:</b> <code>elsa</code></li>
+                    <li><b>Password:</b> <code>elsa</code></li>
+                    <li><b>Database:</b> <code>elsa</code></li>
+                    <li><b>Max Connections:</b> <code>2000</code></li>
+                </list>
+            </li>
+            <li>
+                <b>Elsa Server + Studio:</b> A container running Elsa Server and Studio, configured to use PostgreSQL as the database provider.
+                <list>
+                    <li><b>Environment Variables:</b> Defines <code>DATABASEPROVIDER</code> as <code>PostgreSql</code> and the PostgreSQL connection string in <code>CONNECTIONSTRINGS__POSTGRESQL</code>.</li>
+                    <li><b>Ports:</b> Maps port <code>14000</code> on the host to <code>8080</code> in the container.</li>
+                </list>
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Supported Database Providers" id="supported-db-providers">
+        <p>
+            Elsa supports multiple database providers, which can be configured using the <code>DATABASEPROVIDER</code> environment variable:
+        </p>
+        <list>
+            <li><code>SqlServer</code></li>
+            <li><code>Sqlite</code> (default)</li>
+            <li><code>MySql</code></li>
+            <li><code>PostgreSql</code></li>
+        </list>
+        <p>
+            In this setup, <code>PostgreSql</code> is used as the database provider.
+        </p>
+    </chapter>
+
+    <chapter title="Running the Services" id="running-services">
+        <p>
+            To run the services defined in the Docker Compose file, use the following command:
+        </p>
+        <code-block lang="bash">
+docker-compose up
+        </code-block>
+        <p>
+            Once the services are running, you can access Elsa Studio by navigating to <a href="http://localhost:14000"/>.
+        </p>
+    </chapter>
+</topic>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Elsa Server + Studio - Single Image" id="Elsa-Server-Studio-Single-Image">
+
+    <p>
+        This guide demonstrates how to set up Elsa Server and Studio using Docker Compose, enabling you to run both components from a single Docker image.
+    </p>
+
+    <chapter title="Docker Compose Configuration" id="docker-compose-configuration">
+        <p>
+            Below is an example Docker Compose configuration that sets up the <b>Elsa Server + Studio</b> application:
+        </p>
+        <code-block lang="yaml">
+            services:
+
+                # Elsa Studio and Server from a single image.
+                elsa-server-and-studio:
+                    image: elsaworkflows/elsa-server-and-studio-v3-3-0-preview:latest
+                    pull_policy: always
+                    environment:
+                        ASPNETCORE_ENVIRONMENT: Development
+                        HTTP_PORTS: 8080
+                        HTTP__BASEURL: http://localhost:14000
+                    ports:
+                        - "14000:8080"
+        </code-block>
+    </chapter>
+
+    <chapter title="Steps to Set Up" id="steps-to-set-up">
+        <list>
+            <li>Create a <code>docker-compose.yml</code> file in your project directory with the above configuration.</li>
+            <li>Ensure that Docker and Docker Compose are installed on your machine. Refer to the <a href="Prerequisites.topic#docker">prerequisites documentation</a> for installation guidance.</li>
+            <li>Open a terminal in the directory containing the <code>docker-compose.yml</code> file.</li>
+            <li>Run the following command to start the container:
+                <code-block lang="bash">
+                    docker-compose up
+                </code-block>
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Accessing Elsa" id="accessing-elsa">
+        <p>
+            Once the container is running, you can access Elsa Studio in your browser at:
+            <a href="http://localhost:14000"/>.
+        </p>
+        <p>
+            Use the default admin credentials to log in.
+            <include from="Snippets.topic" element-id="default-admin-credentials"/>
+        </p>
+    </chapter>
+</topic>

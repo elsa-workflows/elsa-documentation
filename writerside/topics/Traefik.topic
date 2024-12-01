@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Traefik" id="Traefik">
+
+    <p>
+        This guide walks you through setting up and running Elsa Server and Studio using a Docker Compose file. The setup includes PostgreSQL as the database, Traefik as a reverse proxy, and Elsa workflows.
+    </p>
+
+    <chapter title="Docker Compose Configuration" id="docker-compose-config">
+        <p>
+            The following <code>docker-compose.yml</code> file defines services for:
+        </p>
+        <list>
+            <li>PostgreSQL database for data persistence.</li>
+            <li>Elsa Server and Studio, configured to use PostgreSQL.</li>
+            <li>Traefik reverse proxy for routing requests to the appropriate service.</li>
+        </list>
+        <code-block lang="yaml">
+services:
+
+    # PostgreSQL database.
+    postgres:
+        image: postgres:latest
+        command: -c 'max_connections=2000'
+        environment:
+            POSTGRES_USER: elsa
+            POSTGRES_PASSWORD: elsa
+            POSTGRES_DB: elsa
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - elsa-network
+
+    # Elsa Server and Studio behind Traefik and configured with PostgreSQL.
+    elsa-server-and-studio:
+        image: elsaworkflows/elsa-server-and-studio-v3-3-0-preview:latest
+        pull_policy: always
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            HTTP_PORTS: 8080
+            HTTP__BASEURL: http://elsa.localhost
+            DATABASEPROVIDER: PostgreSql
+            CONNECTIONSTRINGS__POSTGRES: Host=postgres;Port=5432;Database=elsa;Username=elsa;Password=elsa
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.elsa.rule=Host(`elsa.localhost`)"
+            - "traefik.http.services.elsa.loadbalancer.server.port=8080"
+        networks:
+            - elsa-network
+
+    # Traefik reverse proxy.
+    traefik:
+        image: traefik:2.7.2
+        command:
+            - "--api.insecure=true" # Enables the Traefik dashboard
+            - "--providers.docker=true" # Enables Docker as the configuration source
+            - "--entrypoints.web.address=:80" # Sets up the HTTP entry point on port 80
+        ports:
+            - "1280:80" # Expose HTTP port. Access Elsa Studio at: http://elsa.localhost:1280/
+            - "8080:8080" # Expose Traefik dashboard
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock" # Allows Traefik to communicate with the Docker daemon
+        networks:
+            - elsa-network
+        depends_on:
+            - elsa-server-and-studio
+
+networks:
+    elsa-network:
+        driver: bridge
+
+volumes:
+    postgres-data:
+        </code-block>
+    </chapter>
+
+    <chapter title="Setup Instructions" id="setup-instructions">
+        <p>
+            Follow these steps to set up and run the Docker Compose configuration:
+        </p>
+        <list>
+            <li>Ensure you have Docker and Docker Compose installed on your machine. Refer to the <a href="Prerequisites.topic#docker">prerequisites</a> if necessary.</li>
+            <li>Create a file named <code>docker-compose.yml</code> and paste the provided configuration into it.</li>
+            <li>Run the following command in the directory containing the <code>docker-compose.yml</code> file to start the services:
+                <code-block lang="bash">
+docker-compose up
+                </code-block>
+            </li>
+            <li>Edit your <code>/etc/hosts</code> file (on Linux/Mac) or <code>C:\Windows\System32\drivers\etc\hosts</code> (on Windows) to include the following entry for mapping <code>elsa.localhost</code> to <code>127.0.0.1</code>:
+                <code-block lang="plain text">
+                    127.0.0.1 elsa.localhost
+                </code-block>
+            </li>
+            <li>
+                Once the services are running:
+                <list>
+                    <li>Access Elsa Studio at <a href="http://elsa.localhost:1280"/>.</li>
+                    <li>Open the Traefik dashboard at <a href="http://localhost:8080"/>.</li>
+                </list>
+            </li>
+        </list>
+    </chapter>
+
+    <chapter title="Environment Configuration" id="env-configuration">
+        <p>
+            The environment variables and settings used in this Docker Compose file:
+        </p>
+        <list>
+            <li><b>PostgreSQL:</b> The database user, password, and name are configured as <code>elsa</code>.</li>
+            <li><b>Elsa Server and Studio:</b> Configured to use PostgreSQL as the database provider.</li>
+            <li><b>Traefik:</b> Acts as a reverse proxy with routing rules for <code>elsa.localhost</code>.</li>
+        </list>
+    </chapter>
+
+    <chapter title="Troubleshooting" id="troubleshooting">
+        <p>
+            If you encounter issues, check the following:
+        </p>
+        <list>
+            <li>Ensure Docker and Docker Compose are correctly installed and running.</li>
+            <li>Verify the <code>/etc/hosts</code> file includes an entry for <code>elsa.localhost</code> mapping to <code>127.0.0.1</code>.</li>
+            <li>Inspect logs for each service using <code>docker-compose logs [service-name]</code>.</li>
+        </list>
+    </chapter>
+</topic>

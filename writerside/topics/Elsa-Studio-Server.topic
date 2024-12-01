@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Elsa Server + Studio" id="Elsa-Studio-Server">
+
+    <p>
+        Using <b>Docker Compose</b>, you can quickly set up and run both Elsa Server and Elsa Studio. This guide walks
+        you through creating a <code>docker-compose.yml</code> file to deploy these services.
+    </p>
+
+    <chapter title="Docker Compose File Structure" id="compose-file-structure">
+        <p>
+            Below is the full content of a <code>docker-compose.yml</code> file for deploying <b>Elsa Server</b> and <b>Elsa
+            Studio</b> with minimal configuration:
+        </p>
+        <code-block lang="yaml">
+services:
+
+    # Elsa Server.
+    elsa-server:
+        image: elsaworkflows/elsa-server-v3-3-0-preview:latest
+        pull_policy: always
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            HTTP_PORTS: 8080
+            HTTP__BASEURL: http://localhost:12000
+        ports:
+            - "12000:8080"
+
+    # Elsa Studio connected to Elsa Server.
+    elsa-studio:
+        image: elsaworkflows/elsa-studio-v3-3-0-preview:latest
+        pull_policy: always
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            HTTP_PORTS: 8080
+            HTTP__BASEURL: http://localhost:13000
+            ELSASERVER__URL: http://localhost:12000/elsa/api
+        ports:
+            - "13000:8080"
+        depends_on:
+            - elsa-server
+        </code-block>
+        <p>
+            Save this file as <code>docker-compose.yml</code> in your working directory.
+        </p>
+    </chapter>
+
+    <chapter title="Running the Docker Compose File" id="running-compose">
+        <p>
+            To start the services defined in the <code>docker-compose.yml</code> file, use the following command in your
+            terminal:
+        </p>
+        <code-block lang="bash">
+            docker-compose up
+        </code-block>
+        <p>
+            This command will:
+        </p>
+        <list>
+            <li>Pull the necessary Docker images (<b>elsaworkflows/elsa-server-v3</b> and <b>elsaworkflows/elsa-studio-v3</b>).
+            </li>
+            <li>Start both services (Elsa Server and Elsa Studio).</li>
+        </list>
+        <p>
+            Once the services are running, you can access them at the following URLs:
+        </p>
+        <list>
+            <li><b>Elsa Server:</b> <a href="http://localhost:12000">http://localhost:12000</a></li>
+            <li><b>Elsa Studio:</b> <a href="http://localhost:13000">http://localhost:13000</a></li>
+        </list>
+    </chapter>
+
+    <chapter title="Service Configuration Details" id="service-configuration">
+        <p>
+            Here is a quick overview of the services defined in the Docker Compose file:
+        </p>
+        <chapter title="Elsa Server" id="elsa-server-details">
+            <p>
+                <b>Elsa Server</b> is configured to run on <code>http://localhost:12000</code>. Key environment
+                variables include:
+            </p>
+            <list>
+                <li><code>ASPNETCORE_ENVIRONMENT</code>: Specifies the environment (e.g., <code>Development</code>).
+                </li>
+                <li><code>HTTP_PORTS</code>: Specifies the HTTP port within the container.</li>
+                <li><code>HTTP__BASEURL</code>: Sets the base URL for the server.</li>
+            </list>
+        </chapter>
+        <chapter title="Elsa Studio" id="elsa-studio-details">
+            <p>
+                <b>Elsa Studio</b> is configured to run on <code>http://localhost:13000</code>. It connects to Elsa
+                Server at <code>http://localhost:12000/elsa/api</code>. Key environment variables include:
+            </p>
+            <list>
+                <li><code>ASPNETCORE_ENVIRONMENT</code>: Specifies the environment (e.g., <code>Development</code>).
+                </li>
+                <li><code>HTTP_PORTS</code>: Specifies the HTTP port within the container.</li>
+                <li><code>HTTP__BASEURL</code>: Sets the base URL for the Studio.</li>
+                <li><code>ELSASERVER__URL</code>: Configures the URL of the connected Elsa Server.</li>
+            </list>
+        </chapter>
+    </chapter>
+
+    <note title="Network Configuration">
+        Ensure the ports specified in the <code>docker-compose.yml</code> file (e.g., <code>12000:8080</code> and <code>13000:8080</code>)
+        are not already in use on your system. If they are, adjust the port mappings to avoid conflicts.
+    </note>
+</topic>
