@@ -15,6 +15,12 @@
         <toc-element topic="Packages.topic"/>
         <toc-element topic="Docker.topic">
         </toc-element>
+        <toc-element topic="Docker-Compose.topic">
+            <toc-element topic="Elsa-Studio-Server.topic"/>
+            <toc-element topic="Elsa-Server-Studio-Single-Image.topic"/>
+            <toc-element topic="Persistent-Database.topic"/>
+            <toc-element topic="Traefik.topic"/>
+        </toc-element>
     </toc-element>
     <toc-element topic="Application-Types.topic">
         <toc-element topic="Elsa-Server.topic"/>

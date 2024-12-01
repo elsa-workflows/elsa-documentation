@@ -50,4 +50,13 @@
         <description>Created after removal of "Writing Custom Activities" from Elsa</description>
         <accepts>Writing-Custom-Activities.html</accepts>
     </rule>
+    <rule id="4314d5e">
+        <description>Created after removal of "Docker Compose" from Elsa</description>
+        <accepts>Docker-Compose.html</accepts>
+    </rule>
+    <rule id="79d79c8f">
+        <description>Created after removal of "Setting Up Elsa with PostgreSQL using Docker Compose" from Elsa
+        </description>
+        <accepts>PostgreSQL.html</accepts>
+    </rule>
 </rules>
