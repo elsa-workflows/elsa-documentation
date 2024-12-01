@@ -45,7 +45,7 @@ services:
             HTTP_PORTS: 8080
             HTTP__BASEURL: http://elsa.localhost
             DATABASEPROVIDER: PostgreSql
-            CONNECTIONSTRINGS__POSTGRES: Host=postgres;Port=5432;Database=elsa;Username=elsa;Password=elsa
+            CONNECTIONSTRINGS__POSTGRESQL: Host=postgres;Port=5432;Database=elsa;Username=elsa;Password=elsa
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.elsa.rule=Host(`elsa.localhost`)"
