@@ -42,7 +42,7 @@ await workflowRunner.RunAsync(workflow);
 
 ## Workflow definition
 
-Workflows can be created either from code or using the designer. When created using the designer, the workflow definition is stored in JSON form and us used to reconstruct an actual `Workflow` object at runtime.
+Workflows can be created either from code or using the designer. When created using the designer, the workflow definition is stored in JSON form and is used to reconstruct an actual `Workflow` object at runtime.
 
 ## Workflow instance
 
