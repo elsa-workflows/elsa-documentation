@@ -45,7 +45,7 @@ Other examples of triggers include:
 The `Elsa.Workflows.Api` package provides two endpoints for executing a workflow:
 
 - `/workflow-definitions/{workflow_definition_id}/execute`: Executes a workflow definition **synchronously**.
-- `/workflow-instances/{workflow_instance_id}/dispatch`: Executes a workflow instance **asynchronously**.
+- `/workflow-definitions/{workflow_definition_id}/dispatch`: Executes a workflow definition **asynchronously**.
 
 ### Synchronous execution
 
