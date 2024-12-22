@@ -67,12 +67,6 @@ curl --location --request POST 'https://localhost:5001/elsa/api/workflow-definit
 }'
 ```
 
-{% callout title="Authorization" type="note" %}
-
-The authorization token can be obtained as described in [ASP.NET workflow server / security](../installation/aspnet-apps-workflow-server).
-
-{% /callout %}
-
 You can define inputs and outputs for each workflow from the **Input/Output** tab.
 ![Workflow input and output](/guides/invoking-workflows/inputs.png)
 
