@@ -64,12 +64,8 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
-        {description && <meta name="description" content={description} />}
+        <meta httpEquiv="refresh" content="0; url=https://docs.elsaworkflows.io" />
       </Head>
-      <Layout title={title} tableOfContents={tableOfContents}>
-        <Component {...pageProps} />
-      </Layout>
     </>
   )
 }
