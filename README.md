@@ -1,26 +1,26 @@
-# Elsa Documentation
+# Elsa Documentation (Archived)
 
-Welcome to the **Elsa Documentation** repository! This repository contains the source files for the documentation of Elsa Workflows, an open-source library for workflows in .NET.
+🚨 **This repository has been archived.** 🚨  
 
-## Overview
+The Elsa Documentation has moved to **[elsa-gitbook](https://github.com/elsa-workflows/elsa-gitbook)**. This repository is no longer maintained and exists for historical reference only.  
 
-Elsa Workflows is a library that enables developers to create workflows in a fluent and easy-to-use manner. The documentation in this repository provides comprehensive guides, tutorials, and API references to help you get started with and master Elsa Workflows.
+## New Documentation
+
+For the latest documentation, guides, and API references, please visit the new **[Elsa GitBook](https://elsa-workflows.gitbook.io/elsa/)**.
+
+## What’s Changed?
+
+- All documentation has been migrated to GitBook for improved readability and maintenance.
+- Future updates and contributions should be made in the **[elsa-gitbook](https://github.com/elsa-workflows/elsa-gitbook)** repository.
 
 ## Contributing
 
-We welcome contributions from the community! If you find a typo, an error, or have suggestions for improvements, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes.
-4. Commit your changes (`git commit -am 'Add some feature'`).
-5. Push to the branch (`git push origin feature/YourFeature`).
-6. Create a new Pull Request.
+If you would like to contribute to the documentation, please do so in the **[elsa-gitbook](https://github.com/elsa-workflows/elsa-gitbook)** repository.
 
 ## Contact
 
-For any questions or feedback, please open an issue on this repository or reach out to the Elsa Workflows community.
+For any questions or feedback, please open an issue in the **[elsa-gitbook](https://github.com/elsa-workflows/elsa-gitbook/issues)** repository or reach out to the Elsa Workflows community.
 
 ---
 
-Thank you for contributing to the Elsa Workflows documentation!
+Thank you for supporting Elsa Workflows!
